@@ -31,6 +31,7 @@ dependencies:
   cloud_firestore: ^2.0.0
   firebase_storage: ^8.0.5
   firebase_database: ^6.0.0
+  autocomplete_textfield: ^1.7.3
 
 
 

@@ -7,12 +7,12 @@ import 'package:teach_me/AppManagment/sign_in.dart';
 
 
 
-class teacher_homepage extends StatefulWidget {
+class Teacher_Homepage extends StatefulWidget {
   @override
   _Homepage_teacherState createState() => _Homepage_teacherState();
 }
 
-class _Homepage_teacherState extends State<teacher_homepage> {
+class _Homepage_teacherState extends State<Teacher_Homepage> {
   bool showvalue=false;
 
   Widget build(BuildContext context) {

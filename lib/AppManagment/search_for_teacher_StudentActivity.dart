@@ -1,5 +1,9 @@
+import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teach_me/AppManagment/StudentActivity.dart';
+import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
+
 
 
 
@@ -11,6 +15,11 @@ class search_for_teacher_StudentActivity extends StatefulWidget {
 
 class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
   bool showvalue=false;
+  var controler = new TextEditingController();
+  var controlersecond =new TextEditingController();
+  List subjects = ["English","Math","maba","biology","physic","hebrew","arabic"];
+  List Locations = ["Haifa","TelAviv","faradis","BatYam"];
+  String _selectedSubject,_selectedLocation;
 
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -44,6 +53,7 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
               // horizontal).
               //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  SizedBox(height: 25,),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -52,6 +62,10 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                             iconSize: 50,
                             alignment: Alignment.topLeft,
                             onPressed: () {
+                              Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                                  builder: (context) => StudentActivity()
+
+                              ));
 
                             }
                         ),
@@ -66,12 +80,12 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                              SizedBox(
                             height: 11,
                              ),
-                            Icon(Icons.book, size: 110, color: Colors.black),
+                            Icon(Icons.book, size: 140, color: Colors.black),
                              Text(
                             'TeachMe',
                             style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 25,
+                            fontSize: 30,
                             color: Colors.black),
                             ),  ]),
                       ),
@@ -80,27 +94,70 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                     padding: const EdgeInsets.all(15.0),
                     child: Column(
                         children: <Widget>[
-                    TextField(
-                    decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter a search term'
-                ),
-              ),
-                          SizedBox(height: 10,),
-
-                          TextField(
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'Enter a search term'
+                          Center(
+                            child: Text(
+                              "Subject",style:TextStyle(color:Colors.black,fontSize: 20),
                             ),
                           ),
+                          SizedBox(height: 4,),
+                          Autocomplete(
+                            optionsBuilder: (TextEditingValue value) {
+                              // When the field is empty
+                              if (value.text.isEmpty) {
+                                return [];
+                              }
+
+                              // The logic to find out which ones should appear
+                              return subjects.where((suggestion) => suggestion
+                                  .toLowerCase()
+                                  .startsWith(value.text.toLowerCase()));
+                            },
+                            onSelected: (value) {
+                              setState(() {
+                                _selectedSubject = value;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10,),
+                          Center(
+                            child: Text(
+                              "City",style:TextStyle(color:Colors.black,fontSize: 20),
+                            ),
+                          ),
+                          SizedBox(height: 4,),
+                          Container(
+                            child: Autocomplete(
+                              optionsBuilder: (TextEditingValue value) {
+                                // When the field is empty
+                                if (value.text.isEmpty) {
+                                  return [];
+                                }
+
+                                // The logic to find out which ones should appear
+                                return Locations.where((suggestion) => suggestion
+                                    .toLowerCase()
+                                    .startsWith(value.text.toLowerCase()));
+                              },
+                              onSelected: (value) {
+                                setState(() {
+                                  _selectedLocation = value;
+                                });
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                        //  Text(_selectedAnimal != null
+                          //    ? _selectedAnimal
+                            //  : 'Type something (a, b, c, etc)'),
                         ]),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Row(
                       children: [
-                        Text("By his/her Place",
+                        Text("By Your Place",
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.black,
@@ -127,7 +184,10 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                       iconSize: 50,
                       alignment: Alignment.bottomCenter,
                       onPressed: () {
+                        Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                            builder: (context) => search_for_teacher_viewTeachers()
 
+                        ));
                       }
                   ),
 

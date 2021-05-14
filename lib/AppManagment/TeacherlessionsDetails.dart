@@ -4,11 +4,14 @@
 
 
 // ignore: camel_case_types
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../firebase.dart';
 import 'AccountType.dart';
+import 'Teacher_Homepage.dart';
 
 class TeacherlessionsDetail extends StatefulWidget {
   @override
@@ -16,14 +19,17 @@ class TeacherlessionsDetail extends StatefulWidget {
 }
 
 class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
-
-  String email, password, verifypassword;
+  String Subjects,TitleSentence,MoreDetails,Price,_selectedsubject;
+  List subjects = ["English","Math","maba","biology","physic","hebrew","arabic"];
   bool CanGo=false;
+
 
 
 
   Widget build(BuildContext context) {
     final _auth= FirebaseAuth.instance;
+    CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -104,36 +110,39 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-
-                      },
-                      decoration: InputDecoration(
-                        fillColor: Colors.white60,
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(15.0)
-                        ),
-
-                        hintText: 'Full Name',
-                        hintStyle: TextStyle(
-                          color: const Color(0xCB101010),
-                          fontSize: null,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                        ),
-
-
+                    Center(
+                      child: Text(
+                        "subjects",style:TextStyle(color:Colors.black,fontSize: 20),
                       ),
                     ),
+                    SizedBox(height: 4,),
+                    Container(
+                      child: Autocomplete(
+                        optionsBuilder: (TextEditingValue value) {
+                          // When the field is empty
+                          if (value.text.isEmpty) {
+                            return [];
+                          }
+
+                          // The logic to find out which ones should appear
+                          return subjects.where((suggestion) => suggestion
+                              .toLowerCase()
+                              .startsWith(value.text.toLowerCase()));
+                        },
+                        onSelected: (value) {
+                          setState(() {
+                            _selectedsubject = value;
+                          });
+                        },
+                      ),
+                    ),
+
                     SizedBox(height: 15,),
                     TextField(
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
                       onChanged: (value) {
-
+                        TitleSentence=value;
                       },
                       decoration: InputDecoration(
                         fillColor: Colors.white60,
@@ -142,32 +151,7 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                             borderRadius: new BorderRadius.circular(15.0)
                         ),
 
-                        hintText: 'Full Name',
-                        hintStyle: TextStyle(
-                          color: const Color(0xCB101010),
-                          fontSize: null,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                        ),
-
-
-                      ),
-                    ),
-                    SizedBox(height: 15,),
-                    TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-
-                      },
-                      decoration: InputDecoration(
-                        fillColor: Colors.white60,
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(15.0)
-                        ),
-
-                        hintText: 'Full Name',
+                        hintText: 'Enter a Title Sentence',
                         hintStyle: TextStyle(
                           color: const Color(0xCB101010),
                           fontSize: null,
@@ -188,7 +172,7 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                           keyboardType: TextInputType.emailAddress,
                           textAlign: TextAlign.center,
                           onChanged: (value) {
-
+                          MoreDetails=value;
                           },
                           decoration: InputDecoration(
                             contentPadding: new EdgeInsets.symmetric(vertical: 75.0, horizontal: 10.0),
@@ -198,7 +182,7 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                                 borderRadius: new BorderRadius.circular(15.0)
                             ),
 
-                            hintText: 'Full Name',
+                            hintText: 'More About you',
 
 
                             hintStyle: TextStyle(
@@ -256,10 +240,9 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                          height: 70,
                          width: 150,
                          child:TextField(
-                           keyboardType: TextInputType.emailAddress,
                            textAlign: TextAlign.center,
                            onChanged: (value) {
-
+                              Price=value;
                            },
                            decoration: InputDecoration(
                              contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
@@ -292,10 +275,18 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
 
                                alignment: Alignment.topLeft,
                                onPressed: () async {
+                                 Map <String,dynamic> data = {"subjects":Subjects,"Title Sentence":TitleSentence,"More":MoreDetails,"Price":Price,"CanGo":CanGo} ;
 
-                                 Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                     builder: (context) => TeacherlessionsDetail()
-                                 ));
+
+                                 await MoreTeacherDet(data,Teachers);
+
+                                   Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                                       builder: (context) => Teacher_Homepage()
+                                   ));
+
+
+
+
 
                                }
                            ),
@@ -323,5 +314,14 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+}
+
+
+Future<void> MoreTeacherDet(Map <String,dynamic> data,CollectionReference collectionReference)async{
+  FirebaseAuth auth = FirebaseAuth.instance;
+  String UserId = auth.currentUser.uid.toString();
+  collectionReference.doc(UserId).update(data);
+  return;
 
 }

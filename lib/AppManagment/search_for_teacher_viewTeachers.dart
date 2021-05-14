@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teach_me/AppManagment/search_for_teacher_StudentActivity.dart';
 
 
 
@@ -13,6 +14,7 @@ class search_for_teacher_viewTeachers extends StatefulWidget {
 
 class _SearchforTeacherState extends State<search_for_teacher_viewTeachers> {
   bool showvalue=false;
+
 
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -47,6 +49,7 @@ class _SearchforTeacherState extends State<search_for_teacher_viewTeachers> {
             // horizontal).
             //mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                SizedBox(height: 20,),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Row(
@@ -57,7 +60,10 @@ class _SearchforTeacherState extends State<search_for_teacher_viewTeachers> {
                           iconSize: 50,
                           alignment: Alignment.topLeft,
                           onPressed: () {
+                            Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                                builder: (context) => search_for_teacher_StudentActivity()
 
+                            ));
                           }
                       ),
 
@@ -102,7 +108,7 @@ class _SearchforTeacherState extends State<search_for_teacher_viewTeachers> {
                       foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
                     ),
                     onPressed: () { },
-                    child: Text('point${(i+3)}'),
+                    child: Text('point ${(i+3)}'),
                   ),
                 ]
               ),

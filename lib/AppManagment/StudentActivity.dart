@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_StudentActivity.dart';
-import 'SearchForTeacher.dart';
 import 'sign_in.dart';
 
 class StudentActivity extends StatelessWidget  {
@@ -60,7 +59,7 @@ class StudentActivity extends StatelessWidget  {
 
 
                    Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                        builder: (context) => search_for_teacher_StudentActivity()
+                        builder: (context) =>search_for_teacher_StudentActivity()
 
                     ));
 

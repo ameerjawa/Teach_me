@@ -1,11 +1,12 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:teach_me/AppManagment/Sign_Up_Teacher.dart';
+import 'package:teach_me/UserManagment/TeacherProfiles.dart';
 
 import '../../firebase.dart';
 import '../User.dart';
 
-class Teacher extends User{
+class Teacher extends User with TeacherProfiles{
 
   final List<String> subjects;
  final String DetailsOnExperience;

@@ -133,7 +133,7 @@ class _MyHomePageState extends State<sign_in> {
                       if(isTeacher.exists){
                         print("isTeacher");
                         Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                            builder: (context) => teacher_homepage()
+                            builder: (context) => Teacher_Homepage()
                         ));
                       }else{
                         print("isStudent");

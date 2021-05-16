@@ -3,6 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
+import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
+import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
+import 'package:teach_me/UserManagment/Userbg.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/AccountType.dart';
 import 'Sign_Up_Teacher.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_up_user.dart';
@@ -20,6 +23,8 @@ class _MyHomePageState extends State<sign_in> {
   }
     String email ,password ;
   CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -123,36 +128,10 @@ class _MyHomePageState extends State<sign_in> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   onPressed: () async {
-                    try {
-                      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                          email: email,
-                          password: password,
-                    );
-                    if(userCredential != null){
-                      DocumentSnapshot isTeacher = await Teachers.doc("${userCredential.user.uid}").get();
-                      if(isTeacher.exists){
-                        print("isTeacher");
-                        Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                            builder: (context) => Teacher_Homepage()
-                        ));
-                      }else{
-                        print("isStudent");
-                        Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                            builder: (context) => StudentActivity()
-                        ));
 
-                      }
-                    }
-                    } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                        print('No user found for that email.');
-                      } else if (e.code == 'wrong-password') {
-                        print('Wrong password provided for that user.');
-                      }
-                    }
-                   // Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                   //     builder: (context) => StudentActivity()
-                   // ));
+                    Userbg newlogin = Userbg(email,password,"","","","","");
+                    newlogin.login(context, Teachers);
+
                   },
                   child: const Text(
                     'sign in',
@@ -166,7 +145,9 @@ class _MyHomePageState extends State<sign_in> {
                     side: BorderSide(color: Colors.black,width: 1.8),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  onPressed: () {
+                  onPressed: ()async {
+
+
                     Navigator.of(context).pushReplacement(CupertinoPageRoute(
                         builder: (context) => Sign_Up_User()
 

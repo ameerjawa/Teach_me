@@ -1,21 +1,19 @@
 
-import 'dart:html';
-import 'dart:js';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
-import 'package:teach_me/UserManagment/TeacherProfiles.dart';
 
-import '../../firebase.dart';
-import '../User.dart';
+import 'file:///D:/ameer/teach_me/lib/UserManagment/TeacherManagment/TeacherProfiles.dart';
 
-class Student extends User implements TeacherProfiles{
+import '../../DBManagment/firebase.dart';
+import '../Userbg.dart';
+
+class Student extends Userbg implements TeacherProfiles{
 
   final bool isMale;
   int grade;
 
-  Student(String Email, String Password, String VerifyPassword, String FullName, String BirthDate, String PhoneNumber, String Location, this.isMale) : super(Email, Password, VerifyPassword, FullName, BirthDate, PhoneNumber, Location);
+  Student(String email, String password, String verifyPassword, String fullName, String birthDate, String phoneNumber, String location, this.isMale) : super(email, password, verifyPassword, fullName, birthDate, phoneNumber, location);
 
 
 
@@ -23,8 +21,14 @@ class Student extends User implements TeacherProfiles{
 
 
 
-  void SignUpAS_Student(Map <String,dynamic> data,CollectionReference collectionReference)async{
-    await UserSetup(data,collectionReference);
+  void signUpASStudent(Student student,CollectionReference collectionReference)async{
+     var isTeacher=false;
+
+
+    Map <String,dynamic> data = {"Email":student.email,"FullName":student.fullName,"PhoneNumber":student.phoneNumber,"UserType":isTeacher,"Location":student.location,"BirthDate":student.birthDate,"grade":student.grade,"ismale":student.isMale.toString()} ;
+
+
+    await userSetup(data,collectionReference);
   }
 
 
@@ -32,33 +36,33 @@ class Student extends User implements TeacherProfiles{
   //------------------------
   // Search for Teacher
   @override
- Future<List<dynamic>> GetTeacherDetails(String Subject, String Location) async {
+ Future<List<dynamic>> getTeacherDetails(String subject, String location) async {
 
 
-    return await GetTeachersDetailsFromFireBase(Subject, Location);
+    return await getTeachersDetailsFromFireBase(subject, location);
 
   }
 
 
 //----------------
   // Search for courses
-  Future<List<dynamic>> SearchForCourses(String Subject) async {
+  Future<List<dynamic>> searchForCourses(String subject) async {
 
 
-    return await GetCoursesFromFireBase(Subject);
-
-  }
-
-  Future<List<dynamic>> SearchForMeetings(String UserID) async {
-
-
-    return await GetMeetingsFromFireBase(UserID);
+    return await getCoursesFromFireBase(subject);
 
   }
-  Future<List<dynamic>> SearchForExams(String Subject) async {
+
+  Future<List<dynamic>> searchForMeetings(String userID) async {
 
 
-    return await GetExamsFromFireBase(Subject);
+    return await getMeetingsFromFireBase(userID);
+
+  }
+  Future<List<dynamic>> searchForExams(String subject) async {
+
+
+    return await getExamsFromFireBase(subject);
 
   }
 

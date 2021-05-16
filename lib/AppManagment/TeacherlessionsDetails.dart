@@ -9,7 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../firebase.dart';
+import '../DBManagment/firebase.dart';
 import 'AccountType.dart';
 import 'Teacher_Homepage.dart';
 
@@ -275,12 +275,10 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
 
                                alignment: Alignment.topLeft,
                                onPressed: () async {
-                                 Map <String,dynamic> data = {"subjects":Subjects,"Title Sentence":TitleSentence,"More":MoreDetails,"Price":Price,"CanGo":CanGo} ;
 
-
+                                 Map <String,dynamic> data = {"subjects":_selectedsubject,"Title Sentence":TitleSentence,"More":MoreDetails,"Price":Price,"CanGo":CanGo} ;
                                  await MoreTeacherDet(data,Teachers);
-
-                                   Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                                 Navigator.of(context).pushReplacement(CupertinoPageRoute(
                                        builder: (context) => Teacher_Homepage()
                                    ));
 

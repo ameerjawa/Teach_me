@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:teach_me/UserManagment/Userbg.dart';
 
 
 import 'AccountType.dart';
@@ -150,22 +151,8 @@ class Sign_Up_User extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 onPressed: () async  {
-
-                 try{
-                   if (password == verifypassword){
-                     final newUser = await  _auth.createUserWithEmailAndPassword(email: email, password: password);
-                     if(newUser != null){
-
-                       Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                           builder: (context) => AccountType()
-                       ));
-                   }
-                   }
-                 }
-                 catch(e){
-                   print(e);
-
-                 }
+                  Userbg user = Userbg(email, password, verifypassword, "", "", "", "");
+                  await user.signUp(context);
 
 
 

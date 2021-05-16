@@ -12,7 +12,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:gender_selection/gender_selection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:teach_me/AppManagment/AccountType.dart';
-import 'package:teach_me/firebase.dart';
+import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
+import 'file:///D:/ameer/teach_me/lib/DBManagment/firebase.dart';
 
 import 'TeacherlessionsDetails.dart';
 import 'sign_in.dart';
@@ -31,8 +32,6 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
   final databaseReference = FirebaseDatabase.instance.reference();
   CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
   final _auth= FirebaseAuth.instance;
-
-
   bool isTeacher=true;
 
 
@@ -260,14 +259,13 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
 
                                 alignment: Alignment.topLeft,
                                 onPressed: () async {
-                                  isTeacher=true;
-                                  Map <String,dynamic> data = {"FullName":TeacherFullName,"PhoneNumber":PhoneNumber,"UserType":isTeacher,"Location":Location,"BirthDate":dateController.text} ;
-                                  String  UserId =  _auth.currentUser.uid.toString();
 
+                                Teacher newTeacher = Teacher(_auth.currentUser.email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "");
+                                await newTeacher.signUpASTeacher(newTeacher,Teachers);
 
-                                await UserSetup(data,Teachers);
                                 if (imageFile != null ){
-                                  UploadImagetofireStorage(imageFile,TeacherFullName,UserId);
+                                  String  userId =  _auth.currentUser.uid.toString();
+                                  uploadImagetofireStorage(imageFile,TeacherFullName,userId);
                                 }
                                 Navigator.of(context).pushReplacement(CupertinoPageRoute(
                                 builder: (context) => TeacherlessionsDetail()
@@ -296,7 +294,7 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
     );
   }
 
-  void _getFromGallery() async {
+  Future<void> _getFromGallery() async {
     PickedFile pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
       maxWidth: 1800,
@@ -309,7 +307,7 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
     }
   }
 
-  void _getFromCamera() async {
+  Future<void> _getFromCamera() async {
     PickedFile pickedFile = await ImagePicker().getImage(
       source: ImageSource.camera,
       maxWidth: 1800,

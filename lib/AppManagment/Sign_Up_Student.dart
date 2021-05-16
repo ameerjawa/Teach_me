@@ -9,8 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:teach_me/AppManagment/AccountType.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
+import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 
-import '../firebase.dart';
+import '../DBManagment/firebase.dart';
 
 
 
@@ -28,6 +29,7 @@ class _Sign_up_student extends State<Sign_Up_Student> {
   final _auth= FirebaseAuth.instance;
   File image;
   bool isTeacher=false;
+
 
 
 
@@ -317,13 +319,11 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                         alignment: Alignment.topLeft,
                         onPressed: ()async {
                           isTeacher=false;
-                          Map <String,dynamic> data = {"FullName":studentfullname,"PhoneNumber":phonenumber,"UserType":isTeacher,"Location":location,"BirthDate":dateController.text,"grade":grade,"ismale":isMale.toString()} ;
-                          String  UserId =  _auth.currentUser.uid.toString();
-
-
-                          await UserSetup(data,Students);
+                          Student newStudent = Student(_auth.currentUser.email, "", "", studentfullname, dateController.text, phonenumber, location, isMale);
+                          await newStudent.signUpASStudent(newStudent,Students);
                           if (image != null ){
-                           UploadImagetofireStorage(image,studentfullname,UserId);
+                            String  userId =  _auth.currentUser.uid.toString();
+                            uploadImagetofireStorage(image,studentfullname,userId);
                           }
                           Navigator.of(context).pushReplacement(CupertinoPageRoute(
                               builder: (context) => StudentActivity()
@@ -341,7 +341,8 @@ class _Sign_up_student extends State<Sign_Up_Student> {
 
     );
   }
-  void getFromGallery() async {
+
+  Future<void> getFromGallery() async {
     PickedFile pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
       maxWidth: 1800,

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
 import 'Course.dart';
 
@@ -26,7 +27,7 @@ Future<void> userSetup(Map <String,dynamic> data,CollectionReference collectionR
 
 
 
-Future<void> uploadImagetofireStorage(File imageFile,String userFullName,String userId)async{
+Future<String> uploadImagetofireStorage(File imageFile,String userFullName,String userId)async{
 
 
    final _firebaseStorage = FirebaseStorage.instance;
@@ -36,35 +37,50 @@ Future<void> uploadImagetofireStorage(File imageFile,String userFullName,String 
        .child('ProfileImages/${userFullName}${userId}ProImage')
        .putFile(file).whenComplete(() => null);
    String downloadUrl = await snapshot.ref.getDownloadURL();
-   return downloadUrl;
+   return downloadUrl.toString();
 
 
+}
+
+Future<String> getProfileImageFromFireBase()async{
+
+  String url = (await FirebaseStorage.instance.ref().child("abdallaProImage").getDownloadURL()).toString();
+  return url;
 }
 
 
 
 // here we connect to the database collections and retrieve the specific Teacher Data
-Future<List<dynamic>> getTeachersDetailsFromFireBase(String Subject,String Location)async{
+// Stream<List<Teacher>> getTeachersDetailsFromFireBase(String Subject,String Location){
+// // try {
+//   Stream<QuerySnapshot<Map<String, dynamic>>> Teachers =  FirebaseFirestore.instance.collection(
+//       "Teachers").where("Location" ,isEqualTo: Location);
+// //   List<Teacher> TeachersDet = [];
+// //
+// //   Teachers.forEach((element) {
+// //     element.docs.asMap().
+// //     if (element.get(FieldPath(["subjects"])) == Subject &&
+// //         element.get(FieldPath(["Location"])) == Location) {
+// //       Teacher teacher = new Teacher(element.get(FieldPath(["email"])), "password"," verifyPassword", element.get(FieldPath(["FullName"])), element.get(FieldPath(["BirthDate"])), element.get(FieldPath(["PhoneNumber"])), element.get(FieldPath(["Location"])), element.get(FieldPath(["subjects"])), element.get(FieldPath(["More"])));
+// //
+// //        TeachersDet.add(teacher);
+// //     }
+// //   });
+// // if (TeachersDet!=null)
+// //      return TeachersDet;
+// // } catch(e){
+// //   print (e);
+// //   }
+//
+//
+//
+//
+//
+// }
 
-  QuerySnapshot Teachers = await FirebaseFirestore.instance.collection(
-      "Teachers").get();
-
-  List<dynamic> TeachersDet = [];
-  Teachers.docs.forEach((element) {
-
-   if (element.get(FieldPath(["subjects"])) == Subject && element.get(FieldPath(["Location"])) == Location)
-    {
-      TeachersDet.add(element.data());
-    }
-  });
-
-  return TeachersDet;
 
 
 
-
-
-}
 
 
 Future<List<dynamic>> getCoursesFromFireBase(String Subject)async
@@ -137,18 +153,28 @@ Future<void> editMeetingToFireStoreAsTeacher(Map <String,dynamic> data,String me
 
 }
 
-Future<List<dynamic>> getStudentFromFireBase(String email)async{
+Future<List<dynamic>> getStudentFromFireBaseAsTeacher(String fullName)async{
 
   List<dynamic> resultStudents =[];
   QuerySnapshot students = await FirebaseFirestore.instance.collection(
       "Students").get();
   students.docs.forEach((element) {
 
-    if (element.get(FieldPath(["Email"]))==email) {
+    if (element.get(FieldPath(["FullName"]))==fullName) {
       resultStudents.add(element.data());
     }
   });
   return resultStudents;
+
+}
+Future<DocumentReference<Map<String, dynamic>>> getStudentFromFireBaseAsStudent(String userid)async{
+
+  dynamic resultStudent;
+  DocumentReference<Map<String, dynamic>> student = await FirebaseFirestore.instance.collection(
+      "Students").doc(userid);
+ return student;
+
+
 
 }
 

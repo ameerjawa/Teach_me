@@ -260,12 +260,17 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
                                 alignment: Alignment.topLeft,
                                 onPressed: () async {
 
-                                Teacher newTeacher = Teacher(_auth.currentUser.email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "");
-                                await newTeacher.signUpASTeacher(newTeacher,Teachers);
+
 
                                 if (imageFile != null ){
                                   String  userId =  _auth.currentUser.uid.toString();
-                                  uploadImagetofireStorage(imageFile,TeacherFullName,userId);
+
+                                  String imageUrl= await uploadImagetofireStorage(imageFile,TeacherFullName,userId);
+                                  Teacher newTeacher = Teacher(_auth.currentUser.email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "",imageUrl);
+                                  await newTeacher.signUpASTeacher(newTeacher,Teachers);
+                                }else{
+                                  Teacher newTeacher = Teacher(_auth.currentUser.email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU");
+                                  await newTeacher.signUpASTeacher(newTeacher,Teachers);
                                 }
                                 Navigator.of(context).pushReplacement(CupertinoPageRoute(
                                 builder: (context) => TeacherlessionsDetail()

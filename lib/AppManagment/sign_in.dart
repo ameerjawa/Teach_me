@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
+import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/UserManagment/Userbg.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/AccountType.dart';
@@ -15,6 +16,23 @@ import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_up_user.dart';
 
 import 'StudentActivity.dart';
 
+class sign_in extends StatefulWidget {
+  sign_in({Key key, this.title}) : super(key: key);
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
+
+  final String title;
+
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
 
 class _MyHomePageState extends State<sign_in> {
   void _incrementCounter() {
@@ -23,6 +41,8 @@ class _MyHomePageState extends State<sign_in> {
   }
     String email ,password ;
   CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
+  CollectionReference students = FirebaseFirestore.instance.collection("Students");
+
 
 
 
@@ -129,10 +149,58 @@ class _MyHomePageState extends State<sign_in> {
                   ),
                   onPressed: () async {
 
-                    Userbg newlogin = Userbg(email,password,"","","","","");
-                    newlogin.login(context, Teachers);
+                   // Userbg newlogin = Userbg(email,password,"","","","","");
+                  // final userCredential= newlogin.login(context, Teachers);
 
-                  },
+                    final _auth= FirebaseAuth.instance;
+                    print( "here ------->>>>>>>>>${_auth.currentUser.uid}");
+                    try {
+                    final  userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: email,
+                    password: password,
+
+                    );
+                    if(userCredential != null){
+                    DocumentSnapshot isTeacher = await Teachers.doc("${userCredential.user.uid}").get();
+                    if(isTeacher.exists){
+                    print("isTeacher");
+                    Student s;
+                    Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                    builder: (context) => Teacher_Homepage(isTeacher,s,"","")
+                    ));
+                    }else{
+                      DocumentSnapshot student = await students.doc("${userCredential.user.uid}").get();
+
+                      String FullName= student.get(FieldPath(["FullName"]));
+                      String Location= student.get(FieldPath(["Location"]));
+                      String PhoneNumber= student.get(FieldPath(["PhoneNumber"]));
+                      String grade= student.get(FieldPath(["grade"]));
+                      String birthDate= student.get(FieldPath(["BirthDate"]));
+
+
+                      Student s = new Student("email", "password", "verifyPassword", FullName, birthDate, PhoneNumber, Location, true);
+
+                      print("isStudent");
+                    Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                    builder: (context) => StudentActivity(s)
+                    ));
+
+                    }
+                    }
+
+                    } on FirebaseAuthException catch (e) {
+                    if (e.code == 'user-not-found') {
+                    print('No user found for that email.');
+                    } else if (e.code == 'wrong-password') {
+                    print('Wrong password provided for that user.');
+                    }
+                    }
+
+
+                    }
+
+
+  ,
                   child: const Text(
                     'sign in',
                     style: TextStyle(fontSize: 20),
@@ -219,28 +287,11 @@ class _MyHomePageState extends State<sign_in> {
 
         // This trailing comma makes auto-formatting nicer for build methods.
       );
-    
+
   }
 
 }
 
-class sign_in extends StatefulWidget {
-  sign_in({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
 class AboutWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

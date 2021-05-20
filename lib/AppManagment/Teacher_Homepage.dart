@@ -1,22 +1,58 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
 import 'package:teach_me/AppManagment/sign_in.dart';
+import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
+import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
 
 
 
 class Teacher_Homepage extends StatefulWidget {
+
+  DocumentSnapshot isTeacher;
+  String subject,location;
+  Student student;
+  Teacher_Homepage(this.isTeacher,this.student,this.subject,this.location);
+
   @override
-  _Homepage_teacherState createState() => _Homepage_teacherState();
+  Homepage_teacherState createState() => Homepage_teacherState(isTeacher,student,subject,location);
 }
 
-class _Homepage_teacherState extends State<Teacher_Homepage> {
+class Homepage_teacherState extends State<Teacher_Homepage> {
 
   bool showvalue=false;
+  DocumentSnapshot isTeacher;
+  String subject,location;
+  Student student;
+  final _auth = FirebaseAuth.instance;
+
+
+  Homepage_teacherState(this.isTeacher,this.student,this.subject,this.location);
+
+
+
+
+
+
 
   Widget build(BuildContext context) {
+
+  String FullName= this.isTeacher.get(FieldPath(["FullName"]));
+  String Location= this.isTeacher.get(FieldPath(["Location"]));
+  String PhoneNumber= this.isTeacher.get(FieldPath(["PhoneNumber"]));
+  String Price= this.isTeacher.get(FieldPath(["Price"]));
+
+
+
+
+
+
+   Teacher t = new Teacher("email", "password", "verifyPassword", FullName, "birthDate", PhoneNumber, Location, [], "detailsOnExperience","");
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -55,12 +91,9 @@ class _Homepage_teacherState extends State<Teacher_Homepage> {
                     children: <Widget>[
                       Row(
                         children:[
-                         IconButton(
-                            icon: const Icon(Icons.done),
-                            iconSize: 50,
-                            onPressed: () {},
-                        ),
-                          Text('name'
+                          Student==null?showButton(context):showLogoutButton(context),
+
+                          Text(t.fullName
                           ),
                         ]
                       ),
@@ -87,7 +120,7 @@ class _Homepage_teacherState extends State<Teacher_Homepage> {
 
 
                 SizedBox(height: 70,),
-                Text('inquires',
+                Text(this.isTeacher["FullName"],
                     style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 25,
@@ -156,9 +189,9 @@ class _Homepage_teacherState extends State<Teacher_Homepage> {
 
                       ),
                       onPressed: () {
-                        Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                            builder: (context) => sign_in()
-                        ));
+                        // Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                        //     builder: (context) => sign_in()
+                        // ));
                       },
                       child: Text('edit profile',
                         style: TextStyle(
@@ -176,4 +209,39 @@ class _Homepage_teacherState extends State<Teacher_Homepage> {
       ),
     );
   }
+  showLogoutButton(BuildContext context){
+    return  IconButton(
+        icon: const Icon(Icons.logout),
+        iconSize: 50,
+        onPressed: () {
+           _auth.signOut();
+           Navigator.of(context).pushReplacement(CupertinoPageRoute(
+               builder: (context) => sign_in()
+           ));
+        }
+
+    );
+
+  }
+
+  Widget showButton(BuildContext context ){
+    return  IconButton(
+        icon: const Icon(Icons.arrow_back),
+        iconSize: 50,
+        onPressed: () {
+          Navigator.of(context).pushReplacement(CupertinoPageRoute(
+              builder: (context) => search_for_teacher_viewTeachers(selectedSubject: subject, selectedLocation: location)
+          ));
+        }
+
+    );
+
+  }
+
+
+
 }
+
+
+
+

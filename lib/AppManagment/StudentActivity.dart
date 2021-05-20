@@ -1,10 +1,35 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_StudentActivity.dart';
+import 'package:teach_me/DBManagment/firebase.dart';
+import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
+
+
+
 import 'sign_in.dart';
 
 class StudentActivity extends StatelessWidget  {
+Student student;
+
+
+
+
+
+  StudentActivity(this.student);
+
+
+
+
+
+
+
+
   Widget build(BuildContext context) {
+
+
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -44,6 +69,8 @@ class StudentActivity extends StatelessWidget  {
                 style: TextStyle(fontSize: 45),
               ),
               SizedBox(height: 30),
+              Text("Search For Teacher",    style: TextStyle(fontSize: 20,color: Colors.white)
+              ),
 
               SizedBox(
                 width: 270.0,
@@ -59,7 +86,7 @@ class StudentActivity extends StatelessWidget  {
 
 
                    Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                        builder: (context) =>search_for_teacher_StudentActivity()
+                        builder: (context) =>search_for_teacher_StudentActivity(this.student)
 
                     ));
 
@@ -114,6 +141,25 @@ class StudentActivity extends StatelessWidget  {
                   style: TextStyle(color: Colors.black,fontSize: 18.0),
                 ),
               ),
+              FlatButton(
+                onPressed: () {
+
+
+
+
+                  // TODOOOO here
+
+
+
+
+                    // getStudentFromFireBaseAsStudent(this.userId).then((value) => print(value.snapshots().elementAt(0)));
+
+                },
+                child: Text(
+                  "check",
+                  style: TextStyle(color: Colors.black,fontSize: 18.0),
+                ),
+              ),
 
 
             ],
@@ -127,3 +173,12 @@ class StudentActivity extends StatelessWidget  {
 
 }
 
+void get()async{
+  // DocumentReference<Map<String, dynamic>> student = await FirebaseFirestore.instance.collection(
+  //     "Students").doc(userid);
+  //
+  // return student;
+
+
+
+}

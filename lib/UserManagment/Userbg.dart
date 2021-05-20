@@ -10,6 +10,8 @@ import 'package:teach_me/AppManagment/AccountType.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
 
+import 'StudentManagment/Student.dart';
+
 class Userbg{
 
 
@@ -36,6 +38,7 @@ class Userbg{
           ));
         }
       }
+
     }
     catch(e){
       print(e);
@@ -46,25 +49,28 @@ class Userbg{
 
   void login(BuildContext context,CollectionReference Teachers)async{
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      final  userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
+
       );
       if(userCredential != null){
         DocumentSnapshot isTeacher = await Teachers.doc("${userCredential.user.uid}").get();
         if(isTeacher.exists){
+          Student s;
           print("isTeacher");
-          Navigator.of(context).pushReplacement(CupertinoPageRoute(
-              builder: (context) => Teacher_Homepage()
-          ));
+          // Navigator.of(context).pushReplacement(CupertinoPageRoute(
+          //     builder: (context) => Teacher_Homepage(isTeacher,s)
+          // ));
         }else{
           print("isStudent");
           Navigator.of(context).pushReplacement(CupertinoPageRoute(
-              builder: (context) => StudentActivity()
+          //    builder: (context) => StudentActivity()
           ));
 
         }
       }
+
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');

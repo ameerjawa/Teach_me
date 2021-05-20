@@ -321,12 +321,13 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                           isTeacher=false;
                           Student newStudent = Student(_auth.currentUser.email, "", "", studentfullname, dateController.text, phonenumber, location, isMale);
                           await newStudent.signUpASStudent(newStudent,Students);
+                          String  userId =  _auth.currentUser.uid.toString();
+
                           if (image != null ){
-                            String  userId =  _auth.currentUser.uid.toString();
                             uploadImagetofireStorage(image,studentfullname,userId);
                           }
                           Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                              builder: (context) => StudentActivity()
+                              builder: (context) => StudentActivity(newStudent)
                           ));
                         }
                     ),)

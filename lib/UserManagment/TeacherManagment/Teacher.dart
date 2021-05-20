@@ -13,8 +13,10 @@ class Teacher extends Userbg with TeacherProfiles{
  final double rating=0;
  final int raters=0;
  final int allrateCount=0;
+ final String proImg;
 
-  Teacher(String email, String password, String verifyPassword, String fullName, String birthDate, String phoneNumber, String location, this.subjects, this.detailsOnExperience) : super(email, password, verifyPassword, fullName, birthDate, phoneNumber, location);
+
+  Teacher(String email, String password, String verifyPassword, String fullName, String birthDate, String phoneNumber, String location, this.subjects, this.detailsOnExperience, this.proImg) : super(email, password, verifyPassword, fullName, birthDate, phoneNumber, location);
 
 
 
@@ -23,7 +25,7 @@ class Teacher extends Userbg with TeacherProfiles{
   void signUpASTeacher(Teacher newTeacher,CollectionReference collectionReference)async{
 
    var isTeacher=true;
-    Map <String,dynamic> data = {"email":newTeacher.email,"FullName":newTeacher.fullName,"PhoneNumber":newTeacher.phoneNumber,"UserType":isTeacher,"Location":newTeacher.location,"BirthDate":newTeacher.birthDate} ;
+    Map <String,dynamic> data = {"email":newTeacher.email,"ProfileImg":newTeacher.proImg,"FullName":newTeacher.fullName,"PhoneNumber":newTeacher.phoneNumber,"UserType":isTeacher,"Location":newTeacher.location,"BirthDate":newTeacher.birthDate,"Rating":newTeacher.rating} ;
 
     await userSetup(data,collectionReference);
 }
@@ -53,7 +55,7 @@ class Teacher extends Userbg with TeacherProfiles{
   }
 
   Future<List<dynamic>> searchForStudent(String email)async{
-    return await getStudentFromFireBase(email);
+    return await getStudentFromFireBaseAsTeacher(email);
   }
 
   Future<void> addCourse(Map<String,dynamic> data)async{

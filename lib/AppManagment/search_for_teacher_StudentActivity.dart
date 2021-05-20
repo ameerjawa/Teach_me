@@ -3,23 +3,33 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
+import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
+import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
 
 
 
 
 class search_for_teacher_StudentActivity extends StatefulWidget {
+  Student student;
+
+  search_for_teacher_StudentActivity(this.student);
   @override
-  _SearchforTeacherState createState() => _SearchforTeacherState();
+  _SearchforTeacherState createState() => _SearchforTeacherState(student);
 }
 
 class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
   bool showvalue=false;
   var controler = new TextEditingController();
   var controlersecond =new TextEditingController();
-  List subjects = ["English","Math","maba","biology","physic","hebrew","arabic"];
-  List Locations = ["Haifa","TelAviv","faradis","BatYam"];
-  String _selectedSubject,_selectedLocation;
+  List subjects = ["all","English","Math","maba","biology","physic","Hebrew","arabic"];
+  List Locations = ["all","Haifa","TelAviv","faradis","BatYam"];
+  static String selectedSubject;
+  String _selectedLocation;
+
+  Student student;
+
+  _SearchforTeacherState(this.student);
 
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -63,7 +73,7 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                             alignment: Alignment.topLeft,
                             onPressed: () {
                               Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                  builder: (context) => StudentActivity()
+                                  builder: (context) => StudentActivity(this.student)
 
                               ));
 
@@ -114,7 +124,7 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                             },
                             onSelected: (value) {
                               setState(() {
-                                _selectedSubject = value;
+                                selectedSubject = value;
                               });
                             },
                           ),
@@ -183,9 +193,22 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                       icon: const Icon(Icons.done),
                       iconSize: 50,
                       alignment: Alignment.bottomCenter,
-                      onPressed: () {
+                      onPressed: () async{
+
+
+                         //  //List<Teacher> TeachersList= await student.getTeacherDetails(selectedSubject, _selectedLocation);
+                         //
+                         //  print(TeachersList.first.fullName);
+                         //
+                         // if(TeachersList==null){
+                         //   print("here ------------> Nulll");
+                         // }
+                         // else{
+                         //   print("here -----------> NOT NULL");
+                         // }
+
                         Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                            builder: (context) => search_for_teacher_viewTeachers()
+                            builder: (context) => search_for_teacher_viewTeachers(selectedSubject:selectedSubject,selectedLocation: _selectedLocation,s: student,)
 
                         ));
                       }

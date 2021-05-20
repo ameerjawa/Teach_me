@@ -2,6 +2,7 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
 import 'file:///D:/ameer/teach_me/lib/UserManagment/TeacherManagment/TeacherProfiles.dart';
 
@@ -36,12 +37,17 @@ class Student extends Userbg implements TeacherProfiles{
   //------------------------
   // Search for Teacher
   @override
- Future<List<dynamic>> getTeacherDetails(String subject, String location) async {
+ Future<List<Teacher>> getTeacherDetails(String subject, String location) async  {
 
 
-    return await getTeachersDetailsFromFireBase(subject, location);
+    // return  await getTeachersDetailsFromFireBase(subject, location);
+  //
+
 
   }
+
+
+
 
 
 //----------------

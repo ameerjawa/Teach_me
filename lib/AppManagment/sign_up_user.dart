@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:teach_me/AppManagment/sign_in.dart';
 import 'package:teach_me/UserManagment/Userbg.dart';
 
 
@@ -29,7 +30,7 @@ class Sign_Up_User extends StatelessWidget {
 
     return Scaffold(
 
-      body: Center(
+      body: Padding(
 
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -51,6 +52,24 @@ class Sign_Up_User extends StatelessWidget {
             // horizontal).
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+
+
+                 Row(
+
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                   children:<Widget>[ IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        iconSize: 50,
+                        onPressed: () {
+                          // Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                          //     builder: (context) => sign_in()
+                          // ));
+                        }
+
+                    )
+
+             ] ),
 
               Icon(Icons.book, size: 150, color: Colors.white),
               SizedBox(height: 40),

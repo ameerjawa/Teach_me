@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 
 import '../DBManagment/firebase.dart';
 import 'AccountType.dart';
@@ -277,9 +278,15 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                                onPressed: () async {
 
                                  Map <String,dynamic> data = {"subjects":_selectedsubject,"Title Sentence":TitleSentence,"More":MoreDetails,"Price":Price,"CanGo":CanGo} ;
-                                 await MoreTeacherDet(data,Teachers);
+
+                                 FirebaseAuth auth = FirebaseAuth.instance;
+                                 String UserId = auth.currentUser.uid.toString();
+                                 await MoreTeacherDet(data,Teachers,UserId);
+
+                                DocumentSnapshot isTeacher = await Teachers.doc("${UserId}").get();
+                                Student s;
                                  Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                       builder: (context) => Teacher_Homepage()
+                                       builder: (context) => Teacher_Homepage(isTeacher,s,"","")
                                    ));
 
 
@@ -316,9 +323,7 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
 }
 
 
-Future<void> MoreTeacherDet(Map <String,dynamic> data,CollectionReference collectionReference)async{
-  FirebaseAuth auth = FirebaseAuth.instance;
-  String UserId = auth.currentUser.uid.toString();
+Future<void> MoreTeacherDet(Map <String,dynamic> data,CollectionReference collectionReference,String UserId)async{
   collectionReference.doc(UserId).update(data);
   return;
 

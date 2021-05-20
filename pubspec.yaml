@@ -32,6 +32,7 @@ dependencies:
   firebase_storage: ^8.0.5
   firebase_database: ^6.0.0
   autocomplete_textfield: ^1.7.3
+  flutter_rating_bar: ^4.0.0
 
 
 

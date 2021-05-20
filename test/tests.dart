@@ -49,7 +49,7 @@
 // //    print( "${listdet[i]} \n");
 // //     //statements
 // //   }
-//   List<dynamic> stulist=await   t.searchForStudent("saher");
+// List<dynamic> stulist=await   t.searchForStudent("saher");
 //     for (var i=0; i<stulist.length;i++ ) {
 //      print( "${stulist[i]} \n");
 //       //statements

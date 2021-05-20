@@ -2,12 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:teach_me/AppManagment/sign_in.dart';
+
 import 'package:teach_me/UserManagment/Userbg.dart';
 
 
-import 'AccountType.dart';
 
 
 
@@ -30,7 +28,7 @@ class Sign_Up_User extends StatelessWidget {
 
     return Scaffold(
 
-      body: Padding(
+      body: Center(
 
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -62,9 +60,9 @@ class Sign_Up_User extends StatelessWidget {
                         icon: const Icon(Icons.arrow_back),
                         iconSize: 50,
                         onPressed: () {
-                          // Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                          //     builder: (context) => sign_in()
-                          // ));
+                          Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                              builder: (context) => sign_in_user()
+                          ));
                         }
 
                     )

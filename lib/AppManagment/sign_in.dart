@@ -16,8 +16,8 @@ import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_up_user.dart';
 
 import 'StudentActivity.dart';
 
-class sign_in extends StatefulWidget {
-  sign_in({Key key, this.title}) : super(key: key);
+class sign_in_user extends StatefulWidget {
+  sign_in_user({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -34,7 +34,7 @@ class sign_in extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<sign_in> {
+class _MyHomePageState extends State<sign_in_user> {
   void _incrementCounter() {
     setState(() {
     });
@@ -169,7 +169,7 @@ class _MyHomePageState extends State<sign_in> {
                     builder: (context) => Teacher_Homepage(isTeacher,s,"","")
                     ));
                     }else{
-                      DocumentSnapshot student = await students.doc("${userCredential.user.uid}").get();
+                     DocumentSnapshot student = await students.doc("${userCredential.user.uid}").get();
 
                       String FullName= student.get(FieldPath(["FullName"]));
                       String Location= student.get(FieldPath(["Location"]));
@@ -179,7 +179,6 @@ class _MyHomePageState extends State<sign_in> {
 
 
                       Student s = new Student("email", "password", "verifyPassword", FullName, birthDate, PhoneNumber, Location, true);
-
                       print("isStudent");
                     Navigator.of(context).pushReplacement(CupertinoPageRoute(
                     builder: (context) => StudentActivity(s)

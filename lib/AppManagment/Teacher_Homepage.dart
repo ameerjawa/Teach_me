@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
 import 'package:teach_me/AppManagment/sign_in.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
@@ -91,9 +92,12 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                     children: <Widget>[
                       Row(
                         children:[
-                          Student==null?showButton(context):showLogoutButton(context),
+                          Student!=null?showButton(context):showLogoutButton(context),
 
-                          Text(t.fullName
+                          Text("Back To Results",
+                              style: TextStyle(
+                                fontSize: 12
+                              ),
                           ),
                         ]
                       ),
@@ -119,36 +123,112 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                 ),
 
 
-                SizedBox(height: 70,),
+                SizedBox(height: 30,),
                 Text(this.isTeacher["FullName"],
                     style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    color: Colors.black),
+                    fontSize: 35,
+                    color: Colors.white),
                  ),
-                Center(
-
+                SizedBox(height: 10,),
+                Text("${this.isTeacher["subjects"]} Teacher ",
+                  style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15,
+                      color: Colors.white),
+                ),
+                SingleChildScrollView(
                   child: Container(
 
-                    height: 240 ,
-                    decoration: new BoxDecoration(
-                        color: Colors.grey,
-                    ),
+                    height: 440 ,
+                   width: 300,
+                   decoration: BoxDecoration(
+                     borderRadius: BorderRadius.circular(10),
+                     color: Colors.grey
+                   ),
+
+                   // color: Colors.grey,
 
                     child: Column(
 
                       children: [
-                       Row(
-                          children:[ for(var i =0; i<5 ; i++)
-                          Icon(Icons.star, size:70, color: Colors.yellow),
-                          ]),
-                        SizedBox(height: 50,),
-                        Text('Still have no lessons',
-                              style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15,
-                              color: Colors.black),),
+                        RatingBarIndicator(
+                          rating: isTeacher["Rating"],
+                          itemBuilder: (context, index) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          itemCount: 5,
+                          itemSize: 50.0,
+                          direction: Axis.horizontal,
+                        ),
+                        SizedBox(height: 30,),
 
+                        // Text('Still have no lessons',
+                        //       style: TextStyle(
+                        //       fontWeight: FontWeight.bold,
+                        //       fontSize: 15,
+                        //       color: Colors.black),),
+
+
+                        Text(
+                          "City : ${this.isTeacher["Location"]}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20
+                          ),
+                        ),
+                        SizedBox(height: 7,),
+                        Text(
+                            "PhoneNumber :  ${this.isTeacher["PhoneNumber"]}",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
+                          ),
+                        ),
+                        SizedBox(height: 7,),
+                        Text(
+                            "More About Me : ${this.isTeacher["More"]}",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
+                          ),
+                        ),
+                        SizedBox(height: 100,)
+                        ,   Row(
+                            children:<Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                    'Can Go To Student ?'
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+
+
+                                    child: Row(
+
+                                      children: [
+
+                                        // ignore: deprecated_member_use
+                                        FlatButton(child: Text(
+                                    this.isTeacher["CanGo"] ? "Can" : "Can't"
+                                            ,style: TextStyle(
+                                          fontSize: 30,
+                                          color: this.isTeacher["CanGo"] ? Colors.green : Colors.red)
+                                        ),),
+
+
+
+                                      ],
+                                    )
+                                ),
+                              ),
+                            ]
+
+                        ),
 
                       ],
                     ),
@@ -216,7 +296,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
         onPressed: () {
            _auth.signOut();
            Navigator.of(context).pushReplacement(CupertinoPageRoute(
-               builder: (context) => sign_in()
+               builder: (context) => sign_in_user()
            ));
         }
 

@@ -15,7 +15,7 @@ Student student;
 
 
 
-
+final _auth = FirebaseAuth.instance;
 
   StudentActivity(this.student);
 
@@ -129,11 +129,16 @@ Student student;
               FlatButton(
                 onPressed: () {
 
+                  _auth.signOut();
+                  if(_auth.currentUser==null){
+                    Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                        builder: (context) => sign_in_user()
 
-                  Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                     builder: (context) => sign_in()
+                    ));
+                  }
 
-                  ));
+
+
 
                 },
                 child: Text(

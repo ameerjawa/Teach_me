@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:teach_me/Splash_Screen.dart';
 
 
 
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home:sign_in(title: 'TeachMe'),
+      home:Splash(),
     );
   }
 }

@@ -1,9 +1,31 @@
+
+
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'AppManagment/sign_up_user.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_in.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:teach_me/AppManagment/sign_in.dart';
 
 
-class page1 extends StatelessWidget  {
+class Splash extends StatefulWidget {
+  @override
+  splashScreen createState() => splashScreen();
+}
+class splashScreen extends State<Splash>  {
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Timer(Duration(seconds: 3),()=>  Navigator.of(context).pushReplacement(CupertinoPageRoute(
+        builder: (context) => Sign_Up_User()
+    )));
+  }
+
+  @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -32,43 +54,13 @@ class page1 extends StatelessWidget  {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
+          mainAxisAlignment:MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
 
           children: <Widget>[
-            SizedBox(height: 60.0,),
-
-            SizedBox(height: 15.0,),
-            Text(
-              'TeachMe',
-              style: TextStyle(fontSize: 45),
-            ),
-            SizedBox(height: 30),
-
-             SizedBox(height: 20.0,),
-            FlatButton(
-              onPressed: () {
-
-
-              },
-              child: Text(
-                "Logout",
-                style: TextStyle(color: Colors.black, fontSize: 18.0),
-              ),
-            ),SizedBox(height: 20.0,),
-            FlatButton(
-              onPressed: () {
-                 Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                   builder: (context) => sign_in_user()
-
-                ));
-
-              },
-              child: Text(
-                "back",
-                style: TextStyle(color: Colors.black, fontSize: 18.0),
-              ),
-            ),
-
-
+            Image.asset('assets/images/download.jpg'),
+          SizedBox(height: 20),
+            SpinKitRipple(color: Colors.red,)
           ],
         ),
       ),
@@ -78,4 +70,3 @@ class page1 extends StatelessWidget  {
 
 
 }
-

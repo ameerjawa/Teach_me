@@ -51,7 +51,7 @@ class AccountType extends StatelessWidget {
                       alignment: Alignment.topLeft,
                       onPressed: () {
                         Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                            builder: (context) => sign_in()
+                            builder: (context) => sign_in_user()
                         ));
                       }
                   ),

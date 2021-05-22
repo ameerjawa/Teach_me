@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
+import 'package:teach_me/routes/pageRouter.dart';
 
 import '../DBManagment/firebase.dart';
 import 'AccountType.dart';
@@ -72,8 +73,8 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                         iconSize: 50,
                         alignment: Alignment.topLeft,
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                              builder: (context) => AccountType()
+                          Navigator.of(context).pushReplacement(SlideRightRoute(
+                             page: AccountType()
                           ));
                         }
                     ),
@@ -285,8 +286,8 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
 
                                 DocumentSnapshot isTeacher = await Teachers.doc("${UserId}").get();
                                 Student s;
-                                 Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                       builder: (context) => Teacher_Homepage(isTeacher,s,"","")
+                                 Navigator.of(context).pushReplacement(SlideRightRoute(
+                                      page: Teacher_Homepage(isTeacher,s,"","")
                                    ));
 
 

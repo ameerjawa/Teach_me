@@ -4,10 +4,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'AppManagment/sign_up_user.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_in.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:teach_me/AppManagment/sign_in.dart';
+import 'package:teach_me/routes/pageRouter.dart';
+import 'AppManagment/sign_up_user.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 
 
 class Splash extends StatefulWidget {
@@ -20,8 +21,8 @@ class splashScreen extends State<Splash>  {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 3),()=>  Navigator.of(context).pushReplacement(CupertinoPageRoute(
-        builder: (context) => Sign_Up_User()
+    Timer(Duration(seconds: 3),()=>  Navigator.of(context).pushReplacement(ScaleRoute(
+       page: sign_in_user()
     )));
   }
 
@@ -58,9 +59,23 @@ class splashScreen extends State<Splash>  {
           crossAxisAlignment: CrossAxisAlignment.center,
 
           children: <Widget>[
-            Image.asset('assets/images/download.jpg'),
+            Container(
+              width: 150.0,
+              height: 150.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                color: Colors.grey,
+              ),
+              child: Image.asset("assets/images/logo.jpg")
+            ),
+            SizedBox(height: 20),
+            Text(
+
+              'TeachMe',
+              style: TextStyle(fontWeight: FontWeight.bold ,  fontSize: 50,color:Colors.white),
+            ),
           SizedBox(height: 20),
-            SpinKitRipple(color: Colors.red,)
+            SpinKitRipple(color: Colors.black,)
           ],
         ),
       ),

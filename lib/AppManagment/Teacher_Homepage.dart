@@ -5,10 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
 import 'package:teach_me/AppManagment/sign_in.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
+import 'package:teach_me/routes/pageRouter.dart';
 
 
 
@@ -293,12 +295,11 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
     return  IconButton(
         icon: const Icon(Icons.logout),
         iconSize: 50,
-        onPressed: () {
-           _auth.signOut();
-           Navigator.of(context).pushReplacement(CupertinoPageRoute(
-               builder: (context) => sign_in_user()
-           ));
-        }
+      onPressed: ()=>showDialog(
+        context: context,
+        builder: (context) => SureLogout(auth:_auth),
+
+      ),
 
     );
 

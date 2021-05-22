@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:teach_me/AppManagment/AccountType.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -13,6 +14,7 @@ import 'package:gender_selection/gender_selection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:teach_me/AppManagment/AccountType.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
+import 'package:teach_me/routes/pageRouter.dart';
 import 'file:///D:/ameer/teach_me/lib/DBManagment/firebase.dart';
 
 import 'TeacherlessionsDetails.dart';
@@ -21,8 +23,12 @@ import 'sign_in.dart';
 
 
 class Sign_Up_Teacher extends StatefulWidget {
+ final  GoogleSignInAccount userObj;
+
+  const Sign_Up_Teacher({Key key, this.userObj}) : super(key: key);
+
   @override
-  _Sign_Up_TeacherState createState() => _Sign_Up_TeacherState();
+  _Sign_Up_TeacherState createState() => _Sign_Up_TeacherState(this.userObj);
 }
 
 class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
@@ -33,6 +39,9 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
   CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
   final _auth= FirebaseAuth.instance;
   bool isTeacher=true;
+ final GoogleSignInAccount userObj;
+
+  _Sign_Up_TeacherState(this.userObj);
 
 
 
@@ -75,8 +84,8 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
                         iconSize: 50,
                         alignment: Alignment.topLeft,
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                              builder: (context) => AccountType()
+                          Navigator.of(context).pushReplacement(SlideRightRoute(
+                             page: AccountType()
                           ));
                         }
                       ),
@@ -136,7 +145,9 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
                                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU"),
                       ),
                     ),
-                    SizedBox(height: 40,),
+                    SizedBox(height: 25,),
+                    Text(userObj!=null?userObj.email:""),
+                    SizedBox(height: 10,),
                     TextField(
                       keyboardType: TextInputType.emailAddress,
                       textAlign: TextAlign.center,
@@ -263,7 +274,7 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
 
 
                                 if (imageFile != null ){
-                                  String  userId =  _auth.currentUser.uid.toString();
+                                  String  userId = userObj==null? _auth.currentUser.uid.toString():userObj.id;
 
                                   String imageUrl= await uploadImagetofireStorage(imageFile,TeacherFullName,userId);
                                   Teacher newTeacher = Teacher(_auth.currentUser.email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "",imageUrl);
@@ -272,8 +283,8 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
                                   Teacher newTeacher = Teacher(_auth.currentUser.email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU");
                                   await newTeacher.signUpASTeacher(newTeacher,Teachers);
                                 }
-                                Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                builder: (context) => TeacherlessionsDetail()
+                                Navigator.of(context).pushReplacement(SlideRightRoute(
+                              page: TeacherlessionsDetail()
                                 ));
 
                                 }

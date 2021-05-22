@@ -2,14 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teach_me/AppManagment/AccountType.dart';
 import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
-import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
-import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
-import 'package:teach_me/UserManagment/Userbg.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/AccountType.dart';
+import 'package:teach_me/routes/pageRouter.dart';
 import 'Sign_Up_Teacher.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_up_user.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 
 
@@ -42,7 +41,47 @@ class _MyHomePageState extends State<sign_in_user> {
     String email ,password ;
   CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
   CollectionReference students = FirebaseFirestore.instance.collection("Students");
+  final _auth= FirebaseAuth.instance;
 
+
+  final GoogleSignIn _googleSignIn = new GoogleSignIn(
+    scopes: [
+      'email',
+       'https://www.googleapis.com/auth/contacts.readonly',
+    ],
+  );
+  GoogleSignInAccount _userObj;
+  bool isLoggedin=false;
+
+ Future<bool> _login ()async{
+    try{
+      _userObj=  await _googleSignIn.signIn();
+      setState(() {
+         isLoggedin=true;
+
+      });
+      print("hereeeee ${_userObj.displayName}");
+      return isLoggedin;
+    }catch(e){
+      print(e);
+
+    }
+  }
+
+
+ _logout()async{
+  try{
+    await _googleSignIn.signOut();
+    setState(() {
+      isLoggedin=false;
+    });
+
+  }catch(e){
+    print(e);
+
+  }
+
+}
 
 
 
@@ -80,8 +119,8 @@ class _MyHomePageState extends State<sign_in_user> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
 
-                Icon(Icons.book, size: 150,color :Colors.white),
-                SizedBox(height: 40),
+                Container(child: Icon(Icons.book, size: 150,color :Colors.white)),
+                SizedBox(height: 10),
                 Text(
                   'TeachMe',
                   style: TextStyle(fontWeight: FontWeight.bold ,  fontSize: 50,color:Colors.white),
@@ -152,7 +191,6 @@ class _MyHomePageState extends State<sign_in_user> {
                    // Userbg newlogin = Userbg(email,password,"","","","","");
                   // final userCredential= newlogin.login(context, Teachers);
 
-                    final _auth= FirebaseAuth.instance;
                     print( "here ------->>>>>>>>>${_auth.currentUser.uid}");
                     try {
                     final  userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -215,9 +253,8 @@ class _MyHomePageState extends State<sign_in_user> {
                   onPressed: ()async {
 
 
-                    Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                        builder: (context) => Sign_Up_User()
-
+                    Navigator.of(context).pushReplacement(SlideRightRoute(
+                       page: Sign_Up_User()
                     ));
 
                   },
@@ -248,8 +285,8 @@ class _MyHomePageState extends State<sign_in_user> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                        builder: (context) => Sign_Up_Teacher()
+                    Navigator.of(context).pushReplacement(SlideRightRoute(
+                       page: Sign_Up_Teacher()
                     ));
                   },
                   child: const Text(
@@ -267,12 +304,14 @@ class _MyHomePageState extends State<sign_in_user> {
                   ),
                   onPressed: () async {
 
+                   bool isLogedin=  await   _login();
+                     if (isLogedin == true)
+                       {
+                         Navigator.of(context).pushReplacement(SlideRightRoute(
+                             page: AccountType(userObj: _userObj,)
+                         ));
+                       }
 
-
-                 //   Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                    //    builder: (context) => sign_in()
-
-                  //  ));
                   },
                   child: const Text(
                     'SIGN IN WITH GOOGLE',

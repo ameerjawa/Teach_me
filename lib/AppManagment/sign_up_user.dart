@@ -4,6 +4,7 @@ import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:teach_me/UserManagment/Userbg.dart';
+import 'package:teach_me/routes/pageRouter.dart';
 
 
 
@@ -60,9 +61,10 @@ class Sign_Up_User extends StatelessWidget {
                         icon: const Icon(Icons.arrow_back),
                         iconSize: 50,
                         onPressed: () {
-                          Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                              builder: (context) => sign_in_user()
+                          Navigator.of(context).pushReplacement(SlideRightRoute(
+                            page: sign_in_user()
                           ));
+
                         }
 
                     )

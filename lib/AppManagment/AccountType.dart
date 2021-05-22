@@ -2,12 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/Sign_Up_Student.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:teach_me/AppManagment/StudentActivity.dart';
+import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
+import 'package:teach_me/routes/pageRouter.dart';
 
 
 import 'Sign_Up_Teacher.dart';
 import 'sign_in.dart';
 
 class AccountType extends StatelessWidget {
+
+  final GoogleSignInAccount userObj;
+
+  const AccountType({Key key, this.userObj}) : super(key: key);
+
 
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -50,8 +59,8 @@ class AccountType extends StatelessWidget {
                       iconSize: 50,
                       alignment: Alignment.topLeft,
                       onPressed: () {
-                        Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                            builder: (context) => sign_in_user()
+                        Navigator.of(context).pushReplacement(SlideRightRoute(
+                            page:sign_in_user()
                         ));
                       }
                   ),
@@ -72,7 +81,7 @@ class AccountType extends StatelessWidget {
                       child: Column(
                           children: <Widget>[
                             Text(
-                              'sign up as',
+                             userObj!=null?"sign in as": 'sign up as',
                               style: TextStyle(fontWeight: FontWeight.bold,
                                   fontSize: 30,
                                   color: Colors.white),
@@ -94,8 +103,8 @@ class AccountType extends StatelessWidget {
                               ),
                               onPressed: () {
 
-                                Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                    builder: (context) => Sign_Up_Teacher()
+                                Navigator.of(context).pushReplacement(SlideRightRoute(
+                                    page: Sign_Up_Teacher(userObj: userObj,)
 
                                 ));
                               },
@@ -118,8 +127,9 @@ class AccountType extends StatelessWidget {
                                 ),
                               ),
                               onPressed: () {
-                                Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                    builder: (context) => Sign_Up_Student()
+                                Student student= Student(userObj.email, "password", "verifyPassword", userObj.displayName, "birthDate", "phoneNumber", "location",true);
+                                Navigator.of(context).pushReplacement(SlideRightRoute(
+                                   page: userObj==null?Sign_Up_Student(userObj: userObj,):StudentActivity(student)
 
                                 ));
                               },

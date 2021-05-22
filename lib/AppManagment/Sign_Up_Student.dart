@@ -6,10 +6,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:teach_me/AppManagment/AccountType.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
+import 'package:teach_me/routes/pageRouter.dart';
 
 import '../DBManagment/firebase.dart';
 
@@ -17,8 +19,11 @@ import '../DBManagment/firebase.dart';
 
 
 class Sign_Up_Student extends StatefulWidget {
+  final GoogleSignInAccount userObj;
+
+  const Sign_Up_Student({Key key, this.userObj}) : super(key: key);
   @override
-  _Sign_up_student createState() => _Sign_up_student();
+  _Sign_up_student createState() => _Sign_up_student(userObj);
 }
 
 class _Sign_up_student extends State<Sign_Up_Student> {
@@ -29,11 +34,25 @@ class _Sign_up_student extends State<Sign_Up_Student> {
   final _auth= FirebaseAuth.instance;
   File image;
   bool isTeacher=false;
+  final GoogleSignInAccount _userObj;
+  String googlePhotoUrl;
+  List Locations = ["all","Haifa","TelAviv","faradis","BatYam"];
+
+
+  _Sign_up_student(this._userObj);
+
+
+
 
 
 
 
   Widget build(BuildContext context) {
+    if (this._userObj!=null){
+      setState(() {
+       googlePhotoUrl=_userObj.photoUrl;
+      });
+    }
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -73,8 +92,8 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                           iconSize: 50,
                           alignment: Alignment.topLeft,
                           onPressed: () {
-                            Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                builder: (context) => AccountType()
+                            Navigator.of(context).pushReplacement(SlideRightRoute(
+                              page:AccountType()
                             ));
                           }
                       ),
@@ -119,14 +138,14 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                     radius: 70,
                     backgroundImage: image != null
                         ? FileImage(image)
-                        : NetworkImage(
+                        : googlePhotoUrl != null?NetworkImage(googlePhotoUrl): NetworkImage(
                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU"),
                   ),
                 ),
 
                 SizedBox(height: 40,),
                 TextField(
-                  keyboardType: TextInputType.emailAddress,
+
                   textAlign: TextAlign.center,
                   onChanged: (value) {
                     studentfullname = value;
@@ -140,7 +159,7 @@ class _Sign_up_student extends State<Sign_Up_Student> {
 
 
 
-                    hintText: 'Full Name',
+                    hintText: _userObj != null?_userObj.displayName:"FullName",
                     hintStyle: TextStyle(
                       color: const Color(0xCB101010),
                       fontSize: null,
@@ -164,7 +183,7 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                     border: OutlineInputBorder(
                         borderRadius: new BorderRadius.circular(15.0)
                     ),
-                    hintText: 'Phone Number',
+                    hintText: "Phone Number",
                     hintStyle: TextStyle(
                       color: const Color(0xCB101010),
                       fontSize: null,
@@ -176,27 +195,27 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                   ),
                 ),
                 SizedBox(height: 10),
-                TextField(
+                 Text("City"),
+                 
+                 Autocomplete(
+                    optionsBuilder: (TextEditingValue value) {
+                      // When the field is empty
+                      if (value.text.isEmpty) {
+                        return [];
+                      }
 
-                  textAlign: TextAlign.center,
-                  onChanged: (value) {
-                    location = value;
-                  },
-                  decoration: InputDecoration(
-                    fillColor: Colors.white60,
-                    filled: true,
-                    border: OutlineInputBorder(
-                        borderRadius: new BorderRadius.circular(15.0)
-                    ),
-                    hintText: 'Location',
-                    hintStyle: TextStyle(
-                      color: const Color(0xCB101010),
-                      fontSize: null,
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.normal,
-                    ),
+                      // The logic to find out which ones should appear
+                      return Locations.where((suggestion) => suggestion
+                          .toLowerCase()
+                          .startsWith(value.text.toLowerCase()));
+                    },
+                    onSelected: (value) {
+                      setState(() {
+                        location = value;
+                      });
+                    },
                   ),
-                ),
+
                 SizedBox(height: 10,)
                 ,
                 TextField(
@@ -275,8 +294,8 @@ class _Sign_up_student extends State<Sign_Up_Student> {
 
                                     children: [
 
-                                      FlatButton(onPressed: (){
-                                        color: isMale ? Colors.blue : Colors.green;
+                                      TextButton(onPressed: (){
+                                        color: isMale ? Colors.green : Colors.blue;
                                         setState(() {
                                           isMale=true;
 
@@ -285,8 +304,9 @@ class _Sign_up_student extends State<Sign_Up_Student> {
 
 
                                       }, child: Text('Male'),
-                                        color: isMale ? Colors.blue : Colors.green,),
-                                      FlatButton(onPressed: (){
+                                       ),
+                                      TextButton(onPressed: (){
+                                        color: isMale ?  Colors.blue : Colors.green;
 
 
                                         setState(() {
@@ -294,7 +314,7 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                                         });
 
                                       }, child: Text('Female')
-                                        ,color: isMale ?  Colors.green : Colors.blue,
+
                                       )
 
                                     ],
@@ -319,15 +339,18 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                         alignment: Alignment.topLeft,
                         onPressed: ()async {
                           isTeacher=false;
-                          Student newStudent = Student(_auth.currentUser.email, "", "", studentfullname, dateController.text, phonenumber, location, isMale);
+                          studentfullname==null?studentfullname=_userObj.displayName:studentfullname;
+                         String userEmail = _auth.currentUser.email;
+                         userEmail ==null? userEmail==_userObj.email:userEmail;
+                          Student newStudent = Student(userEmail, "", "", studentfullname, dateController.text, phonenumber, location, isMale);
                           await newStudent.signUpASStudent(newStudent,Students);
                           String  userId =  _auth.currentUser.uid.toString();
 
                           if (image != null ){
                             uploadImagetofireStorage(image,studentfullname,userId);
                           }
-                          Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                              builder: (context) => StudentActivity(newStudent)
+                          Navigator.of(context).pushReplacement(SlideRightRoute(
+                             page: StudentActivity(newStudent)
                           ));
                         }
                     ),)

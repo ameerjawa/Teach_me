@@ -10,6 +10,7 @@ import 'package:teach_me/AppManagment/search_for_teacher_StudentActivity.dart';
 import 'package:teach_me/DBManagment/firebase.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
+import 'package:teach_me/routes/pageRouter.dart';
 import 'search_for_teacher_StudentActivity.dart';
 
 
@@ -203,8 +204,8 @@ class _TeachersListState extends State<TeachersList> {
 
             return new ListTile(  contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                 onTap: (){
-                  Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                      builder: (context) => Teacher_Homepage(document,this.student,this.subject,this.location)
+                  Navigator.of(context).pushReplacement(SlideRightRoute(
+                      page: Teacher_Homepage(document,this.student,this.subject,this.location)
                   ));
                 },
                 leading: Container(

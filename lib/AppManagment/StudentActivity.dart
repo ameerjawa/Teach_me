@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_StudentActivity.dart';
 import 'package:teach_me/DBManagment/firebase.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
+import 'package:teach_me/routes/pageRouter.dart';
 
 
 
 import 'sign_in.dart';
+
 
 class StudentActivity extends StatelessWidget  {
 Student student;
@@ -69,9 +71,9 @@ final _auth = FirebaseAuth.instance;
                 style: TextStyle(fontSize: 45),
               ),
               SizedBox(height: 30),
-              Text("Search For Teacher",    style: TextStyle(fontSize: 20,color: Colors.white)
+              Text(student.email,    style: TextStyle(fontSize: 20,color: Colors.white)
               ),
-
+              SizedBox(height: 10),
               SizedBox(
                 width: 270.0,
                 child: RaisedButton(
@@ -85,8 +87,8 @@ final _auth = FirebaseAuth.instance;
                   onPressed: () {
 
 
-                   Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                        builder: (context) =>search_for_teacher_StudentActivity(this.student)
+                   Navigator.of(context).pushReplacement(ScaleRoute(
+                        page:search_for_teacher_StudentActivity(this.student)
 
                     ));
 
@@ -126,21 +128,12 @@ final _auth = FirebaseAuth.instance;
 
                 ),
               ),SizedBox(height: 20.0,),
-              FlatButton(
-                onPressed: () {
+              TextButton(
+                  onPressed: ()=>showDialog(
+                    context: context,
+                    builder: (context) => SureLogout(auth:_auth,),
 
-                  _auth.signOut();
-                  if(_auth.currentUser==null){
-                    Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                        builder: (context) => sign_in_user()
-
-                    ));
-                  }
-
-
-
-
-                },
+                  ),
                 child: Text(
                   "Logout",
                   style: TextStyle(color: Colors.black,fontSize: 18.0),
@@ -150,7 +143,7 @@ final _auth = FirebaseAuth.instance;
                 onPressed: () {
 
 
-
+                 
 
                   // TODOOOO here
 
@@ -187,3 +180,86 @@ void get()async{
 
 
 }
+
+
+class SureLogout extends StatelessWidget {
+  
+  
+final auth;
+
+  const SureLogout({Key key, this.auth}) : super(key: key);
+ 
+ 
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: Container(
+        height: 100,
+          child: Column(
+        children: <Widget>[
+          new Text(" are U sure ?"),
+
+
+            SizedBox(height: 20,),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+
+                children:<Widget> [
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Colors.blue,
+
+                      backgroundColor: Colors.grey,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('Cancel',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,),),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      primary: Colors.blue,
+
+                      backgroundColor: Colors.grey,
+                    ),
+                    onPressed: () {
+
+                      auth.signOut();
+
+                      if(auth.currentUser==null){
+                        Navigator.of(context).pushReplacement(SlideRightRoute(
+                            page: sign_in_user()
+
+                        ));
+                      }
+
+
+                    },
+                    child: Text('LogOut',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,),),
+                  ),
+
+                ],
+              ),
+            ),
+
+
+        ],
+      )),
+      title: Text(''),
+
+
+    );
+  }
+}
+
+
+

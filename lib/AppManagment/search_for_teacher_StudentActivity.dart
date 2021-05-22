@@ -5,6 +5,7 @@ import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
+import 'package:teach_me/routes/pageRouter.dart';
 
 
 
@@ -72,8 +73,8 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                             iconSize: 50,
                             alignment: Alignment.topLeft,
                             onPressed: () {
-                              Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                  builder: (context) => StudentActivity(this.student)
+                              Navigator.of(context).pushReplacement(SlideRightRoute(
+                                 page: StudentActivity(this.student)
 
                               ));
 
@@ -207,8 +208,8 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                          //   print("here -----------> NOT NULL");
                          // }
 
-                        Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                            builder: (context) => search_for_teacher_viewTeachers(selectedSubject:selectedSubject,selectedLocation: _selectedLocation,s: student,)
+                        Navigator.of(context).pushReplacement(SlideRightRoute(
+                            page: search_for_teacher_viewTeachers(selectedSubject:selectedSubject,selectedLocation: _selectedLocation,s: student,)
 
                         ));
                       }

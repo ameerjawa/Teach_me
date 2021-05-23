@@ -64,229 +64,234 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
     // than having to individually change instances of widgets.
     return Scaffold(
 
-      body: Padding(
-        padding: const EdgeInsets.all(5.0),
+      body: Container(
+        decoration: BoxDecoration(
+            color: Colors.blue.shade200
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
 
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: SingleChildScrollView(
-          child: Column(
-            // Column is also a layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Invoke "debug painting" (press "p" in the console, choose the
-            // "Toggle Debug Paint" action from the Flutter Inspector in Android
-            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-            // to see the wireframe for each widget.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
-            //mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Row(
-                        children:[
-                          Student!=null?showButton(context):showLogoutButton(context),
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: SingleChildScrollView(
+            child: Column(
+              // Column is also a layout widget. It takes a list of children and
+              // arranges them vertically. By default, it sizes itself to fit its
+              // children horizontally, and tries to be as tall as its parent.
+              //
+              // Invoke "debug painting" (press "p" in the console, choose the
+              // "Toggle Debug Paint" action from the Flutter Inspector in Android
+              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+              // to see the wireframe for each widget.
+              //
+              // Column has various properties to control how it sizes itself and
+              // how it positions its children. Here we use mainAxisAlignment to
+              // center the children vertically; the main axis here is the vertical
+              // axis because Columns are vertical (the cross axis would be
+              // horizontal).
+              //mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          children:[
+                            Student!=null?showButton(context):showLogoutButton(context),
 
-                          Text("Back To Results",
-                              style: TextStyle(
-                                fontSize: 12
-                              ),
-                          ),
-                        ]
-                      ),
-
-                      Column(
-                          children: [
-                            SizedBox(
-                              height: 11,
+                            Text("Back To Results",
+                                style: TextStyle(
+                                  fontSize: 12
+                                ),
                             ),
-                            Icon(Icons.book, size:70, color: Colors.black),
-                            Text(
-                              'TeachMe',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 25,
-                                  color: Colors.black),
-                            ),  ]),
-
-
-
-                    ],
-                  ),
-                ),
-
-
-                SizedBox(height: 30,),
-                Text(this.isTeacher["FullName"],
-                    style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 35,
-                    color: Colors.white),
-                 ),
-                SizedBox(height: 10,),
-                Text("${this.isTeacher["subjects"]} Teacher ",
-                  style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 15,
-                      color: Colors.white),
-                ),
-                SingleChildScrollView(
-                  child: Container(
-
-                    height: 440 ,
-                   width: 300,
-                   decoration: BoxDecoration(
-                     borderRadius: BorderRadius.circular(10),
-                     color: Colors.grey
-                   ),
-
-                   // color: Colors.grey,
-
-                    child: Column(
-
-                      children: [
-                        RatingBarIndicator(
-                          rating: isTeacher["Rating"],
-                          itemBuilder: (context, index) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          itemCount: 5,
-                          itemSize: 50.0,
-                          direction: Axis.horizontal,
+                          ]
                         ),
-                        SizedBox(height: 30,),
 
-                        // Text('Still have no lessons',
-                        //       style: TextStyle(
-                        //       fontWeight: FontWeight.bold,
-                        //       fontSize: 15,
-                        //       color: Colors.black),),
-
-
-                        Text(
-                          "City : ${this.isTeacher["Location"]}",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20
-                          ),
-                        ),
-                        SizedBox(height: 7,),
-                        Text(
-                            "PhoneNumber :  ${this.isTeacher["PhoneNumber"]}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20
-                          ),
-                        ),
-                        SizedBox(height: 7,),
-                        Text(
-                            "More About Me : ${this.isTeacher["More"]}",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20
-                          ),
-                        ),
-                        SizedBox(height: 100,)
-                        ,   Row(
-                            children:<Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                    'Can Go To Student ?'
-                                ),
+                        Column(
+                            children: [
+                              SizedBox(
+                                height: 11,
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Container(
+                              Icon(Icons.book, size:70, color: Colors.black),
+                              Text(
+                                'TeachMe',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                    color: Colors.black),
+                              ),  ]),
 
 
-                                    child: Row(
-
-                                      children: [
-
-                                        // ignore: deprecated_member_use
-                                        FlatButton(child: Text(
-                                    this.isTeacher["CanGo"] ? "Can" : "Can't"
-                                            ,style: TextStyle(
-                                          fontSize: 30,
-                                          color: this.isTeacher["CanGo"] ? Colors.green : Colors.red)
-                                        ),),
-
-
-
-                                      ],
-                                    )
-                                ),
-                              ),
-                            ]
-
-                        ),
 
                       ],
                     ),
                   ),
-                ),
-                Column(
-                  children: [
-                    SizedBox(height: 20,),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        primary: Colors.blue,
-                        backgroundColor: Colors.grey,
 
+
+                  SizedBox(height: 30,),
+                  Text(this.isTeacher["FullName"],
+                      style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 35,
+                      color: Colors.white),
+                   ),
+                  SizedBox(height: 10,),
+                  Text("${this.isTeacher["subjects"]} Teacher ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15,
+                        color: Colors.white),
+                  ),
+                  SingleChildScrollView(
+                    child: Container(
+
+                      height: 440 ,
+                     width: 300,
+                     decoration: BoxDecoration(
+                       borderRadius: BorderRadius.circular(10),
+                       color: Colors.grey
+                     ),
+
+                     // color: Colors.grey,
+
+                      child: Column(
+
+                        children: [
+                          RatingBarIndicator(
+                            rating: isTeacher["Rating"],
+                            itemBuilder: (context, index) => Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            itemCount: 5,
+                            itemSize: 50.0,
+                            direction: Axis.horizontal,
+                          ),
+                          SizedBox(height: 30,),
+
+                          // Text('Still have no lessons',
+                          //       style: TextStyle(
+                          //       fontWeight: FontWeight.bold,
+                          //       fontSize: 15,
+                          //       color: Colors.black),),
+
+
+                          Text(
+                            "City : ${this.isTeacher["Location"]}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20
+                            ),
+                          ),
+                          SizedBox(height: 7,),
+                          Text(
+                              "PhoneNumber :  ${this.isTeacher["PhoneNumber"]}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20
+                            ),
+                          ),
+                          SizedBox(height: 7,),
+                          Text(
+                              "More About Me : ${this.isTeacher["More"]}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20
+                            ),
+                          ),
+                          SizedBox(height: 100,)
+                          ,   Row(
+                              children:<Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                      'Can Go To Student ?'
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Container(
+
+
+                                      child: Row(
+
+                                        children: [
+
+                                          // ignore: deprecated_member_use
+                                          FlatButton(child: Text(
+                                      this.isTeacher["CanGo"] ? "Can" : "Can't"
+                                              ,style: TextStyle(
+                                            fontSize: 30,
+                                            color: this.isTeacher["CanGo"] ? Colors.green : Colors.red)
+                                          ),),
+
+
+
+                                        ],
+                                      )
+                                  ),
+                                ),
+                              ]
+
+                          ),
+
+                        ],
                       ),
-                      onPressed: () { },
-                      child: Text('Search For Student',
-                        style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,),),
                     ),
-                    SizedBox(height: 20,),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        primary: Colors.blue,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(height: 20,),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          primary: Colors.blue,
+                          backgroundColor: Colors.grey,
 
-                        backgroundColor: Colors.grey,
-                      ),
-                      onPressed: () { },
-                      child: Text('calander',
-                        style: TextStyle(
+                        ),
+                        onPressed: () { },
+                        child: Text('Search For Student',
+                          style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,),),
-                    ),
-                    SizedBox(height: 40,),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        primary: Colors.blue,
-
                       ),
-                      onPressed: () {
-                        // Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                        //     builder: (context) => sign_in()
-                        // ));
-                      },
-                      child: Text('edit profile',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,),),
-                    ),
-                  ],
-                )
+                      SizedBox(height: 20,),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          primary: Colors.blue,
+
+                          backgroundColor: Colors.grey,
+                        ),
+                        onPressed: () { },
+                        child: Text('calander',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,),),
+                      ),
+                      SizedBox(height: 40,),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          primary: Colors.blue,
+
+                        ),
+                        onPressed: () {
+                          // Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                          //     builder: (context) => sign_in()
+                          // ));
+                        },
+                        child: Text('edit profile',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,),),
+                      ),
+                    ],
+                  )
 
 
 
 
-              ]),
+                ]),
+          ),
         ),
       ),
     );

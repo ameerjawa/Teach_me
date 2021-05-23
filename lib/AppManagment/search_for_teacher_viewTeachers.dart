@@ -52,113 +52,118 @@ class _SearchforTeacherState extends State<search_for_teacher_viewTeachers> {
     // than having to individually change instances of widgets.
     return Scaffold(
 
-      body: Padding(
-        padding: const EdgeInsets.all(5.0),
+      body: Container(
+        decoration: BoxDecoration(
+            color: Colors.blue.shade200
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
 
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-
-
-            child: Column(
-              // Column is also a layout widget. It takes a list of children and
-              // arranges them vertically. By default, it sizes itself to fit its
-              // children horizontally, and tries to be as tall as its parent.
-              //
-              // Invoke "debug painting" (press "p" in the console, choose the
-              // "Toggle Debug Paint" action from the Flutter Inspector in Android
-              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-              // to see the wireframe for each widget.
-              //
-              // Column has various properties to control how it sizes itself and
-              // how it positions its children. Here we use mainAxisAlignment to
-              // center the children vertically; the main axis here is the vertical
-              // axis because Columns are vertical (the cross axis would be
-              // horizontal).
-              //mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: 20,),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        IconButton(
-                            icon: const Icon(Icons.arrow_back),
-                            iconSize: 50,
-                            alignment: Alignment.topLeft,
-                            onPressed: () {
-                              Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                  builder: (context) => search_for_teacher_StudentActivity(this.s)
-
-                              ));
-                            }
-                        ),
-
-                         Column(
-                              children: [
-                                SizedBox(
-                                  height: 11,
-                                ),
-                                Icon(Icons.book, size: 60, color: Colors.black),
-                                Text(
-                                  'TeachMe',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 25,
-                                      color: Colors.black),
-                                ),  ]),
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
 
 
-                      ],
-                    ),
-                  ),
+              child: Column(
+                // Column is also a layout widget. It takes a list of children and
+                // arranges them vertically. By default, it sizes itself to fit its
+                // children horizontally, and tries to be as tall as its parent.
+                //
+                // Invoke "debug painting" (press "p" in the console, choose the
+                // "Toggle Debug Paint" action from the Flutter Inspector in Android
+                // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+                // to see the wireframe for each widget.
+                //
+                // Column has various properties to control how it sizes itself and
+                // how it positions its children. Here we use mainAxisAlignment to
+                // center the children vertically; the main axis here is the vertical
+                // axis because Columns are vertical (the cross axis would be
+                // horizontal).
+                //mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: 20,),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          IconButton(
+                              icon: const Icon(Icons.arrow_back),
+                              iconSize: 50,
+                              alignment: Alignment.topLeft,
+                              onPressed: () {
+                                Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                                    builder: (context) => search_for_teacher_StudentActivity(this.s)
+
+                                ));
+                              }
+                          ),
+
+                           Column(
+                                children: [
+                                  SizedBox(
+                                    height: 11,
+                                  ),
+                                  Icon(Icons.book, size: 60, color: Colors.black),
+                                  Text(
+                                    'TeachMe',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        color: Colors.black),
+                                  ),  ]),
 
 
-                  SizedBox(height: 10,),
-                 Padding(
-                   padding: const EdgeInsets.all(15.0),
-                   child: Column(
-                     children: [
-                       Text(selectedSubject != null?selectedSubject:"Subject",
-                       style: TextStyle(
-                         color: Colors.blue,
-                         fontSize: 50,
-                         fontWeight: FontWeight.bold
-                       ),),
-                       Text("Here You Can Find Very Professional ${selectedSubject} Teachers"),
-                     ],
-                   ),
-                 ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  for(var i=0 ; i<4 ; i++)
-                    TextButton(
-                      style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                        ],
                       ),
-                      onPressed: () { },
-                      child: Text('point ${(i+3)}'),
                     ),
-                  ]
-                ),
-              ),
 
-            )
+
+                    SizedBox(height: 10,),
+                   Padding(
+                     padding: const EdgeInsets.all(15.0),
+                     child: Column(
+                       children: [
+                         Text(selectedSubject != null?selectedSubject:"Subject",
+                         style: TextStyle(
+                           color: Colors.blue,
+                           fontSize: 50,
+                           fontWeight: FontWeight.bold
+                         ),),
+                         Text("Here You Can Find Very Professional ${selectedSubject} Teachers"),
+                       ],
+                     ),
+                   ),
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for(var i=0 ; i<4 ; i++)
+                      TextButton(
+                        style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                        ),
+                        onPressed: () { },
+                        child: Text('point ${(i+3)}'),
+                      ),
+                    ]
+                  ),
+                ),
+
+              )
 ,
 
 
-               SingleChildScrollView(child: Container(height:500,child: TeachersList(this.selectedSubject,this.selectedLocation,this.s)))
+                 SingleChildScrollView(child: Container(height:500,child: TeachersList(this.selectedSubject,this.selectedLocation,this.s)))
 
 
 
-                ]),
+                  ]),
 
 
-        ),
+          ),
+      ),
 
     );
   }

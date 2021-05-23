@@ -40,127 +40,132 @@ final _auth = FirebaseAuth.instance;
     // than having to individually change instances of widgets.
     return Scaffold(
 
-      body: Center(
+      body: Container(
+        decoration: BoxDecoration(
+            color: Colors.blue.shade200
+        ),
+        child: Center(
 
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: SingleChildScrollView(
-          child: Column(
-            // Column is also a layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Invoke "debug painting" (press "p" in the console, choose the
-            // "Toggle Debug Paint" action from the Flutter Inspector in Android
-            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-            // to see the wireframe for each widget.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: SingleChildScrollView(
+            child: Column(
+              // Column is also a layout widget. It takes a list of children and
+              // arranges them vertically. By default, it sizes itself to fit its
+              // children horizontally, and tries to be as tall as its parent.
+              //
+              // Invoke "debug painting" (press "p" in the console, choose the
+              // "Toggle Debug Paint" action from the Flutter Inspector in Android
+              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+              // to see the wireframe for each widget.
+              //
+              // Column has various properties to control how it sizes itself and
+              // how it positions its children. Here we use mainAxisAlignment to
+              // center the children vertically; the main axis here is the vertical
+              // axis because Columns are vertical (the cross axis would be
+              // horizontal).
 
-            children: <Widget>[
-              SizedBox(height: 60.0,),
-              Icon(Icons.book,
-                size: 170.0,),
-              SizedBox(height: 15.0,),
-              Text(
-                'TeachMe',
-                style: TextStyle(fontSize: 45),
-              ),
-              SizedBox(height: 30),
-              Text(student.email,    style: TextStyle(fontSize: 20,color: Colors.white)
-              ),
-              SizedBox(height: 10),
-              SizedBox(
-                width: 270.0,
-                child: RaisedButton(
-                  child:
-                  Text("Search For Teacher",    style: TextStyle(fontSize: 20,color: Colors.white)
+              children: <Widget>[
+                SizedBox(height: 60.0,),
+                Icon(Icons.book,
+                  size: 170.0,),
+                SizedBox(height: 15.0,),
+                Text(
+                  'TeachMe',
+                  style: TextStyle(fontSize: 45),
+                ),
+                SizedBox(height: 30),
+                Text(student.email,    style: TextStyle(fontSize: 20,color: Colors.white)
+                ),
+                SizedBox(height: 10),
+                SizedBox(
+                  width: 270.0,
+                  child: RaisedButton(
+                    child:
+                    Text("Search For Teacher",    style: TextStyle(fontSize: 20,color: Colors.white)
+                    ),
+
+
+
+                    padding: EdgeInsets.only(top:40.0,bottom: 40.0,right: 40.0,left: 40.0),
+                    onPressed: () {
+
+
+                     Navigator.of(context).pushReplacement(ScaleRoute(
+                          page:search_for_teacher_StudentActivity(this.student)
+
+                      ));
+
+                    },
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
+
+
+
                   ),
+                ),SizedBox(height: 20.0)
+                ,SizedBox(
+                  width: 270.0,
+                  child: RaisedButton(
+
+                    child:
+                    Text("Level Exams",style: TextStyle(fontSize: 20,color: Colors.white))
+                    ,
+                    padding: EdgeInsets.only(top:40.0,bottom: 40.0,right: 40.0,left: 40.0),
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
+
+                  ),
+                ),SizedBox(height: 20.0),SizedBox(
+                  width: 270.0,
+                  child: RaisedButton(
+                    child:
+                    Text("Courses",style: TextStyle(fontSize: 20,color: Colors.white))
+                    ,
+                    padding: EdgeInsets.only(top:40.0,bottom: 40.0,right: 80.0,left: 80.0),
+                    shape: new RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0),
+                    ),
 
 
+                  ),
+                ),SizedBox(height: 20.0,),
+                TextButton(
+                    onPressed: ()=>showDialog(
+                      context: context,
+                      builder: (context) => SureLogout(auth:_auth,),
 
-                  padding: EdgeInsets.only(top:40.0,bottom: 40.0,right: 40.0,left: 40.0),
+                    ),
+                  child: Text(
+                    "Logout",
+                    style: TextStyle(color: Colors.black,fontSize: 18.0),
+                  ),
+                ),
+                FlatButton(
                   onPressed: () {
 
 
-                   Navigator.of(context).pushReplacement(ScaleRoute(
-                        page:search_for_teacher_StudentActivity(this.student)
 
-                    ));
+
+                    // TODOOOO here
+
+
+
+
+                      // getStudentFromFireBaseAsStudent(this.userId).then((value) => print(value.snapshots().elementAt(0)));
 
                   },
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
+                  child: Text(
+                    "check",
+                    style: TextStyle(color: Colors.black,fontSize: 18.0),
                   ),
-
-
-
                 ),
-              ),SizedBox(height: 20.0)
-              ,SizedBox(
-                width: 270.0,
-                child: RaisedButton(
-
-                  child:
-                  Text("Level Exams",style: TextStyle(fontSize: 20,color: Colors.white))
-                  ,
-                  padding: EdgeInsets.only(top:40.0,bottom: 40.0,right: 40.0,left: 40.0),
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
-                  ),
-
-                ),
-              ),SizedBox(height: 20.0),SizedBox(
-                width: 270.0,
-                child: RaisedButton(
-                  child:
-                  Text("Courses",style: TextStyle(fontSize: 20,color: Colors.white))
-                  ,
-                  padding: EdgeInsets.only(top:40.0,bottom: 40.0,right: 80.0,left: 80.0),
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
-                  ),
 
 
-                ),
-              ),SizedBox(height: 20.0,),
-              TextButton(
-                  onPressed: ()=>showDialog(
-                    context: context,
-                    builder: (context) => SureLogout(auth:_auth,),
-
-                  ),
-                child: Text(
-                  "Logout",
-                  style: TextStyle(color: Colors.black,fontSize: 18.0),
-                ),
-              ),
-              FlatButton(
-                onPressed: () {
-
-
-                 
-
-                  // TODOOOO here
-
-
-
-
-                    // getStudentFromFireBaseAsStudent(this.userId).then((value) => print(value.snapshots().elementAt(0)));
-
-                },
-                child: Text(
-                  "check",
-                  style: TextStyle(color: Colors.black,fontSize: 18.0),
-                ),
-              ),
-
-
-            ],
+              ],
+            ),
           ),
         ),
       ),

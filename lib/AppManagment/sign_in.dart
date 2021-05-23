@@ -9,6 +9,12 @@ import 'package:teach_me/routes/pageRouter.dart';
 import 'Sign_Up_Teacher.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_up_user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+
+
 
 
 
@@ -96,231 +102,241 @@ class _MyHomePageState extends State<sign_in_user> {
 
     return  Scaffold(
 
-        body: Center(
+        body:Container(
+          decoration: BoxDecoration(
+            color: Colors.blue.shade200
+          ),
+          child: Center(
 
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
-          child: SingleChildScrollView(
-            child: Column(
-              // Column is also a layout widget. It takes a list of children and
-              // arranges them vertically. By default, it sizes itself to fit its
-              // children horizontally, and tries to be as tall as its parent.
-              //
-              // Invoke "debug painting" (press "p" in the console, choose the
-              // "Toggle Debug Paint" action from the Flutter Inspector in Android
-              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-              // to see the wireframe for each widget.
-              //
-              // Column has various properties to control how it sizes itself and
-              // how it positions its children. Here we use mainAxisAlignment to
-              // center the children vertically; the main axis here is the vertical
-              // axis because Columns are vertical (the cross axis would be
-              // horizontal).
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+            // Center is a layout widget. It takes a single child and positions it
+            // in the middle of the parent.
+            child: SingleChildScrollView(
+              child: Column(
+                // Column is also a layout widget. It takes a list of children and
+                // arranges them vertically. By default, it sizes itself to fit its
+                // children horizontally, and tries to be as tall as its parent.
+                //
+                // Invoke "debug painting" (press "p" in the console, choose the
+                // "Toggle Debug Paint" action from the Flutter Inspector in Android
+                // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+                // to see the wireframe for each widget.
+                //
+                // Column has various properties to control how it sizes itself and
+                // how it positions its children. Here we use mainAxisAlignment to
+                // center the children vertically; the main axis here is the vertical
+                // axis because Columns are vertical (the cross axis would be
+                // horizontal).
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
 
-                Container(child: Icon(Icons.book, size: 150,color :Colors.white)),
-                SizedBox(height: 10),
-                Text(
-                  'TeachMe',
-                  style: TextStyle(fontWeight: FontWeight.bold ,  fontSize: 50,color:Colors.white),
-                ),
-                SizedBox(height: 100),
-                Center(
-                  child: Container(
-                      width: 300,
-                      child:Column(
-
-                          children: <Widget>[
-                            TextField(
-                              onChanged: (value){
-                                email = value;
-                              },
-                              decoration: InputDecoration(
-                                fillColor: Colors.white60, filled: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(15.0)
-                                ),
-
-                                hintText: 'Enter your email' ,
-                                hintStyle: TextStyle(
-                                  color: const Color(0xCB101010),
-                                  fontSize: null,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                ),
-
-
-                              ),
-                            ),
-                            SizedBox(height: 10),
-                            TextField(
-                              onChanged: (value){
-                                password=value;
-                              },
-                              decoration: InputDecoration(
-                                fillColor: Colors.white60, filled: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(15.0)
-                                ),
-                                hintText: 'Enter your password',
-                                hintStyle: TextStyle(
-                                  color: const Color(0xCB101010),
-                                  fontSize: null,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                ),
-
-
-                              ),
-                            ),
-                          ]
-                      )
+                  // Container(child: Icon(FontAwesomeIcons.swatchbook, size: 30,color :Colors.white)),
+                  Container(child: SvgPicture.asset("assets/images/logo.svg",color: Colors.white,height: 150,width: 300)),
+                  SizedBox(height: 10),
+                  Text(
+                    'TeachMe',
+                    style: TextStyle(fontWeight: FontWeight.bold ,  fontSize: 50,color:Colors.white),
                   ),
-                ) ,
-                SizedBox(height: 5),
-                RaisedButton(
-                  color: Colors.white60,
-                  textColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.black,width: 1.8),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  onPressed: () async {
+                  SizedBox(height: 50),
+                  Center(
+                    child: Container(
+                        width: 300,
+                        child:Column(
 
-                   // Userbg newlogin = Userbg(email,password,"","","","","");
-                  // final userCredential= newlogin.login(context, Teachers);
+                            children: <Widget>[
+                              TextField(
+                                onChanged: (value){
+                                  email = value;
+                                },
+                                keyboardType: TextInputType.emailAddress,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white60, filled: true,
+                                  border: OutlineInputBorder(
+                                      borderRadius: new BorderRadius.circular(15.0)
+                                  ),
 
-                    print( "here ------->>>>>>>>>${_auth.currentUser.uid}");
-                    try {
-                    final  userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: email,
-                    password: password,
-
-                    );
-                    if(userCredential != null){
-                    DocumentSnapshot isTeacher = await Teachers.doc("${userCredential.user.uid}").get();
-                    if(isTeacher.exists){
-                    print("isTeacher");
-                    Student s;
-                    Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                    builder: (context) => Teacher_Homepage(isTeacher,s,"","")
-                    ));
-                    }else{
-                     DocumentSnapshot student = await students.doc("${userCredential.user.uid}").get();
-
-                      String FullName= student.get(FieldPath(["FullName"]));
-                      String Location= student.get(FieldPath(["Location"]));
-                      String PhoneNumber= student.get(FieldPath(["PhoneNumber"]));
-                      String grade= student.get(FieldPath(["grade"]));
-                      String birthDate= student.get(FieldPath(["BirthDate"]));
+                                  hintText: 'Enter your email' ,
+                                  hintStyle: TextStyle(
+                                    color: const Color(0xCB101010),
+                                    fontSize: null,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                  ),
 
 
-                      Student s = new Student("email", "password", "verifyPassword", FullName, birthDate, PhoneNumber, Location, true);
-                      print("isStudent");
-                    Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                    builder: (context) => StudentActivity(s)
-                    ));
+                                ),
+                              ),
+                              SizedBox(height: 10),
+                              TextField(
+                                onChanged: (value){
+                                  password=value;
+                                },
+                                keyboardType: TextInputType.visiblePassword,
+                                  obscureText: true,
 
-                    }
-                    }
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white60, filled: true,
+                                  border: OutlineInputBorder(
+                                      borderRadius: new BorderRadius.circular(15.0)
+                                  ),
+                                  hintText: 'Enter your password',
+                                  hintStyle: TextStyle(
+                                    color: const Color(0xCB101010),
+                                    fontSize: null,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                  ),
 
-                    } on FirebaseAuthException catch (e) {
-                    if (e.code == 'user-not-found') {
-                    print('No user found for that email.');
-                    } else if (e.code == 'wrong-password') {
-                    print('Wrong password provided for that user.');
-                    }
-                    }
+
+                                ),
+                              ),
+                            ]
+                        )
+                    ),
+                  ) ,
+                  SizedBox(height: 5),
+                  ElevatedButton(
+                    // color: Colors.white60,
+                    // textColor: Colors.black,
+                    // shape: RoundedRectangleBorder(
+                    //   side: BorderSide(color: Colors.black,width: 1.8),
+                    //   borderRadius: BorderRadius.circular(10),
+                    // ),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.white60),
+                      textStyle: MaterialStateProperty.all(TextStyle(
+                        color: Colors.blue
+                      ))
 
 
-                    }
+                    ),
+                    onPressed: () async {
+
+                     // Userbg newlogin = Userbg(email,password,"","","","","");
+                    // final userCredential= newlogin.login(context, Teachers);
+
+                      print( "here ------->>>>>>>>>${_auth.currentUser.uid}");
+                      try {
+                      final  userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: email,
+                      password: password,
+
+                      );
+                      if(userCredential != null){
+                      DocumentSnapshot isTeacher = await Teachers.doc("${userCredential.user.uid}").get();
+                      if(isTeacher.exists){
+                      print("isTeacher");
+                      Student s;
+                      Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                      builder: (context) => Teacher_Homepage(isTeacher,s,"","")
+                      ));
+                      }else{
+                       DocumentSnapshot student = await students.doc("${userCredential.user.uid}").get();
+
+                        String FullName= student.get(FieldPath(["FullName"]));
+                        String Location= student.get(FieldPath(["Location"]));
+                        String PhoneNumber= student.get(FieldPath(["PhoneNumber"]));
+                        String grade= student.get(FieldPath(["grade"]));
+                        String birthDate= student.get(FieldPath(["BirthDate"]));
+
+
+                        Student s = new Student("email", "password", "verifyPassword", FullName, birthDate, PhoneNumber, Location, true);
+                        print("isStudent");
+                      Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                      builder: (context) => StudentActivity(s)
+                      ));
+
+                      }
+                      }
+
+                      } on FirebaseAuthException catch (e) {
+                      if (e.code == 'user-not-found') {
+                      print('No user found for that email.');
+                      } else if (e.code == 'wrong-password') {
+                      print('Wrong password provided for that user.');
+                      }
+                      }
+
+
+                      }
 
 
   ,
-                  child: const Text(
-                    'sign in',
-                    style: TextStyle(fontSize: 20),
+                    child: const Text(
+                      'sign in',
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
-                ),
-                RaisedButton(
-                  color: Colors.white60,
-                  textColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.black,width: 1.8),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  onPressed: ()async {
 
+                  SizedBox(height: 16),
+                  // Align(
+                  //     alignment: Alignment.bottomRight,
+                  //     child: IconButton( icon: const Icon(Icons.help),iconSize: 70,alignment: Alignment.topRight, onPressed: ()=>showDialog(
+                  //       context: context,
+                  //       builder: (context) => AboutWidget(),
+                  //
+                  //     ),
+                  //
+                  //     )
+                  //
+                  // ),
+                  Text("OR",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold
+                  ),),
+                  SizedBox(height: 16),
 
-                    Navigator.of(context).pushReplacement(SlideRightRoute(
-                       page: Sign_Up_User()
-                    ));
-
-                  },
-                  child: const Text(
-                    'sign up',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                SizedBox(height: 30),
-                Align(
-                    alignment: Alignment.bottomRight,
-                    child: IconButton( icon: const Icon(Icons.help),iconSize: 70,alignment: Alignment.topRight, onPressed: ()=>showDialog(
-                      context: context,
-                      builder: (context) => AboutWidget(),
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.white,
+                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(20))
 
                     ),
+                    child: IconButton(
+                      color: Colors.black,
+                    icon:Icon( FontAwesomeIcons.google),
+                      onPressed: () async {
 
-                    )
+                        bool isLogedin=  await   _login();
+                        if (isLogedin == true)
+                        {
+                          Navigator.of(context).pushReplacement(SlideRightRoute(
+                              page: AccountType(userObj: _userObj,)
+                          ));
+                        }
 
-                ),
-                SizedBox(height: 2),
-                // ignore: deprecated_member_use
-                RaisedButton(
-                  color: Colors.white60,
-                  textColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.black, width: 1.8),
-                    borderRadius: BorderRadius.circular(10),
+                      },
+                    ),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(SlideRightRoute(
-                       page: Sign_Up_Teacher()
-                    ));
-                  },
-                  child: const Text(
-                    'SIGN IN WITH FACEBOOK',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                ),
-                // ignore: deprecated_member_use
-                RaisedButton(
-                  color: Colors.white60,
-                  textColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(color: Colors.black, width: 1.8),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  onPressed: () async {
+                  SizedBox(height: 30,),
 
-                   bool isLogedin=  await   _login();
-                     if (isLogedin == true)
-                       {
-                         Navigator.of(context).pushReplacement(SlideRightRoute(
-                             page: AccountType(userObj: _userObj,)
-                         ));
-                       }
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Have no Account ?"),
+                      TextButton(onPressed: ()async {
 
-                  },
-                  child: const Text(
-                    'SIGN IN WITH GOOGLE',
-                    style: TextStyle(fontSize: 20),
+
+                        Navigator.of(context).pushReplacement(SlideRightRoute(
+                            page: Sign_Up_User()
+                        ));
+
+                      } , child:Text(
+                        'sign up',
+                        style: TextStyle(fontSize: 20,  decoration: TextDecoration.underline,),
+                      ), ),
+
+                    ],
                   ),
-                ),],
+
+
+                ],
+              ),
             ),
-          ),
 
+          ),
         ),
 
         // This trailing comma makes auto-formatting nicer for build methods.

@@ -53,258 +53,263 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
+      body: Container(
+        decoration: BoxDecoration(
+            color: Colors.blue.shade200
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
 
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: SingleChildScrollView(
-          child: Column(
-              // Column is also a layout widget. It takes a list of children and
-              // arranges them vertically. By default, it sizes itself to fit its
-              // children horizontally, and tries to be as tall as its parent.
-              //
-              // Invoke "debug painting" (press "p" in the console, choose the
-              // "Toggle Debug Paint" action from the Flutter Inspector in Android
-              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-              // to see the wireframe for each widget.
-              //
-              // Column has various properties to control how it sizes itself and
-              // how it positions its children. Here we use mainAxisAlignment to
-              // center the children vertically; the main axis here is the vertical
-              // axis because Columns are vertical (the cross axis would be
-              // horizontal).
-              //mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        iconSize: 50,
-                        alignment: Alignment.topLeft,
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(SlideRightRoute(
-                             page: AccountType()
-                          ));
-                        }
+          // Center is a layout widget. It takes a single child and positions it
+          // in the middle of the parent.
+          child: SingleChildScrollView(
+            child: Column(
+                // Column is also a layout widget. It takes a list of children and
+                // arranges them vertically. By default, it sizes itself to fit its
+                // children horizontally, and tries to be as tall as its parent.
+                //
+                // Invoke "debug painting" (press "p" in the console, choose the
+                // "Toggle Debug Paint" action from the Flutter Inspector in Android
+                // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+                // to see the wireframe for each widget.
+                //
+                // Column has various properties to control how it sizes itself and
+                // how it positions its children. Here we use mainAxisAlignment to
+                // center the children vertically; the main axis here is the vertical
+                // axis because Columns are vertical (the cross axis would be
+                // horizontal).
+                //mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          iconSize: 50,
+                          alignment: Alignment.topLeft,
+                          onPressed: () {
+                            Navigator.of(context).pushReplacement(SlideRightRoute(
+                               page: AccountType()
+                            ));
+                          }
+                        ),
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Icon(Icons.book, size: 110, color: Colors.white),
+                            Text(
+                              'TeachMe',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ]),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: 30,
                       ),
-                      Column(
-                        children: [
-                          SizedBox(
-                            height: 25,
+                      Text(
+                        'sign up as Teacher',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                            color: Colors.white),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Personal information',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.white),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                         _getFromGallery();
+                        },
+                        child: CircleAvatar(
+                          radius: 70,
+                          backgroundImage: imageFile != null
+                              ? FileImage(imageFile)
+                              : NetworkImage(
+                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU"),
+                        ),
+                      ),
+                      SizedBox(height: 25,),
+                      Text(userObj!=null?userObj.email:""),
+                      SizedBox(height: 10,),
+                      TextField(
+                        keyboardType: TextInputType.emailAddress,
+                        textAlign: TextAlign.center,
+                        onChanged: (value) {
+                            TeacherFullName =value;
+                        },
+                        decoration: InputDecoration(
+                          fillColor: Colors.white60,
+                          filled: true,
+                          border: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(15.0)
                           ),
-                          Icon(Icons.book, size: 110, color: Colors.white),
-                          Text(
-                            'TeachMe',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30,
-                                color: Colors.white),
+
+                          hintText: 'Full Name',
+                          hintStyle: TextStyle(
+                            color: const Color(0xCB101010),
+                            fontSize: null,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
                           ),
-                        ],
-                      ),
-                    ]),
-                SizedBox(
-                  height: 20,
-                ),
-                Column(
-                  children: [
-                    SizedBox(
-                      height: 30,
-                    ),
-                    Text(
-                      'sign up as Teacher',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
-                          color: Colors.white),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Personal information',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.white),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                       _getFromGallery();
-                      },
-                      child: CircleAvatar(
-                        radius: 70,
-                        backgroundImage: imageFile != null
-                            ? FileImage(imageFile)
-                            : NetworkImage(
-                                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU"),
-                      ),
-                    ),
-                    SizedBox(height: 25,),
-                    Text(userObj!=null?userObj.email:""),
-                    SizedBox(height: 10,),
-                    TextField(
-                      keyboardType: TextInputType.emailAddress,
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                          TeacherFullName =value;
-                      },
-                      decoration: InputDecoration(
-                        fillColor: Colors.white60,
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(15.0)
-                        ),
-
-                        hintText: 'Full Name',
-                        hintStyle: TextStyle(
-                          color: const Color(0xCB101010),
-                          fontSize: null,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                        ),
 
 
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    TextField(
-
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                      PhoneNumber=value;
-                      },
-                      decoration: InputDecoration(
-                        fillColor: Colors.white60,
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(15.0)
-                        ),
-                        hintText: 'Phone Number',
-                        hintStyle: TextStyle(
-                          color: const Color(0xCB101010),
-                          fontSize: null,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
-                        ),
-
-
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    TextField(
-
-                      textAlign: TextAlign.center,
-                      onChanged: (value) {
-                            Location = value;
-                      },
-                      decoration: InputDecoration(
-                        fillColor: Colors.white60,
-                        filled: true,
-                        border: OutlineInputBorder(
-                            borderRadius: new BorderRadius.circular(15.0)
-                        ),
-                        hintText: 'Location',
-                        hintStyle: TextStyle(
-                          color: const Color(0xCB101010),
-                          fontSize: null,
-                          fontWeight: FontWeight.w700,
-                          fontStyle: FontStyle.normal,
                         ),
                       ),
-                    ),
-                    SizedBox(height: 10,),
+                      SizedBox(height: 10),
+                      TextField(
 
-
-
-                           Container(
-                             width: 130,
-                             child: TextField(
-
-                              readOnly: true,
-                              controller: dateController,
-                              textAlign: TextAlign.center,
-                               onTap: () async{
-                                 var date =  await showDatePicker(
-                                     context: context,
-                                     initialDate:DateTime.now(),
-                                     firstDate:DateTime(1900),
-                                     lastDate: DateTime(2100));
-                                 dateController.text = date.toString().substring(0,10);
-                                  },
-                              onChanged: (value) {
-                                     dateController.text=value;
-                              },
-                              decoration: InputDecoration(
-                                fillColor: Colors.white60,
-                                filled: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(15.0)
-                                ),
-                                hintText: 'Birth Date',
-                                hintStyle: TextStyle(
-                                  color: const Color(0xCB101010),
-                                  fontSize: null,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                ),
-                              ),
+                        textAlign: TextAlign.center,
+                        onChanged: (value) {
+                        PhoneNumber=value;
+                        },
+                        decoration: InputDecoration(
+                          fillColor: Colors.white60,
+                          filled: true,
+                          border: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(15.0)
                           ),
-                           ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Container(
-
+                          hintText: 'Phone Number',
+                          hintStyle: TextStyle(
+                            color: const Color(0xCB101010),
+                            fontSize: null,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
                           ),
-                          Column(
-                            children: [
-                              IconButton(
-                                icon: const Icon(Icons.arrow_forward),
-                                iconSize: 50,
-
-                                alignment: Alignment.topLeft,
-                                onPressed: () async {
 
 
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      TextField(
 
-                                if (imageFile != null ){
-                                  String  userId = userObj==null? _auth.currentUser.uid.toString():userObj.id;
+                        textAlign: TextAlign.center,
+                        onChanged: (value) {
+                              Location = value;
+                        },
+                        decoration: InputDecoration(
+                          fillColor: Colors.white60,
+                          filled: true,
+                          border: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(15.0)
+                          ),
+                          hintText: 'Location',
+                          hintStyle: TextStyle(
+                            color: const Color(0xCB101010),
+                            fontSize: null,
+                            fontWeight: FontWeight.w700,
+                            fontStyle: FontStyle.normal,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10,),
 
-                                  String imageUrl= await uploadImagetofireStorage(imageFile,TeacherFullName,userId);
-                                  Teacher newTeacher = Teacher(_auth.currentUser.email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "",imageUrl);
-                                  await newTeacher.signUpASTeacher(newTeacher,Teachers);
-                                }else{
-                                  Teacher newTeacher = Teacher(_auth.currentUser.email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU");
-                                  await newTeacher.signUpASTeacher(newTeacher,Teachers);
-                                }
-                                Navigator.of(context).pushReplacement(SlideRightRoute(
-                              page: TeacherlessionsDetail()
-                                ));
 
-                                }
-                              ),
-                              Text(
-                                'Next',
+
+                             Container(
+                               width: 130,
+                               child: TextField(
+
+                                readOnly: true,
+                                controller: dateController,
                                 textAlign: TextAlign.center,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
+                                 onTap: () async{
+                                   var date =  await showDatePicker(
+                                       context: context,
+                                       initialDate:DateTime.now(),
+                                       firstDate:DateTime(1900),
+                                       lastDate: DateTime(2100));
+                                   dateController.text = date.toString().substring(0,10);
+                                    },
+                                onChanged: (value) {
+                                       dateController.text=value;
+                                },
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white60,
+                                  filled: true,
+                                  border: OutlineInputBorder(
+                                      borderRadius: new BorderRadius.circular(15.0)
+                                  ),
+                                  hintText: 'Birth Date',
+                                  hintStyle: TextStyle(
+                                    color: const Color(0xCB101010),
+                                    fontSize: null,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.normal,
+                                  ),
+                                ),
+                            ),
+                             ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
 
-                        ]),
+                            ),
+                            Column(
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.arrow_forward),
+                                  iconSize: 50,
+
+                                  alignment: Alignment.topLeft,
+                                  onPressed: () async {
 
 
 
-                  ],
-                ),
-              ]),
+                                  if (imageFile != null ){
+                                    String  userId = userObj==null? _auth.currentUser.uid.toString():userObj.id;
+
+                                    String imageUrl= await uploadImagetofireStorage(imageFile,TeacherFullName,userId);
+                                    Teacher newTeacher = Teacher(_auth.currentUser.email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "",imageUrl);
+                                    await newTeacher.signUpASTeacher(newTeacher,Teachers);
+                                  }else{
+                                    Teacher newTeacher = Teacher(_auth.currentUser.email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU");
+                                    await newTeacher.signUpASTeacher(newTeacher,Teachers);
+                                  }
+                                  Navigator.of(context).pushReplacement(SlideRightRoute(
+                                page: TeacherlessionsDetail()
+                                  ));
+
+                                  }
+                                ),
+                                Text(
+                                  'Next',
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+
+                          ]),
+
+
+
+                    ],
+                  ),
+                ]),
+          ),
         ),
       ),
     );

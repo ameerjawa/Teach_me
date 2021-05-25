@@ -22,14 +22,14 @@ class Student extends Userbg implements TeacherProfiles{
 
 
 
-  void signUpASStudent(Student student,CollectionReference collectionReference)async{
+  void signUpASStudent(Student student,CollectionReference collectionReference,String userId)async{
      var isTeacher=false;
 
 
     Map <String,dynamic> data = {"Email":student.email,"FullName":student.fullName,"PhoneNumber":student.phoneNumber,"UserType":isTeacher,"Location":student.location,"BirthDate":student.birthDate,"grade":student.grade,"ismale":student.isMale.toString()} ;
 
 
-    await userSetup(data,collectionReference);
+    await userSetup(data,collectionReference,userId);
   }
 
 

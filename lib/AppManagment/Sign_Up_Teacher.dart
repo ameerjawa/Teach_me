@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:teach_me/AppManagment/AccountType.dart';
@@ -58,7 +59,7 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
             color: Colors.blue.shade200
         ),
         child: Padding(
-          padding: const EdgeInsets.all(30.0),
+          padding: const EdgeInsets.all(15.0),
 
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
@@ -80,6 +81,7 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
                 // horizontal).
                 //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  SizedBox(height: 10,),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -93,12 +95,8 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
                             ));
                           }
                         ),
-                        Column(
-                          children: [
-                            SizedBox(
-                              height: 25,
-                            ),
-                            Icon(Icons.book, size: 110, color: Colors.white),
+
+
                             Text(
                               'TeachMe',
                               style: TextStyle(
@@ -106,8 +104,7 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
                                   fontSize: 30,
                                   color: Colors.white),
                             ),
-                          ],
-                        ),
+
                       ]),
                   SizedBox(
                     height: 20,
@@ -276,20 +273,25 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
                                   onPressed: () async {
 
 
-
+                                   String userId = userObj==null? _auth.currentUser.uid.toString():userObj.id;
+                                  String  email = userObj==null? _auth.currentUser.email.toString():userObj.email;
                                   if (imageFile != null ){
-                                    String  userId = userObj==null? _auth.currentUser.uid.toString():userObj.id;
+
 
                                     String imageUrl= await uploadImagetofireStorage(imageFile,TeacherFullName,userId);
-                                    Teacher newTeacher = Teacher(_auth.currentUser.email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "",imageUrl);
-                                    await newTeacher.signUpASTeacher(newTeacher,Teachers);
+                                    Teacher newTeacher = Teacher(email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "",imageUrl);
+                                    await newTeacher.signUpASTeacher(newTeacher,Teachers,userId);
+                                    Navigator.of(context).pushReplacement(SlideRightRoute(
+                                        page: TeacherlessionsDetail(userObj: userObj,)
+                                    ));
                                   }else{
-                                    Teacher newTeacher = Teacher(_auth.currentUser.email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU");
-                                    await newTeacher.signUpASTeacher(newTeacher,Teachers);
+                                    Teacher newTeacher = Teacher(email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU");
+                                    await newTeacher.signUpASTeacher(newTeacher,Teachers,userId);
+                                    Navigator.of(context).pushReplacement(SlideRightRoute(
+                                        page: TeacherlessionsDetail(userObj: userObj,)
+                                    ));
                                   }
-                                  Navigator.of(context).pushReplacement(SlideRightRoute(
-                                page: TeacherlessionsDetail()
-                                  ));
+
 
                                   }
                                 ),
@@ -298,7 +300,8 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
                                   textAlign: TextAlign.center,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontWeight: FontWeight.bold),
-                                )
+                                ),
+                                SizedBox(height: 80,)
                               ],
                             ),
 

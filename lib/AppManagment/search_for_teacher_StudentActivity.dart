@@ -1,11 +1,14 @@
 import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/routes/pageRouter.dart';
+
+import '../my_flutter_app_icons.dart';
 
 
 
@@ -92,11 +95,9 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                               Center(
                               child: Column(
                               children: [
-                               SizedBox(
-                              height: 11,
-                               ),
-                              Icon(Icons.book, size: 140, color: Colors.black),
-                               Text(
+                                Container(child: SvgPicture.asset("assets/images/bookimage.svg",allowDrawingOutsideViewBox: true,matchTextDirection: true,color: Colors.blue.shade900,height: 250,width: 400)),
+
+                                Text(
                               'TeachMe',
                               style: TextStyle(
                               fontWeight: FontWeight.bold,
@@ -218,6 +219,7 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                           ));
                         }
                     ),
+
 
 
 

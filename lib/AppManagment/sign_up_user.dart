@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:teach_me/UserManagment/Userbg.dart';
 import 'package:teach_me/routes/pageRouter.dart';
@@ -75,8 +76,7 @@ class Sign_Up_User extends StatelessWidget {
 
                ] ),
 
-                Icon(Icons.book, size: 150, color: Colors.white),
-                SizedBox(height: 40),
+                Container(child: SvgPicture.asset("assets/images/bookimage.svg",allowDrawingOutsideViewBox: true,matchTextDirection: true,color: Colors.blue.shade900,height: 250,width: 400)),
                 Text(
                   'TeachMe',
                   style: TextStyle(fontWeight: FontWeight.bold,

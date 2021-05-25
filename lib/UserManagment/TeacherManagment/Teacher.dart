@@ -22,12 +22,12 @@ class Teacher extends Userbg with TeacherProfiles{
 
 
 
-  void signUpASTeacher(Teacher newTeacher,CollectionReference collectionReference)async{
+  void signUpASTeacher(Teacher newTeacher,CollectionReference collectionReference,String UserId)async{
 
    var isTeacher=true;
     Map <String,dynamic> data = {"email":newTeacher.email,"ProfileImg":newTeacher.proImg,"FullName":newTeacher.fullName,"PhoneNumber":newTeacher.phoneNumber,"UserType":isTeacher,"Location":newTeacher.location,"BirthDate":newTeacher.birthDate,"Rating":newTeacher.rating} ;
 
-    await userSetup(data,collectionReference);
+    await userSetup(data,collectionReference,UserId);
 }
 
   Future<void> addMeeting( Lession lession)async {

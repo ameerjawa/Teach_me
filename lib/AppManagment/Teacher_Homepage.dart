@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:teach_me/AppManagment/Lessons.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
 import 'package:teach_me/AppManagment/sign_in.dart';
@@ -98,7 +99,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                       children: <Widget>[
                         Row(
                           children:[
-                            Student!=null?showButton(context):showLogoutButton(context),
+                            student!=null?showButton(context):showLogoutButton(context),
 
                             Text("Back To Results",
                                 style: TextStyle(
@@ -150,7 +151,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                      width: 300,
                      decoration: BoxDecoration(
                        borderRadius: BorderRadius.circular(10),
-                       color: Colors.grey
+                       color: Colors.white54
                      ),
 
                      // color: Colors.grey,
@@ -240,7 +241,9 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                       ),
                     ),
                   ),
-                  Column(
+                  student!=null? Container(
+                    height: 170
+                  ):Column(
                     children: [
                       SizedBox(height: 20,),
                       TextButton(
@@ -262,8 +265,13 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
 
                           backgroundColor: Colors.grey,
                         ),
-                        onPressed: () { },
-                        child: Text('calander',
+                        onPressed: () {
+
+                          Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                              builder: (context) => Lessons(isTeacher)
+                          ));
+                        },
+                        child: Text('Lessons',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,),),
@@ -316,7 +324,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
         iconSize: 50,
         onPressed: () {
           Navigator.of(context).pushReplacement(CupertinoPageRoute(
-              builder: (context) => search_for_teacher_viewTeachers(selectedSubject: subject, selectedLocation: location)
+              builder: (context) => search_for_teacher_viewTeachers(s: student,selectedSubject: subject, selectedLocation: location)
           ));
         }
 

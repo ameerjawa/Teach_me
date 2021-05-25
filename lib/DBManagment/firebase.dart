@@ -10,11 +10,10 @@ import 'Course.dart';
 
 
 
-Future<void> userSetup(Map <String,dynamic> data,CollectionReference collectionReference)async{
+Future<void> userSetup(Map <String,dynamic> data,CollectionReference collectionReference,String UserId)async{
 
 
-   FirebaseAuth auth = FirebaseAuth.instance;
-   String UserId = auth.currentUser.uid.toString();
+
    collectionReference.doc(UserId).set(data);
    return;
 
@@ -140,14 +139,14 @@ Future<List<dynamic>> getMeetingsFromFireBase(String userID)async{
 }
 
 Future<void> addMeetingToFireStoreAsTeacher(Map <String,dynamic> data)async{
-  CollectionReference meetings = await FirebaseFirestore.instance.collection("meetings");
+  CollectionReference meetings = await FirebaseFirestore.instance.collection("Meetings");
 
  await meetings.add(data);
 
 }
 
 Future<void> editMeetingToFireStoreAsTeacher(Map <String,dynamic> data,String meetingId)async{
-  CollectionReference Meetings = await FirebaseFirestore.instance.collection("meetings");
+  CollectionReference Meetings = await FirebaseFirestore.instance.collection("Meetings");
 
   await Meetings.doc(meetingId).update(data);
 

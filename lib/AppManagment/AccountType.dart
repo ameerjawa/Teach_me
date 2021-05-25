@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/Sign_Up_Student.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
+import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
@@ -17,6 +19,7 @@ class AccountType extends StatelessWidget {
 
   final GoogleSignInAccount userObj;
   final _auth=FirebaseAuth.instance;
+  Student s;
 
    AccountType({Key key, this.userObj}) : super(key: key);
 
@@ -60,7 +63,7 @@ class AccountType extends StatelessWidget {
                   //mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
               Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(height: 10,),
                     IconButton(
@@ -74,9 +77,8 @@ class AccountType extends StatelessWidget {
                         }
                     ),
                      ]),
-                     SizedBox(height: 20,)     ,
-                    Icon(Icons.book, size: 150, color: Colors.white),
-                    SizedBox(height: 20),
+                    Container(child: SvgPicture.asset("assets/images/bookimage.svg",allowDrawingOutsideViewBox: true,matchTextDirection: true,color: Colors.blue.shade900,height: 220,width: 350)),
+
                     Text(
                       'TeachMe',
                       style: TextStyle(fontWeight: FontWeight.bold,
@@ -110,12 +112,40 @@ class AccountType extends StatelessWidget {
                                       fontStyle: FontStyle.italic
                                   ),
                                 ),
-                                onPressed: () {
+                                onPressed: () async{
 
-                                  Navigator.of(context).pushReplacement(SlideRightRoute(
-                                      page: Sign_Up_Teacher(userObj: userObj,)
 
-                                  ));
+                                  CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
+                                  if (userObj ==null){
+                                    Navigator.of(context).pushReplacement(SlideRightRoute(
+                                        page: Sign_Up_Teacher(userObj: userObj,)
+
+                                    ));
+                                  }else{
+
+                                    DocumentSnapshot isTeacher = await Teachers.doc("${this.userObj.id}").get();
+                                    if (isTeacher.exists){
+                                      Navigator.of(context).pushReplacement(SlideRightRoute(
+                                          page: Teacher_Homepage(isTeacher,s,"","")
+
+                                      ));
+                                    }else{
+                                      Navigator.of(context).pushReplacement(SlideRightRoute(
+                                          page: Sign_Up_Teacher(userObj: userObj,)
+
+                                      ));
+                                    }
+
+                                  }
+
+
+
+
+
+
+
+
+
                                 },
                               ),
 
@@ -137,7 +167,9 @@ class AccountType extends StatelessWidget {
                                 ),
                                 onPressed: () {
                                   if(userObj!=null){
-                                    Student student= Student(userObj.email, "password", "verifyPassword", userObj.displayName, "birthDate", "phoneNumber", "location",true);
+                                    String email = userObj.email;
+                                    String fullname=userObj.displayName;
+                                    Student student= Student(email, "password", "verifyPassword", fullname, "birthDate", "phoneNumber", "location",true);
                                     Navigator.of(context).pushReplacement(SlideRightRoute(
                                         page: StudentActivity(student)
 

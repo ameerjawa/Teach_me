@@ -130,8 +130,8 @@ class _MyHomePageState extends State<sign_in_user> {
                 children: <Widget>[
 
                   // Container(child: Icon(FontAwesomeIcons.swatchbook, size: 30,color :Colors.white)),
-                  Container(child: SvgPicture.asset("assets/images/logo.svg",color: Colors.white,height: 150,width: 300)),
-                  SizedBox(height: 10),
+                  Container(child: SvgPicture.asset("assets/images/bookimage.svg",allowDrawingOutsideViewBox: true,matchTextDirection: true,color: Colors.blue.shade900,height: 250,width: 400)),
+
                   Text(
                     'TeachMe',
                     style: TextStyle(fontWeight: FontWeight.bold ,  fontSize: 50,color:Colors.white),

@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
@@ -16,15 +17,20 @@ import 'AccountType.dart';
 import 'Teacher_Homepage.dart';
 
 class TeacherlessionsDetail extends StatefulWidget {
+  final  GoogleSignInAccount userObj;
+
+  const TeacherlessionsDetail({Key key, this.userObj}) : super(key: key);
   @override
-  TeacherlessionsDetails createState() => TeacherlessionsDetails();
+  TeacherlessionsDetails createState() => TeacherlessionsDetails(userObj);
 }
 
 class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
   String Subjects,TitleSentence,MoreDetails,Price,_selectedsubject;
   List subjects = ["English","Math","maba","biology","physic","hebrew","arabic"];
   bool CanGo=false;
+  final  GoogleSignInAccount userObj;
 
+  TeacherlessionsDetails(this.userObj);
 
 
 
@@ -285,7 +291,8 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                                    Map <String,dynamic> data = {"subjects":_selectedsubject,"Title Sentence":TitleSentence,"More":MoreDetails,"Price":Price,"CanGo":CanGo} ;
 
                                    FirebaseAuth auth = FirebaseAuth.instance;
-                                   String UserId = auth.currentUser.uid.toString();
+                                   String UserId =userObj!=null?userObj.id: auth.currentUser.uid.toString();
+
                                    await MoreTeacherDet(data,Teachers,UserId);
 
                                   DocumentSnapshot isTeacher = await Teachers.doc("${UserId}").get();

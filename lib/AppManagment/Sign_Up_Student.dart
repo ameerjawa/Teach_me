@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:teach_me/AppManagment/AccountType.dart';
@@ -70,6 +71,7 @@ class _Sign_up_student extends State<Sign_Up_Student> {
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
           child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
             child: Column(
               // Column is also a layout widget. It takes a list of children and
               // arranges them vertically. By default, it sizes itself to fit its
@@ -103,10 +105,8 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                         ),
                         Column(
                           children: [
-                            SizedBox(
-                              height: 11,
-                            ),
-                            Icon(Icons.book, size: 110, color: Colors.black),
+
+                            Container(child: SvgPicture.asset("assets/images/bookimage.svg",allowDrawingOutsideViewBox: true,matchTextDirection: true,color: Colors.blue.shade900,height: 100,width: 200)),
                             Text(
                               'TeachMe',
                               style: TextStyle(
@@ -346,10 +346,11 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                             //_userObj.displayName
                             // studentfullname==null?studentfullname=studentfullname:studentfullname;
                            String userEmail = _auth.currentUser.email;
+                            String  userId =  _auth.currentUser.uid.toString();
                            // userEmail ==null? userEmail:userEmail;
                             Student newStudent = Student(userEmail, "", "", studentfullname, dateController.text, phonenumber, location, isMale);
-                            await newStudent.signUpASStudent(newStudent,Students);
-                            String  userId =  _auth.currentUser.uid.toString();
+                            await newStudent.signUpASStudent(newStudent,Students,userId);
+
 
                             if (image != null ){
                               uploadImagetofireStorage(image,studentfullname,userId);

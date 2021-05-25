@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_StudentActivity.dart';
 import 'package:teach_me/DBManagment/firebase.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
@@ -66,16 +67,14 @@ final _auth = FirebaseAuth.instance;
               // horizontal).
 
               children: <Widget>[
-                SizedBox(height: 60.0,),
-                Icon(Icons.book,
-                  size: 170.0,),
-                SizedBox(height: 15.0,),
+                Container(child: SvgPicture.asset("assets/images/bookimage.svg",allowDrawingOutsideViewBox: true,matchTextDirection: true,color: Colors.blue.shade900,height: 250,width: 400)),
+
                 Text(
                   'TeachMe',
                   style: TextStyle(fontSize: 45),
                 ),
                 SizedBox(height: 30),
-                Text(student.email,    style: TextStyle(fontSize: 20,color: Colors.white)
+                Text(student.email!=null?student.email:"your email",    style: TextStyle(fontSize: 20,color: Colors.white)
                 ),
                 SizedBox(height: 10),
                 SizedBox(
@@ -233,9 +232,9 @@ final auth;
 
                       backgroundColor: Colors.grey,
                     ),
-                    onPressed: () {
+                    onPressed: ()async {
 
-                      auth.signOut();
+                     await auth.signOut();
 
                       if(auth.currentUser==null){
                         Navigator.of(context).pushReplacement(SlideRightRoute(

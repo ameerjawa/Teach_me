@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_StudentActivity.dart';
 import 'package:teach_me/DBManagment/firebase.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
@@ -15,6 +16,7 @@ import 'sign_in.dart';
 
 class StudentActivity extends StatelessWidget  {
 Student student;
+
 
 
 
@@ -134,7 +136,7 @@ final _auth = FirebaseAuth.instance;
                 TextButton(
                     onPressed: ()=>showDialog(
                       context: context,
-                      builder: (context) => SureLogout(auth:_auth,),
+                      builder: (context) => SureLogout(auth:_auth),
 
                     ),
                   child: Text(
@@ -187,11 +189,12 @@ void get()async{
 
 
 class SureLogout extends StatelessWidget {
-  
-  
-final auth;
 
-  const SureLogout({Key key, this.auth}) : super(key: key);
+
+
+  final auth;
+
+   SureLogout({Key key, this.auth}) : super(key: key);
  
  
 
@@ -234,14 +237,26 @@ final auth;
                     ),
                     onPressed: ()async {
 
-                     await auth.signOut();
+                      if (auth.currentUser!=null){
+                        await auth.signOut();
 
-                      if(auth.currentUser==null){
-                        Navigator.of(context).pushReplacement(SlideRightRoute(
-                            page: sign_in_user()
 
-                        ));
+                        if(auth.currentUser==null){
+                          Navigator.of(context).pushReplacement(SlideRightRoute(
+                              page: sign_in_user()
+
+                          ));
+                        }
+                      }else{
+                        try{
+                         // await userObj.signOut();
+
+
+                        }catch(e){
+                          print(e);
+                        }
                       }
+
 
 
                     },
@@ -262,8 +277,13 @@ final auth;
 
 
     );
-  }
+  }}
+
+
+
+Future<void> signOutAuth(){
+
 }
+Future<void> signoutGoogle(){
 
-
-
+}

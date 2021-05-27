@@ -41,8 +41,11 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
   final _auth= FirebaseAuth.instance;
   bool isTeacher=true;
  final GoogleSignInAccount userObj;
+  final _formKey = GlobalKey<FormState>();
+
 
   _Sign_Up_TeacherState(this.userObj);
+
 
 
 
@@ -149,97 +152,124 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
                       SizedBox(height: 25,),
                       Text(userObj!=null?userObj.email:""),
                       SizedBox(height: 10,),
-                      TextField(
-                        keyboardType: TextInputType.emailAddress,
-                        textAlign: TextAlign.center,
-                        onChanged: (value) {
-                            TeacherFullName =value;
-                        },
-                        decoration: InputDecoration(
-                          fillColor: Colors.white60,
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(15.0)
-                          ),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            TextFormField(
+                              validator: (value) {
+                                if (value.isEmpty || value == null) {
+                                  return "Must Type FullName";
+                                }
+                                return null;
+                              },
+                              keyboardType: TextInputType.emailAddress,
+                              textAlign: TextAlign.center,
+                              onChanged: (value) {
+                                  TeacherFullName =value;
+                              },
+                              decoration: InputDecoration(
+                                fillColor: Colors.white60,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                    borderRadius: new BorderRadius.circular(15.0)
+                                ),
 
-                          hintText: 'Full Name',
-                          hintStyle: TextStyle(
-                            color: const Color(0xCB101010),
-                            fontSize: null,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                          ),
-
-
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      TextField(
-
-                        textAlign: TextAlign.center,
-                        onChanged: (value) {
-                        PhoneNumber=value;
-                        },
-                        decoration: InputDecoration(
-                          fillColor: Colors.white60,
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(15.0)
-                          ),
-                          hintText: 'Phone Number',
-                          hintStyle: TextStyle(
-                            color: const Color(0xCB101010),
-                            fontSize: null,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                          ),
+                                hintText: 'Full Name',
+                                hintStyle: TextStyle(
+                                  color: const Color(0xCB101010),
+                                  fontSize: null,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                ),
 
 
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      TextField(
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              validator: (value) {
+                                if (value.isEmpty || value == null) {
+                                  return "Must Type PhoneNumber";
+                                }
+                                return null;
+                              },
 
-                        textAlign: TextAlign.center,
-                        onChanged: (value) {
-                              Location = value;
-                        },
-                        decoration: InputDecoration(
-                          fillColor: Colors.white60,
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(15.0)
-                          ),
-                          hintText: 'Location',
-                          hintStyle: TextStyle(
-                            color: const Color(0xCB101010),
-                            fontSize: null,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10,),
+                              textAlign: TextAlign.center,
+                              onChanged: (value) {
+                                PhoneNumber=value;
+                              },
+                              decoration: InputDecoration(
+                                fillColor: Colors.white60,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                    borderRadius: new BorderRadius.circular(15.0)
+                                ),
+                                hintText: 'Phone Number',
+                                hintStyle: TextStyle(
+                                  color: const Color(0xCB101010),
+                                  fontSize: null,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                ),
+
+
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              validator: (value) {
+                                if (value.isEmpty || value == null) {
+                                  return "Must Type Location";
+                                }
+                                return null;
+                              },
+
+                              textAlign: TextAlign.center,
+                              onChanged: (value) {
+                                Location = value;
+                              },
+                              decoration: InputDecoration(
+                                fillColor: Colors.white60,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                    borderRadius: new BorderRadius.circular(15.0)
+                                ),
+                                hintText: 'Location',
+                                hintStyle: TextStyle(
+                                  color: const Color(0xCB101010),
+                                  fontSize: null,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10,),
 
 
 
-                             Container(
-                               width: 130,
-                               child: TextField(
-
+                            Container(
+                              width: 130,
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value.isEmpty || value == null) {
+                                    return "Must Type BirthDate";
+                                  }
+                                  return null;
+                                },
                                 readOnly: true,
                                 controller: dateController,
                                 textAlign: TextAlign.center,
-                                 onTap: () async{
-                                   var date =  await showDatePicker(
-                                       context: context,
-                                       initialDate:DateTime.now(),
-                                       firstDate:DateTime(1900),
-                                       lastDate: DateTime(2100));
-                                   dateController.text = date.toString().substring(0,10);
-                                    },
+                                onTap: () async{
+                                  var date =  await showDatePicker(
+                                      context: context,
+                                      initialDate:DateTime.now(),
+                                      firstDate:DateTime(1900),
+                                      lastDate: DateTime(2100));
+                                  dateController.text = date.toString().substring(0,10);
+                                },
                                 onChanged: (value) {
-                                       dateController.text=value;
+                                  dateController.text=value;
                                 },
                                 decoration: InputDecoration(
                                   fillColor: Colors.white60,
@@ -255,8 +285,12 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
                                     fontStyle: FontStyle.normal,
                                   ),
                                 ),
+                              ),
                             ),
-                             ),
+                          ],
+                        ),
+                      ),
+
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -271,28 +305,55 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
 
                                   alignment: Alignment.topLeft,
                                   onPressed: () async {
-
-
-                                   String userId = userObj==null? _auth.currentUser.uid.toString():userObj.id;
-                                  String  email = userObj==null? _auth.currentUser.email.toString():userObj.email;
-                                  if (imageFile != null ){
-
-
-                                    String imageUrl= await uploadImagetofireStorage(imageFile,TeacherFullName,userId);
-                                    Teacher newTeacher = Teacher(email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "",imageUrl);
-                                    await newTeacher.signUpASTeacher(newTeacher,Teachers,userId);
-                                    Navigator.of(context).pushReplacement(SlideRightRoute(
-                                        page: TeacherlessionsDetail(userObj: userObj,)
-                                    ));
-                                  }else{
-                                    Teacher newTeacher = Teacher(email, "", "", TeacherFullName, dateController.text, PhoneNumber, Location, [], "","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU");
-                                    await newTeacher.signUpASTeacher(newTeacher,Teachers,userId);
-                                    Navigator.of(context).pushReplacement(SlideRightRoute(
-                                        page: TeacherlessionsDetail(userObj: userObj,)
-                                    ));
-                                  }
-
-
+                                    if (_formKey.currentState.validate()) {
+                                      String userId = userObj == null ? _auth
+                                          .currentUser.uid.toString() : userObj
+                                          .id;
+                                      String email = userObj == null
+                                          ? _auth.currentUser.email.toString()
+                                          : userObj.email;
+                                      if (imageFile != null) {
+                                        String imageUrl = await uploadImagetofireStorage(
+                                            imageFile, TeacherFullName, userId);
+                                        Teacher newTeacher = Teacher(
+                                            email,
+                                            "",
+                                            "",
+                                            TeacherFullName,
+                                            dateController.text,
+                                            PhoneNumber,
+                                            Location,
+                                            [],
+                                            "",
+                                            imageUrl);
+                                        await newTeacher.signUpASTeacher(
+                                            newTeacher, Teachers, userId);
+                                        Navigator.of(context).pushReplacement(
+                                            SlideRightRoute(
+                                                page: TeacherlessionsDetail(
+                                                  userObj: userObj,)
+                                            ));
+                                      } else {
+                                        Teacher newTeacher = Teacher(
+                                            email,
+                                            "",
+                                            "",
+                                            TeacherFullName,
+                                            dateController.text,
+                                            PhoneNumber,
+                                            Location,
+                                            [],
+                                            "",
+                                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU");
+                                        await newTeacher.signUpASTeacher(
+                                            newTeacher, Teachers, userId);
+                                        Navigator.of(context).pushReplacement(
+                                            SlideRightRoute(
+                                                page: TeacherlessionsDetail(
+                                                  userObj: userObj,)
+                                            ));
+                                      }
+                                    }
                                   }
                                 ),
                                 Text(

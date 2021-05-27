@@ -40,14 +40,11 @@ class sign_in_user extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<sign_in_user> {
-  void _incrementCounter() {
-    setState(() {
-    });
-  }
+
     String email ,password ;
   CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
   CollectionReference students = FirebaseFirestore.instance.collection("Students");
-  final _auth= FirebaseAuth.instance;
+  final _formKey = GlobalKey<FormState>();
 
 
   final GoogleSignIn _googleSignIn = new GoogleSignIn(
@@ -140,56 +137,71 @@ class _MyHomePageState extends State<sign_in_user> {
                   Center(
                     child: Container(
                         width: 300,
-                        child:Column(
+                        child:Form(
+                          key: _formKey,
+                          child: Column(
 
-                            children: <Widget>[
-                              TextField(
-                                onChanged: (value){
-                                  email = value;
-                                },
-                                keyboardType: TextInputType.emailAddress,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white60, filled: true,
-                                  border: OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(15.0)
+                              children: <Widget>[
+                                TextFormField(
+                                  onChanged: (value){
+                                    email = value;
+                                  },
+                                  validator:(value){
+                                    if(value.isEmpty|| value==null){
+                                      return "Must Type Email";
+                                    }
+                                    return null;
+                                  } ,
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white60, filled: true,
+                                    border: OutlineInputBorder(
+                                        borderRadius: new BorderRadius.circular(15.0)
+                                    ),
+
+                                    hintText: 'Enter your email' ,
+                                    hintStyle: TextStyle(
+                                      color: const Color(0xCB101010),
+                                      fontSize: null,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+
+
                                   ),
-
-                                  hintText: 'Enter your email' ,
-                                  hintStyle: TextStyle(
-                                    color: const Color(0xCB101010),
-                                    fontSize: null,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-
-
                                 ),
-                              ),
-                              SizedBox(height: 10),
-                              TextField(
-                                onChanged: (value){
-                                  password=value;
-                                },
-                                keyboardType: TextInputType.visiblePassword,
-                                  obscureText: true,
+                                SizedBox(height: 10),
+                                TextFormField(
+                                    validator:(value){
+                                      if(value.isEmpty|| value==null){
+                                        return "Must Type Password";
+                                      }
+                                      return null;
+                                    },
+                                    onChanged: (value){
+                                    password=value;
+                                  },
+                                  keyboardType: TextInputType.visiblePassword,
+                                    obscureText: true,
 
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white60, filled: true,
-                                  border: OutlineInputBorder(
-                                      borderRadius: new BorderRadius.circular(15.0)
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white60, filled: true,
+                                    border: OutlineInputBorder(
+                                        borderRadius: new BorderRadius.circular(15.0)
+                                    ),
+                                    hintText: 'Enter your password',
+                                    hintStyle: TextStyle(
+                                      color: const Color(0xCB101010),
+                                      fontSize: null,
+                                      fontWeight: FontWeight.w700,
+                                      fontStyle: FontStyle.normal,
+                                    ),
+
+
                                   ),
-                                  hintText: 'Enter your password',
-                                  hintStyle: TextStyle(
-                                    color: const Color(0xCB101010),
-                                    fontSize: null,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ),
-
-
                                 ),
-                              ),
-                            ]
+                              ]
+                          ),
                         )
                     ),
                   ) ,
@@ -214,47 +226,51 @@ class _MyHomePageState extends State<sign_in_user> {
                      // Userbg newlogin = Userbg(email,password,"","","","","");
                     // final userCredential= newlogin.login(context, Teachers);
 
-                      print( "here ------->>>>>>>>>${_auth.currentUser.uid}");
-                      try {
-                      final  userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-                      email: email,
-                      password: password,
+                      if (_formKey.currentState.validate()) {
+                        // TODO submit
 
-                      );
-                      if(userCredential != null){
-                      DocumentSnapshot isTeacher = await Teachers.doc("${userCredential.user.uid}").get();
-                      if(isTeacher.exists){
-                      print("isTeacher");
-                      Student s;
-                      Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                      builder: (context) => Teacher_Homepage(isTeacher,s,"","")
-                      ));
-                      }else{
-                       DocumentSnapshot student = await students.doc("${userCredential.user.uid}").get();
+                        try {
+                          final  userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                            email: email,
+                            password: password,
 
-                        String FullName= student.get(FieldPath(["FullName"]));
-                        String Location= student.get(FieldPath(["Location"]));
-                        String PhoneNumber= student.get(FieldPath(["PhoneNumber"]));
-                        String grade= student.get(FieldPath(["grade"]));
-                        String birthDate= student.get(FieldPath(["BirthDate"]));
+                          );
+                          if(userCredential != null){
+                            DocumentSnapshot isTeacher = await Teachers.doc("${userCredential.user.uid}").get();
+                            if(isTeacher.exists){
+
+                              Student s;
+                              Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                                  builder: (context) => Teacher_Homepage(isTeacher,s,"","")
+                              ));
+                            }else{
+                              DocumentSnapshot student = await students.doc("${userCredential.user.uid}").get();
+
+                              String FullName= student.get(FieldPath(["FullName"]));
+                              String Location= student.get(FieldPath(["Location"]));
+                              String PhoneNumber= student.get(FieldPath(["PhoneNumber"]));
+                              String grade= student.get(FieldPath(["grade"]));
+                              String birthDate= student.get(FieldPath(["BirthDate"]));
 
 
-                        Student s = new Student("email", "password", "verifyPassword", FullName, birthDate, PhoneNumber, Location, true);
-                        print("isStudent");
-                      Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                      builder: (context) => StudentActivity(s)
-                      ));
+                              Student s = new Student("email", "password", "verifyPassword", FullName, birthDate, PhoneNumber, Location, true);
+                              print("isStudent");
+                              Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                                  builder: (context) => StudentActivity(s)
+                              ));
 
+                            }
+                          }
+
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            print('No user found for that email.');
+                          } else if (e.code == 'wrong-password') {
+                            print('Wrong password provided for that user.');
+                          }
+                        }
                       }
-                      }
 
-                      } on FirebaseAuthException catch (e) {
-                      if (e.code == 'user-not-found') {
-                      print('No user found for that email.');
-                      } else if (e.code == 'wrong-password') {
-                      print('Wrong password provided for that user.');
-                      }
-                      }
 
 
                       }
@@ -302,6 +318,7 @@ class _MyHomePageState extends State<sign_in_user> {
                         bool isLogedin=  await   _login();
                         if (isLogedin == true)
                         {
+                          print(_userObj.id);
                           Navigator.of(context).pushReplacement(SlideRightRoute(
                               page: AccountType(userObj: _userObj,)
                           ));

@@ -5,7 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:teach_me/AppManagment/EditProfile_For_Teacher.dart';
 import 'package:teach_me/AppManagment/Lessons.dart';
+import 'package:teach_me/AppManagment/Search_for_student.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
 import 'package:teach_me/AppManagment/sign_in.dart';
@@ -23,6 +26,8 @@ class Teacher_Homepage extends StatefulWidget {
   Student student;
   Teacher_Homepage(this.isTeacher,this.student,this.subject,this.location);
 
+
+
   @override
   Homepage_teacherState createState() => Homepage_teacherState(isTeacher,student,subject,location);
 }
@@ -36,6 +41,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
   final _auth = FirebaseAuth.instance;
 
 
+
   Homepage_teacherState(this.isTeacher,this.student,this.subject,this.location);
 
 
@@ -45,18 +51,16 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
 
 
   Widget build(BuildContext context) {
-
-  String FullName= this.isTeacher.get(FieldPath(["FullName"]));
-  String Location= this.isTeacher.get(FieldPath(["Location"]));
-  String PhoneNumber= this.isTeacher.get(FieldPath(["PhoneNumber"]));
-  String Price= this.isTeacher.get(FieldPath(["Price"]));
-
-
-
+    print(this.isTeacher["FullName"]);
+    print(this.isTeacher["Location"]);
+   // print(this.isTeacher["More"]);
+    print(this.isTeacher["subjects"]);
+    print(this.isTeacher["CanGo"]);
+    print(this.isTeacher["PhoneNumber"]);
 
 
 
-   Teacher t = new Teacher("email", "password", "verifyPassword", FullName, "birthDate", PhoneNumber, Location, [], "detailsOnExperience","");
+  // Teacher t = new Teacher("email", "password", "verifyPassword", FullName, "birthDate", PhoneNumber, Location, [], "detailsOnExperience","");
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -102,6 +106,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                             student!=null?showButton(context):showLogoutButton(context),
 
                             Text("Back To Results",
+
                                 style: TextStyle(
                                   fontSize: 12
                                 ),
@@ -131,14 +136,14 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
 
 
                   SizedBox(height: 30,),
-                  Text(this.isTeacher["FullName"],
+                  Text(isTeacher["FullName"]!=null?this.isTeacher["FullName"]:"name",
                       style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 35,
                       color: Colors.white),
                    ),
                   SizedBox(height: 10,),
-                  Text("${this.isTeacher["subjects"]} Teacher ",
+                  Text("${this.isTeacher["subjects"]!=null?this.isTeacher["subjects"]:""} Teacher ",
                     style: TextStyle(
                         fontWeight: FontWeight.normal,
                         fontSize: 15,
@@ -160,7 +165,8 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
 
                         children: [
                           RatingBarIndicator(
-                            rating: isTeacher["Rating"],
+
+                            rating: this.isTeacher["Rating"]!=null? this.isTeacher["Rating"]:0.0,
                             itemBuilder: (context, index) => Icon(
                               Icons.star,
                               color: Colors.amber,
@@ -179,7 +185,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
 
 
                           Text(
-                            "City : ${this.isTeacher["Location"]}",
+                            "City : ${this.isTeacher["Location"]!=null?this.isTeacher["Location"]:""}",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20
@@ -187,7 +193,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                           ),
                           SizedBox(height: 7,),
                           Text(
-                              "PhoneNumber :  ${this.isTeacher["PhoneNumber"]}",
+                              "PhoneNumber :  ${this.isTeacher["PhoneNumber"]!=null?this.isTeacher["PhoneNumber"]:""}",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20
@@ -195,7 +201,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                           ),
                           SizedBox(height: 7,),
                           Text(
-                              "More About Me : ${this.isTeacher["More"]}",
+                              "More About Me : ${this.isTeacher["More"]!=null?this.isTeacher["More"]:""}",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20
@@ -221,15 +227,18 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
 
                                           // ignore: deprecated_member_use
                                           FlatButton(child: Text(
-                                      this.isTeacher["CanGo"] ? "Can" : "Can't"
-                                              ,style: TextStyle(
+                                      this.isTeacher["CanGo"]==null?"": this.isTeacher["CanGo"] ? "Can" :
+                                            "Can't"
+                                      ,
+
+                                              style: TextStyle(
                                             fontSize: 30,
-                                            color: this.isTeacher["CanGo"] ? Colors.green : Colors.red)
-                                          ),),
+                                            color: this.isTeacher["CanGo"]==null?"":this.isTeacher["CanGo"] ? Colors.green : Colors.red)
+                                               ),),
 
 
 
-                                        ],
+                                 ],
                                       )
                                   ),
                                 ),
@@ -243,57 +252,72 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                   ),
                   student!=null? Container(
                     height: 170
-                  ):Column(
-                    children: [
-                      SizedBox(height: 20,),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          primary: Colors.blue,
-                          backgroundColor: Colors.grey,
+                  ):
+                      SizedBox(height: 50,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              primary: Colors.blue,
+                              backgroundColor: Colors.white70,
 
-                        ),
-                        onPressed: () { },
-                        child: Text('Search For Student',
-                          style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,),),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                                  builder: (context) => Search_for_student(isTeacher)
+                              ));
+                            },
+                            child: Text('Search',
+                              style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,),),
+                          ),
+
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              primary: Colors.blue,
+
+                              backgroundColor: Colors.white70,
+                            ),
+                            onPressed: () {
+
+                              Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                                  builder: (context) => Lessons(isTeacher)
+                              ));
+                            },
+                            child: Text('Lessons',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,),),
+                          ),
+
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              primary: Colors.blue,
+
+                              backgroundColor: Colors.white70,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                                  builder: (context) => EditProfile_For_Teacher(isTeacher: isTeacher,)
+                              ));
+
+                            },
+                            child: Text('Edit Profile',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,),),
+                          ),
+
+
+
+                        ],
                       ),
-                      SizedBox(height: 20,),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          primary: Colors.blue,
+                      SizedBox(height: 70,),
 
-                          backgroundColor: Colors.grey,
-                        ),
-                        onPressed: () {
 
-                          Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                              builder: (context) => Lessons(isTeacher)
-                          ));
-                        },
-                        child: Text('Lessons',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,),),
-                      ),
-                      SizedBox(height: 40,),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          primary: Colors.blue,
 
-                        ),
-                        onPressed: () {
-                          // Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                          //     builder: (context) => sign_in()
-                          // ));
-                        },
-                        child: Text('edit profile',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,),),
-                      ),
-                    ],
-                  )
 
 
 

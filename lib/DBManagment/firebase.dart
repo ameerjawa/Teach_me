@@ -192,3 +192,12 @@ Future<void> addExamToFireBase(Map<String,dynamic> data )async{
   await exams.add(data);
 
 }
+
+Future<void>  updateTeacherDetails(Map<String,dynamic> data, String userId)async{
+
+  CollectionReference Teachers = await FirebaseFirestore.instance.collection("Teachers");
+
+  Teachers.doc(userId).update(data);
+
+
+}

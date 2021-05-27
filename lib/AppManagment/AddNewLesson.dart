@@ -318,6 +318,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                           return showDialog(context: context, builder: (context) => SureDetails());
 
                         }else{
+
                           data ={"Date":dateController.text,"LessonSubject":Lessonsubject,"StuPhoneNumber":stuPhoneNumber,"StudentName":stuName,"TeacherId":isTeacher.id,"TeacherName":this.isTeacher["FullName"],"Time":time};
                           addMeetingToFireStoreAsTeacher(data);
                           Navigator.of(context).pushReplacement(SlideRightRoute(

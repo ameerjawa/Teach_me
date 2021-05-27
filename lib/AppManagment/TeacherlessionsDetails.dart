@@ -1,8 +1,3 @@
-
-
-
-
-
 // ignore: camel_case_types
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,26 +12,38 @@ import 'AccountType.dart';
 import 'Teacher_Homepage.dart';
 
 class TeacherlessionsDetail extends StatefulWidget {
-  final  GoogleSignInAccount userObj;
+  DocumentSnapshot isTeacher;
+  GoogleSignInAccount userObj;
 
-  const TeacherlessionsDetail({Key key, this.userObj}) : super(key: key);
+  TeacherlessionsDetail({Key key, this.isTeacher, this.userObj})
+      : super(key: key);
+
   @override
-  TeacherlessionsDetails createState() => TeacherlessionsDetails(userObj);
+  TeacherlessionsDetails createState() =>
+      TeacherlessionsDetails(isTeacher, userObj);
 }
 
 class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
-  String Subjects,TitleSentence,MoreDetails,Price,_selectedsubject;
-  List subjects = ["English","Math","maba","biology","physic","hebrew","arabic"];
-  bool CanGo=false;
-  final  GoogleSignInAccount userObj;
+  String Subjects, TitleSentence, MoreDetails, Price, _selectedsubject;
+  List subjects = [
+    "English",
+    "Math",
+    "maba",
+    "biology",
+    "physic",
+    "hebrew",
+    "arabic"
+  ];
+  bool CanGo = false;
+  DocumentSnapshot isTeacher;
+  GoogleSignInAccount userObj;
+  final _formKey = GlobalKey<FormState>();
 
-  TeacherlessionsDetails(this.userObj);
-
-
+  TeacherlessionsDetails(this.isTeacher, this.userObj);
 
   Widget build(BuildContext context) {
-    final _auth= FirebaseAuth.instance;
-    CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
+    CollectionReference Teachers =
+        FirebaseFirestore.instance.collection("Teachers");
 
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -45,13 +52,9 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
 
-
     return Scaffold(
-
       body: Container(
-        decoration: BoxDecoration(
-            color: Colors.blue.shade200
-        ),
+        decoration: BoxDecoration(color: Colors.blue.shade200),
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
 
@@ -76,18 +79,8 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      IconButton(
-                          icon: const Icon(Icons.arrow_back),
-                          iconSize: 50,
-                          alignment: Alignment.topLeft,
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement(SlideRightRoute(
-                               page: AccountType()
-                            ));
-                          }
-                      ),
                       Column(
                         children: [
                           SizedBox(
@@ -104,30 +97,33 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                         ],
                       ),
                     ]),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Center(
-                  child: Text(
-                    'Lessions Information',
-                      style:TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
-                          color: Colors.white),
-                  )
-                  ),
-
-
-
-                SizedBox(height: 40,),
+                    child: Text(
+                  'Lessions Information',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                      color: Colors.white),
+                )),
+                SizedBox(
+                  height: 40,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
                       Center(
                         child: Text(
-                          "subjects",style:TextStyle(color:Colors.black,fontSize: 20),
+                          "subjects",
+                          style: TextStyle(color: Colors.black, fontSize: 20),
                         ),
                       ),
-                      SizedBox(height: 4,),
+                      SizedBox(
+                        height: 4,
+                      ),
                       Container(
                         child: Autocomplete(
                           optionsBuilder: (TextEditingValue value) {
@@ -148,196 +144,238 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                           },
                         ),
                       ),
-
-                      SizedBox(height: 15,),
-                      TextField(
-                        keyboardType: TextInputType.emailAddress,
-                        textAlign: TextAlign.center,
-                        onChanged: (value) {
-                          TitleSentence=value;
-                        },
-                        decoration: InputDecoration(
-                          fillColor: Colors.white60,
-                          filled: true,
-                          border: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(15.0)
-                          ),
-
-                          hintText: 'Enter a Title Sentence',
-                          hintStyle: TextStyle(
-                            color: const Color(0xCB101010),
-                            fontSize: null,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                          ),
-
-
-                        ),
+                      SizedBox(
+                        height: 15,
                       ),
-                      SizedBox(height: 15,),
-
-                         Container(
-
-
-                           child: TextField(
-
+                      Form(
+                        key: _formKey,
+                        child: Column(children: [
+                          TextFormField(
+                            validator: (value) {
+                              if (value.isEmpty || value == null) {
+                                return "your Profile look better with Title sentence";
+                              }
+                              return null;
+                            },
                             keyboardType: TextInputType.emailAddress,
                             textAlign: TextAlign.center,
                             onChanged: (value) {
-                            MoreDetails=value;
+                              TitleSentence = value;
                             },
                             decoration: InputDecoration(
-                              contentPadding: new EdgeInsets.symmetric(vertical: 75.0, horizontal: 10.0),
                               fillColor: Colors.white60,
                               filled: true,
                               border: OutlineInputBorder(
-                                  borderRadius: new BorderRadius.circular(15.0)
-                              ),
-
-                              hintText: 'More About you',
-
-
+                                  borderRadius:
+                                      new BorderRadius.circular(15.0)),
+                              hintText: 'Enter a Title Sentence',
                               hintStyle: TextStyle(
                                 color: const Color(0xCB101010),
                                 fontSize: null,
                                 fontWeight: FontWeight.w700,
                                 fontStyle: FontStyle.normal,
                               ),
-
-
-
-                        ),
-                      ),
-                         ),
-                      Row(
-                        children:<Widget>[
-                          Text(
-                             'Can You Go to Student House ?'
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(15.0),
-                            child: Container(
-
-
-                                child: Row(
-
-                                  children: [
-
-                                    // ignore: deprecated_member_use
-                                    FlatButton(onPressed: (){
-                                      color: CanGo ? Colors.red : Colors.green;
-                                      setState(() {
-                                        CanGo=!CanGo;
-
-                                      });
-
-
-
-                                    }, child: Text('Can'),
-                                      color: CanGo ? Colors.red : Colors.green,),
-
-
-                                  ],
-                                )
                             ),
                           ),
-                        ]
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                            child: TextFormField(
+                              keyboardType: TextInputType.emailAddress,
+                              textAlign: TextAlign.center,
+                              onChanged: (value) {
+                                MoreDetails = value;
+                              },
+                              decoration: InputDecoration(
+                                contentPadding: new EdgeInsets.symmetric(
+                                    vertical: 75.0, horizontal: 10.0),
+                                fillColor: Colors.white60,
+                                filled: true,
+                                border: OutlineInputBorder(
+                                    borderRadius:
+                                        new BorderRadius.circular(15.0)),
+                                hintText: 'More About you',
+                                hintStyle: TextStyle(
+                                  color: const Color(0xCB101010),
+                                  fontSize: null,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.normal,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Row(children: <Widget>[
+                            Text('Can You Go to Student House ?'),
+                            Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Container(
+                                  child: Row(
+                                children: [
+                                  // ignore: deprecated_member_use
+                                  FlatButton(
+                                    onPressed: () {
+                                      color:
+                                      CanGo ? Colors.red : Colors.green;
+                                      setState(() {
+                                        CanGo = !CanGo;
+                                      });
+                                    },
+                                    child: Text('Can'),
+                                    color: CanGo ? Colors.red : Colors.green,
+                                  ),
+                                ],
+                              )),
+                            ),
+                          ]),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                  height: 70,
+                                  width: 150,
+                                  child: TextFormField(
+                                    validator: (value) {
+                                      if (value.isEmpty || value == null) {
+                                        return "Must Type Price";
+                                      }
+                                      return null;
+                                    },
+                                    textAlign: TextAlign.center,
+                                    onChanged: (value) {
+                                      Price = value;
+                                    },
+                                    decoration: InputDecoration(
+                                      contentPadding: new EdgeInsets.symmetric(
+                                          vertical: 25.0, horizontal: 10.0),
+                                      fillColor: Colors.white60,
+                                      filled: true,
+                                      border: OutlineInputBorder(
+                                          borderRadius:
+                                              new BorderRadius.circular(15.0)),
+                                      hintText: 'Price',
+                                      hintStyle: TextStyle(
+                                        color: const Color(0xCB101010),
+                                        fontSize: null,
+                                        fontWeight: FontWeight.w700,
+                                        fontStyle: FontStyle.normal,
+                                      ),
+                                    ),
+                                  )),
+                              SizedBox(
+                                width: 30,
+                              ),
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              TextButton(
+                                  onPressed: () async {
+                                    FirebaseAuth auth = FirebaseAuth.instance;
+                                    String UserId = userObj != null
+                                        ? userObj.id
+                                        : auth.currentUser != null
+                                            ? auth.currentUser.uid.toString()
+                                            : "";
+                                    DocumentSnapshot isTeacher =
+                                        await Teachers.doc("${UserId}").get();
+                                    Student s;
+                                    Navigator.of(context).pushReplacement(
+                                        SlideRightRoute(
+                                            page: Teacher_Homepage(
+                                                isTeacher, s, "", "")));
+                                  },
+                                  child: Text(
+                                    'skip',
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ))
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              IconButton(
+                                  icon: const Icon(Icons.arrow_forward),
+                                  iconSize: 50,
+                                  alignment: Alignment.topLeft,
+                                  onPressed: () async {
+                                    if (_formKey.currentState.validate()) {
+                                      // TODO submit
+                                      FirebaseAuth auth = FirebaseAuth.instance;
 
-                      ),
-                     Row(
-                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      String UserId = userObj != null
+                                          ? userObj.id
+                                          : auth.currentUser != null
+                                              ? auth.currentUser.uid.toString()
+                                              : "";
+                                      print(
+                                          "yes im hererere #################${UserId}");
+                                      DocumentSnapshot isTeacher =
+                                          await Teachers.doc("${UserId}").get();
 
-                       children:<Widget>[
-                         Container(
-                           height: 70,
-                           width: 150,
-                           child:TextField(
-                             textAlign: TextAlign.center,
-                             onChanged: (value) {
-                                Price=value;
-                             },
-                             decoration: InputDecoration(
-                               contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
-                               fillColor: Colors.white60,
-                               filled: true,
-                               border: OutlineInputBorder(
-                                   borderRadius: new BorderRadius.circular(15.0)
-                               ),
+                                      String selectedSubject =
+                                          _selectedsubject != ""
+                                              ? _selectedsubject
+                                              : isTeacher["subjects"];
+                                      String titleSentence = TitleSentence != ""
+                                          ? TitleSentence
+                                          : isTeacher["Title Sentence"];
 
-                               hintText: 'Price',
+                                      String moreDetails = MoreDetails != ""
+                                          ? MoreDetails
+                                          : isTeacher["More"];
 
+                                      String price = Price != ""
+                                          ? Price
+                                          : isTeacher["Price"];
 
-                               hintStyle: TextStyle(
-                                 color: const Color(0xCB101010),
-                                 fontSize: null,
-                                 fontWeight: FontWeight.w700,
-                                 fontStyle: FontStyle.normal,
-                               ),
+                                      Map<String, dynamic> data = {
+                                        "subjects": selectedSubject,
+                                        "Title Sentence": titleSentence,
+                                        "More": moreDetails,
+                                        "Price": price,
+                                        "CanGo": CanGo
+                                      };
 
+                                      await MoreTeacherDet(
+                                          data, Teachers, UserId);
 
-
-                             ),
-                           )
-                         ),
-                         Column(
-                           children: [
-                             IconButton(
-                                 icon: const Icon(Icons.arrow_forward),
-                                 iconSize: 50,
-
-                                 alignment: Alignment.topLeft,
-                                 onPressed: () async {
-
-                                   Map <String,dynamic> data = {"subjects":_selectedsubject,"Title Sentence":TitleSentence,"More":MoreDetails,"Price":Price,"CanGo":CanGo} ;
-
-                                   FirebaseAuth auth = FirebaseAuth.instance;
-                                   String UserId =userObj!=null?userObj.id: auth.currentUser.uid.toString();
-
-                                   await MoreTeacherDet(data,Teachers,UserId);
-
-                                  DocumentSnapshot isTeacher = await Teachers.doc("${UserId}").get();
-                                  Student s;
-                                   Navigator.of(context).pushReplacement(SlideRightRoute(
-                                        page: Teacher_Homepage(isTeacher,s,"","")
-                                     ));
-
-
-
-
-
-                                 }
-                             ),
-                             Text(
-                               'Next',
-                               textAlign: TextAlign.center,
-                               overflow: TextOverflow.ellipsis,
-                               style: TextStyle(fontWeight: FontWeight.bold),
-                             )
-                           ],
-                         ),
-                       ]
-                     )
+                                      Student s;
+                                      Navigator.of(context).pushReplacement(
+                                          SlideRightRoute(
+                                              page: Teacher_Homepage(
+                                                  isTeacher, s, "", "")));
+                                    }
+                                  }),
+                              Text(
+                                'Next',
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                        ]),
+                      )
                     ],
                   ),
                 ),
-
-
               ],
             ),
           ),
-
         ),
       ),
 
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-
 }
 
-
-Future<void> MoreTeacherDet(Map <String,dynamic> data,CollectionReference collectionReference,String UserId)async{
+Future<void> MoreTeacherDet(Map<String, dynamic> data,
+    CollectionReference collectionReference, String UserId) async {
   collectionReference.doc(UserId).update(data);
   return;
-
 }

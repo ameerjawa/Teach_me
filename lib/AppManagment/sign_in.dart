@@ -6,10 +6,8 @@ import 'package:teach_me/AppManagment/AccountType.dart';
 import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
-import 'Sign_Up_Teacher.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_up_user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -21,8 +19,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'StudentActivity.dart';
 
-class sign_in_user extends StatefulWidget {
-  sign_in_user({Key key, this.title}) : super(key: key);
+class SignInUser extends StatefulWidget {
+  SignInUser({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -39,18 +37,19 @@ class sign_in_user extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<sign_in_user> {
+class _MyHomePageState extends State<SignInUser> {
 
     String email ,password ;
-  CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
+  CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
   CollectionReference students = FirebaseFirestore.instance.collection("Students");
   final _formKey = GlobalKey<FormState>();
+  final auth = FirebaseAuth.instance;
 
 
   final GoogleSignIn _googleSignIn = new GoogleSignIn(
     scopes: [
       'email',
-       'https://www.googleapis.com/auth/contacts.readonly',
+      // 'https://www.googleapis.com/auth/contacts.readonly',
     ],
   );
   GoogleSignInAccount _userObj;
@@ -69,22 +68,23 @@ class _MyHomePageState extends State<sign_in_user> {
       print(e);
 
     }
+    return null;
   }
 
 
- _logout()async{
-  try{
-    await _googleSignIn.signOut();
-    setState(() {
-      isLoggedin=false;
-    });
-
-  }catch(e){
-    print(e);
-
-  }
-
-}
+//  _logout()async{
+//   try{
+//     await _googleSignIn.signOut();
+//     setState(() {
+//       isLoggedin=false;
+//     });
+//
+//   }catch(e){
+//     print(e);
+//
+//   }
+//
+// }
 
 
 
@@ -230,33 +230,34 @@ class _MyHomePageState extends State<sign_in_user> {
                         // TODO submit
 
                         try {
-                          final  userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                          final  userCredential = await auth.signInWithEmailAndPassword(
                             email: email,
                             password: password,
 
                           );
+
                           if(userCredential != null){
-                            DocumentSnapshot isTeacher = await Teachers.doc("${userCredential.user.uid}").get();
+                            DocumentSnapshot isTeacher = await teachers.doc("${userCredential.user.uid}").get();
                             if(isTeacher.exists){
 
                               Student s;
                               Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                  builder: (context) => Teacher_Homepage(isTeacher,s,"","")
+                                  builder: (context) => TeacherHomepage(isTeacher,s,"","",auth,this._googleSignIn)
                               ));
                             }else{
                               DocumentSnapshot student = await students.doc("${userCredential.user.uid}").get();
 
-                              String FullName= student.get(FieldPath(["FullName"]));
-                              String Location= student.get(FieldPath(["Location"]));
-                              String PhoneNumber= student.get(FieldPath(["PhoneNumber"]));
-                              String grade= student.get(FieldPath(["grade"]));
+                              String fullName= student.get(FieldPath(["FullName"]));
+                              String location= student.get(FieldPath(["Location"]));
+                              String phoneNumber= student.get(FieldPath(["PhoneNumber"]));
+                             // String grade= student.get(FieldPath(["grade"]));
                               String birthDate= student.get(FieldPath(["BirthDate"]));
 
 
-                              Student s = new Student("email", "password", "verifyPassword", FullName, birthDate, PhoneNumber, Location, true);
+                              Student s = new Student("email", "password", "verifyPassword", fullName, birthDate, phoneNumber, location, true);
                               print("isStudent");
                               Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                  builder: (context) => StudentActivity(s)
+                                  builder: (context) => StudentActivity(s,_googleSignIn)
                               ));
 
                             }
@@ -320,7 +321,7 @@ class _MyHomePageState extends State<sign_in_user> {
                         {
                           print(_userObj.id);
                           Navigator.of(context).pushReplacement(SlideRightRoute(
-                              page: AccountType(userObj: _userObj,)
+                              page: AccountType(googleSignIn: _googleSignIn,userObj: _userObj,)
                           ));
                         }
 

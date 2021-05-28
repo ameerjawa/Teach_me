@@ -1,38 +1,40 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
-import 'package:teach_me/DBManagment/firebase.dart';
 
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 
-import 'package:flutter_search_bar/flutter_search_bar.dart';
 
 
-class Search_for_student extends StatefulWidget {
+// ignore: must_be_immutable
+class SearchForStudent extends StatefulWidget {
   DocumentSnapshot isTeacher;
   String subject, location;
   Student student;
+  final auth;
+  GoogleSignIn googleSignin;
 
-  Search_for_student(this.isTeacher);
+  SearchForStudent(this.isTeacher,this.auth,this.googleSignin);
 
   @override
-  Search_for_student_state createState() =>
-      Search_for_student_state(isTeacher);
+  SearchForStudentState createState() =>
+      SearchForStudentState(isTeacher,this.auth,this.googleSignin);
 }
 
-class Search_for_student_state extends State<Search_for_student> {
+class SearchForStudentState extends State<SearchForStudent> {
   bool showvalue = false;
   DocumentSnapshot isTeacher;
   String subject, location;
   Student student;
-  final _auth = FirebaseAuth.instance;
+  final auth ;
   String selectedName;
+  GoogleSignIn googleSignin;
 
-  Search_for_student_state(
-      this.isTeacher);
+  SearchForStudentState(
+      this.isTeacher,this.auth,this.googleSignin);
 
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -79,7 +81,7 @@ class Search_for_student_state extends State<Search_for_student> {
                               onPressed: () {
                                 Navigator.of(context).pushReplacement(
                                     CupertinoPageRoute(
-                                        builder: (context) =>Teacher_Homepage(isTeacher, student, subject, location)
+                                        builder: (context) =>TeacherHomepage(isTeacher, student, subject, location,this.auth,this.googleSignin)
                                             ));
                               }),
                           Text(

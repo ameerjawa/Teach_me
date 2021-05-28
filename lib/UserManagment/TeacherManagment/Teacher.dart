@@ -22,25 +22,25 @@ class Teacher extends Userbg with TeacherProfiles{
 
 
 
-  void signUpASTeacher(Teacher newTeacher,CollectionReference collectionReference,String UserId)async{
+  void signUpASTeacher(Teacher newTeacher,CollectionReference collectionReference,String userId)async{
 
    var isTeacher=true;
     Map <String,dynamic> data = {"email":newTeacher.email,"ProfileImg":newTeacher.proImg,"FullName":newTeacher.fullName,"PhoneNumber":newTeacher.phoneNumber,"UserType":isTeacher,"Location":newTeacher.location,"BirthDate":newTeacher.birthDate,"Rating":newTeacher.rating} ;
 
-    await userSetup(data,collectionReference,UserId);
+    await userSetup(data,collectionReference,userId);
 }
 
-  Future<void> addMeeting( Lession lession)async {
+  Future<void> addMeeting( Lesson lesson)async {
 
-    Map<String,dynamic> data={"Date":lession.date, "StudentId": lession.studentId
+    Map<String,dynamic> data={"Date":lesson.date, "StudentId": lesson.studentId
     ,"StudentName"
-        :lession.studentName,
+        :lesson.studentName,
     "TeacherId":
-    lession.teacherId,
+    lesson.teacherId,
     "TeacherName":
-    lession.teacherName,
+    lesson.teacherName,
     "Time":
-    lession.Time};
+    lesson.time};
 
 
     await addMeetingToFireStoreAsTeacher(data);

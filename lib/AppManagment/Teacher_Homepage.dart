@@ -1,7 +1,6 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -11,38 +10,39 @@ import 'package:teach_me/AppManagment/Lessons.dart';
 import 'package:teach_me/AppManagment/Search_for_student.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
-import 'package:teach_me/AppManagment/sign_in.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
-import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
-import 'package:teach_me/routes/pageRouter.dart';
 
 
 
 
-class Teacher_Homepage extends StatefulWidget {
+// ignore: must_be_immutable
+class TeacherHomepage extends StatefulWidget {
 
   DocumentSnapshot isTeacher;
   String subject,location;
   Student student;
-  Teacher_Homepage(this.isTeacher,this.student,this.subject,this.location);
+  final auth;
+  GoogleSignIn googleSignIn;
+  TeacherHomepage(this.isTeacher,this.student,this.subject,this.location,this.auth,this.googleSignIn);
 
 
 
   @override
-  Homepage_teacherState createState() => Homepage_teacherState(isTeacher,student,subject,location);
+  HomepageteacherState createState() => HomepageteacherState(isTeacher,student,subject,location,this.auth,this.googleSignIn);
 }
 
-class Homepage_teacherState extends State<Teacher_Homepage> {
+class HomepageteacherState extends State<TeacherHomepage> {
 
   bool showvalue=false;
   DocumentSnapshot isTeacher;
   String subject,location;
   Student student;
-  final _auth = FirebaseAuth.instance;
+  final _auth ;
+  GoogleSignIn googleSignIn;
 
 
 
-  Homepage_teacherState(this.isTeacher,this.student,this.subject,this.location);
+  HomepageteacherState(this.isTeacher,this.student,this.subject,this.location,this._auth,this.googleSignIn);
 
 
 
@@ -105,7 +105,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                           children:[
                             student!=null?showButton(context):showLogoutButton(context),
 
-                            Text("Back To Results",
+                            Text(student!=null?"Back To Results":"",
 
                                 style: TextStyle(
                                   fontSize: 12
@@ -226,7 +226,8 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                                         children: [
 
                                           // ignore: deprecated_member_use
-                                          FlatButton(child: Text(
+
+                                            Text(
                                       this.isTeacher["CanGo"]==null?"": this.isTeacher["CanGo"] ? "Can" :
                                             "Can't"
                                       ,
@@ -234,7 +235,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                                               style: TextStyle(
                                             fontSize: 30,
                                             color: this.isTeacher["CanGo"]==null?"":this.isTeacher["CanGo"] ? Colors.green : Colors.red)
-                                               ),),
+                                               ),
 
 
 
@@ -265,7 +266,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                             ),
                             onPressed: () {
                               Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                  builder: (context) => Search_for_student(isTeacher)
+                                  builder: (context) => SearchForStudent(isTeacher,this._auth,this.googleSignIn)
                               ));
                             },
                             child: Text('Search',
@@ -283,7 +284,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                             onPressed: () {
 
                               Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                  builder: (context) => Lessons(isTeacher)
+                                  builder: (context) => Lessons(isTeacher,this._auth,this.googleSignIn)
                               ));
                             },
                             child: Text('Lessons',
@@ -300,7 +301,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
                             ),
                             onPressed: () {
                               Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                  builder: (context) => EditProfile_For_Teacher(isTeacher: isTeacher,)
+                                  builder: (context) => EditProfileForTeacher(isTeacher: isTeacher,)
                               ));
 
                             },
@@ -334,7 +335,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
         iconSize: 50,
       onPressed: ()=>showDialog(
         context: context,
-        builder: (context) => SureLogout(auth:_auth),
+        builder: (context) => SureLogout(auth:_auth,googleSignin: this.googleSignIn,),
 
       ),
 
@@ -348,7 +349,7 @@ class Homepage_teacherState extends State<Teacher_Homepage> {
         iconSize: 50,
         onPressed: () {
           Navigator.of(context).pushReplacement(CupertinoPageRoute(
-              builder: (context) => search_for_teacher_viewTeachers(s: student,selectedSubject: subject, selectedLocation: location)
+              builder: (context) => SearchForTeacherViewTeachers(s: student,selectedSubject: subject, selectedLocation: location)
           ));
         }
 

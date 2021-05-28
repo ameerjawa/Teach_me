@@ -3,49 +3,46 @@
 
 
 
-// ignore: camel_case_types
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
-
 import '../DBManagment/firebase.dart';
-import 'AccountType.dart';
 import 'Lessons.dart';
-import 'Teacher_Homepage.dart';
 
+// ignore: must_be_immutable
 class AddNewLesson extends StatefulWidget {
   final DocumentSnapshot document;
-     // GoogleSignInAccount userObj;
 final   DocumentSnapshot isTeacher;
+final auth;
+GoogleSignIn googleSignIn;
 
 
-  const AddNewLesson({Key key,this.isTeacher, this.document}) : super(key: key);
+   AddNewLesson({Key key,this.isTeacher, this.document,this.auth,this.googleSignIn}) : super(key: key);
   @override
-  AddNewLessonState createState() => AddNewLessonState(isTeacher,document);
+  AddNewLessonState createState() => AddNewLessonState(isTeacher,document,this.auth,this.googleSignIn);
 }
 
 class AddNewLessonState extends State<AddNewLesson> {
-  String Lessonsubject,stuPhoneNumber,stuName,time;
+  String lessonSubject,stuPhoneNumber,stuName,time;
   List subjects = ["English","Math","maba","biology","physic","hebrew","arabic"];
-  bool CanGo=false;
+  bool canGo=false;
   // final  GoogleSignInAccount userObj;
   final   DocumentSnapshot isTeacher;
- final  DocumentSnapshot Lessondocument;
+ final  DocumentSnapshot lessonDocument;
   final dateController = TextEditingController();
+  final auth;
+  GoogleSignIn googleSignIn;
 
 
 
-  AddNewLessonState( this.isTeacher, this.Lessondocument);
+  AddNewLessonState( this.isTeacher, this.lessonDocument,this.auth,this.googleSignIn);
 
 
 
   Widget build(BuildContext context) {
-    final _auth= FirebaseAuth.instance;
-    CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
+
 
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -93,7 +90,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                           alignment: Alignment.topLeft,
                           onPressed: () {
                             Navigator.of(context).pushReplacement(SlideRightRoute(
-                                page: Lessons(isTeacher)
+                                page: Lessons(isTeacher,this.auth,this.googleSignIn)
                             ));
                           }
                       ),
@@ -116,7 +113,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                 SizedBox(height: 40,),
                 Center(
                     child: Text(
-                      this.Lessondocument!=null?'Edit Lesson':'Add New Lesson',
+                      this.lessonDocument!=null?'Edit Lesson':'Add New Lesson',
                       style:TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 30,
@@ -138,7 +135,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                         textAlign: TextAlign.center,
                         onChanged: (value) {
 
-                         Lessonsubject=value;
+                          lessonSubject=value;
                         },
 
                         decoration: InputDecoration(
@@ -148,7 +145,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                               borderRadius: new BorderRadius.circular(15.0)
                           ),
 
-                          hintText: this.Lessondocument!=null?this.Lessondocument["LessonSubject"]:'Lesson subject',
+                          hintText: this.lessonDocument!=null?this.lessonDocument["LessonSubject"]:'Lesson subject',
                           hintStyle: TextStyle(
                             color: const Color(0xCB101010),
                             fontSize: null,
@@ -166,7 +163,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                         keyboardType: TextInputType.emailAddress,
                         textAlign: TextAlign.center,
                         onChanged: (value) {
-                          value!=null? stuPhoneNumber=value:stuPhoneNumber=this.Lessondocument["StuPhoneNumber"];
+                          value!=null? stuPhoneNumber=value:stuPhoneNumber=this.lessonDocument["StuPhoneNumber"];
 
                         },
                         decoration: InputDecoration(
@@ -176,7 +173,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                               borderRadius: new BorderRadius.circular(15.0)
                           ),
 
-                          hintText: this.Lessondocument!=null?this.Lessondocument["StuPhoneNumber"]:'Student Phone Number',
+                          hintText: this.lessonDocument!=null?this.lessonDocument["StuPhoneNumber"]:'Student Phone Number',
 
 
                           hintStyle: TextStyle(
@@ -198,7 +195,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                         textAlign: TextAlign.center,
                         onChanged: (value) {
 
-                          value!=null? stuName=value:stuName=this.Lessondocument["StudentName"];
+                          value!=null? stuName=value:stuName=this.lessonDocument["StudentName"];
 
                         },
                         decoration: InputDecoration(
@@ -208,7 +205,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                               borderRadius: new BorderRadius.circular(15.0)
                           ),
 
-                          hintText: this.Lessondocument!=null?this.Lessondocument["StudentName"]:'Student Name',
+                          hintText: this.lessonDocument!=null?this.lessonDocument["StudentName"]:'Student Name',
 
 
                           hintStyle: TextStyle(
@@ -244,7 +241,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                                   dateController.text = date.toString().substring(0,10);
                                 },
                                 onChanged: (value) {
-                                  value!=null? dateController.text=value:dateController.text=this.Lessondocument["Date"];
+                                  value!=null? dateController.text=value:dateController.text=this.lessonDocument["Date"];
 
                                   dateController.text=value;
 
@@ -255,7 +252,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                                   border: OutlineInputBorder(
                                       borderRadius: new BorderRadius.circular(15.0)
                                   ),
-                                  hintText: this.Lessondocument!=null?this.Lessondocument["Date"]:'Date',
+                                  hintText: this.lessonDocument!=null?this.lessonDocument["Date"]:'Date',
                                   hintStyle: TextStyle(
                                     color: const Color(0xCB101010),
                                     fontSize: null,
@@ -272,7 +269,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                                   textAlign: TextAlign.center,
 
                                   onChanged: (value) {
-                                    value.isEmpty? time=this.Lessondocument["Time"]:time=value;
+                                    value.isEmpty? time=this.lessonDocument["Time"]:time=value;
 
                                   },
                                   decoration: InputDecoration(
@@ -283,7 +280,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                                         borderRadius: new BorderRadius.circular(15.0)
                                     ),
 
-                                    hintText: this.Lessondocument!=null?this.Lessondocument["Time"]:'Time',
+                                    hintText: this.lessonDocument!=null?this.lessonDocument["Time"]:'Time',
 
 
                                     hintStyle: TextStyle(
@@ -306,23 +303,23 @@ class AddNewLessonState extends State<AddNewLesson> {
                       Center(
                        child: IconButton(icon: Icon(Icons.done,size: 50,), onPressed: (){
                         Map<String, dynamic> data;
-                        if (this.Lessondocument!=null){
-                         data ={"Date":dateController.text.isEmpty?this.Lessondocument["Date"]:dateController.text,"LessonSubject":Lessonsubject.isEmpty?this.Lessondocument["LessonSubject"]:Lessonsubject,"StuPhoneNumber":stuPhoneNumber.isEmpty?this.Lessondocument["StuPhoneNumber"]:stuPhoneNumber,"StudentName":stuName.isEmpty?this.Lessondocument["StudentName"]:stuName,"TeacherId":isTeacher.id,"TeacherName":this.isTeacher["FullName"],"Time":time.isEmpty?this.Lessondocument["Time"]:time};
+                        if (this.lessonDocument!=null){
+                         data ={"Date":dateController.text.isEmpty?this.lessonDocument["Date"]:dateController.text,"LessonSubject":lessonSubject.isEmpty?this.lessonDocument["LessonSubject"]:lessonSubject,"StuPhoneNumber":stuPhoneNumber.isEmpty?this.lessonDocument["StuPhoneNumber"]:stuPhoneNumber,"StudentName":stuName.isEmpty?this.lessonDocument["StudentName"]:stuName,"TeacherId":isTeacher.id,"TeacherName":this.isTeacher["FullName"],"Time":time.isEmpty?this.lessonDocument["Time"]:time};
 
-                         editMeetingToFireStoreAsTeacher(data,this.Lessondocument.id);
+                         editMeetingToFireStoreAsTeacher(data,this.lessonDocument.id);
                          Navigator.of(context).pushReplacement(SlideRightRoute(
-                             page: Lessons(isTeacher)
+                             page: Lessons(isTeacher,this.auth,this.googleSignIn)
                          ));
 
-                        }else if(dateController.text.isEmpty|| Lessonsubject.isEmpty||stuPhoneNumber.isEmpty||stuName.isEmpty||time.isEmpty ) {
+                        }else if(dateController.text.isEmpty|| lessonSubject.isEmpty||stuPhoneNumber.isEmpty||stuName.isEmpty||time.isEmpty ) {
                           return showDialog(context: context, builder: (context) => SureDetails());
 
                         }else{
 
-                          data ={"Date":dateController.text,"LessonSubject":Lessonsubject,"StuPhoneNumber":stuPhoneNumber,"StudentName":stuName,"TeacherId":isTeacher.id,"TeacherName":this.isTeacher["FullName"],"Time":time};
+                          data ={"Date":dateController.text,"LessonSubject":lessonSubject,"StuPhoneNumber":stuPhoneNumber,"StudentName":stuName,"TeacherId":isTeacher.id,"TeacherName":this.isTeacher["FullName"],"Time":time};
                           addMeetingToFireStoreAsTeacher(data);
                           Navigator.of(context).pushReplacement(SlideRightRoute(
-                              page: Lessons(isTeacher)
+                              page: Lessons(isTeacher,this.auth,this.googleSignIn)
                           ));
                         }
 

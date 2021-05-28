@@ -4,16 +4,16 @@ import 'package:teach_me/DBManagment/Lession.dart';
 
 class AgendaCalender{
 
-final List<Lession> Lessions;
+final List<Lesson> lessons;
 
-  AgendaCalender(this.Lessions);
+  AgendaCalender(this.lessons);
 
-  void addLession(Lession lession){
-    this.Lessions.add(lession);
+  void addLesson(Lesson lesson){
+    this.lessons.add(lesson);
   }
 
-  void deleteLession(Lession lession){
-    this.Lessions.remove(lession);
+  void deleteLesson(Lesson lesson){
+    this.lessons.remove(lesson);
 
   }
 

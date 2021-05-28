@@ -1,58 +1,53 @@
 
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:teach_me/AppManagment/AccountType.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+
 import 'package:firebase_database/firebase_database.dart';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:gender_selection/gender_selection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:teach_me/AppManagment/AccountType.dart';
 import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
-import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 import 'Edit_Lesson_information.dart';
 import 'file:///D:/ameer/teach_me/lib/DBManagment/firebase.dart';
 
-import 'TeacherlessionsDetails.dart';
-import 'sign_in.dart';
 
 
 
-class EditProfile_For_Teacher extends StatefulWidget {
+// ignore: must_be_immutable
+class EditProfileForTeacher extends StatefulWidget {
   DocumentSnapshot isTeacher;
+  final auth;
+  GoogleSignIn googleSignIn;
 
-   EditProfile_For_Teacher({Key key,this.isTeacher}) : super(key: key);
+  EditProfileForTeacher({Key key,this.isTeacher,this.auth,this.googleSignIn}) : super(key: key);
 
   @override
-  EditProfile_For_Teacher_state createState() => EditProfile_For_Teacher_state(isTeacher);
+  EditProfileForTeacherState createState() => EditProfileForTeacherState(isTeacher,this.auth,this.googleSignIn);
 }
 
-class EditProfile_For_Teacher_state extends State<EditProfile_For_Teacher> {
+class EditProfileForTeacherState extends State<EditProfileForTeacher> {
   File imageFile;
   DocumentSnapshot isTeacher;
 
   final _dateController = TextEditingController();
-  String _fullname,_phoneNumber,_Location;
+  String fullName,phoneNumber,location;
   bool _validate=false;
+  GoogleSignIn googleSignIn;
 
 
 
 
   final databaseReference = FirebaseDatabase.instance.reference();
-  CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
-  final _auth= FirebaseAuth.instance;
+  CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
+  final auth;
 
 
-  EditProfile_For_Teacher_state(this.isTeacher);
+  EditProfileForTeacherState(this.isTeacher,this.auth,this.googleSignIn);
 
 
 
@@ -102,7 +97,7 @@ class EditProfile_For_Teacher_state extends State<EditProfile_For_Teacher> {
                             onPressed: () {
                               Student s;
                               Navigator.of(context).pushReplacement(SlideRightRoute(
-                                  page: Teacher_Homepage(isTeacher,s,"","")
+                                  page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn)
                               ));
                             }
                         ),
@@ -165,7 +160,7 @@ class EditProfile_For_Teacher_state extends State<EditProfile_For_Teacher> {
 
                         textAlign: TextAlign.center,
                         onChanged: (value) {
-                          _fullname =value;
+                          fullName =value;
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.white60,
@@ -193,7 +188,7 @@ class EditProfile_For_Teacher_state extends State<EditProfile_For_Teacher> {
 
                         textAlign: TextAlign.center,
                         onChanged: (value) {
-                          _phoneNumber=value;
+                          phoneNumber=value;
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.white60,
@@ -217,7 +212,7 @@ class EditProfile_For_Teacher_state extends State<EditProfile_For_Teacher> {
                       TextFormField(
                         textAlign: TextAlign.center,
                         onChanged: (value) {
-                          _Location = value;
+                          location = value;
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.white60,
@@ -289,10 +284,10 @@ class EditProfile_For_Teacher_state extends State<EditProfile_For_Teacher> {
                                     alignment: Alignment.topLeft,
                                     onPressed: () async {
 
-                                      String imageUrl;
+                                      //String imageUrl;
                                       String userId = isTeacher.id ;
 
-                                      String  email = isTeacher["email"];
+                                      //String  email = isTeacher["email"];
                                       // setState(() {
                                       //   _fullname.text.isEmpty ? _validate = true : _validate = false;
                                       //   _dateController.text.isEmpty ? _validate = true : _validate = false;
@@ -304,21 +299,21 @@ class EditProfile_For_Teacher_state extends State<EditProfile_For_Teacher> {
 
 
 
-                                        imageUrl = await uploadImagetofireStorage(imageFile,_fullname,userId);
+                                         await uploadImagetofireStorage(imageFile,fullName,userId);
 
                                       }
-                                      print("   here ----------------->>>>>>>>>>>>>>>> ${_fullname == ""}");
-                                      String fullname=_fullname!=null?_fullname:isTeacher["FullName"];
-                                      print("fullname ::::::::::::$fullname ${fullname!=""}");
-                                      String phonenumber=_phoneNumber!=null?_phoneNumber:isTeacher["PhoneNumber"];
+                                      print("   here ----------------->>>>>>>>>>>>>>>> ${fullName == ""}");
+                                      String fullname=fullName!=null?fullName:isTeacher["FullName"];
+                                      print("fullName ::::::::::::$fullname ${fullname!=""}");
+                                      String phonenumber=phoneNumber!=null?phoneNumber:isTeacher["PhoneNumber"];
 
-                                      String location=_Location!=null?_Location:isTeacher["Location"];
+                                      String locations=location!=null?location:isTeacher["Location"];
 
                                       String date=_dateController.text!= null?_dateController.text:isTeacher["BirthDate"];
 
 
                                       // Teacher newTeacher = Teacher(email, "", "", _fullname.text, _dateController.text, _phoneNumber.text, _Location.text, [], "",imageUrl);
-                                      Map<String,dynamic> data ={"FullName":fullname,"PhoneNumber":phonenumber,"Location":location,"BirthDate":date};
+                                      Map<String,dynamic> data ={"FullName":fullname,"PhoneNumber":phonenumber,"Location":locations,"BirthDate":date};
                                       await updateTeacherDetails(data,userId);
 
                                       Navigator.of(context).pushReplacement(SlideRightRoute(
@@ -362,18 +357,18 @@ class EditProfile_For_Teacher_state extends State<EditProfile_For_Teacher> {
       });
     }
   }
-
-  Future<void> _getFromCamera() async {
-    PickedFile pickedFile = await ImagePicker().getImage(
-      source: ImageSource.camera,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
-    if (pickedFile != null) {
-      setState(() {
-        imageFile = File(pickedFile.path);
-      });
-    }
-  }
+  //
+  // Future<void> _getFromCamera() async {
+  //   PickedFile pickedFile = await ImagePicker().getImage(
+  //     source: ImageSource.camera,
+  //     maxWidth: 1800,
+  //     maxHeight: 1800,
+  //   );
+  //   if (pickedFile != null) {
+  //     setState(() {
+  //       imageFile = File(pickedFile.path);
+  //     });
+  //   }
+  // }
 
 }

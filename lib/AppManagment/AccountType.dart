@@ -1,5 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/Sign_Up_Student.dart';
@@ -15,16 +14,22 @@ import 'package:teach_me/routes/pageRouter.dart';
 import 'Sign_Up_Teacher.dart';
 import 'sign_in.dart';
 
+// ignore: must_be_immutable
 class AccountType extends StatelessWidget {
 
-  final GoogleSignInAccount userObj;
-  final _auth=FirebaseAuth.instance;
+  GoogleSignIn googleSignIn;
+  final auth;
+  GoogleSignInAccount userObj;
   Student s;
 
-   AccountType({Key key, this.userObj}) : super(key: key);
+
+   AccountType({Key key, this.googleSignIn,this.userObj,this.auth}) : super(key: key);
 
 
   Widget build(BuildContext context) {
+
+
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -70,9 +75,18 @@ class AccountType extends StatelessWidget {
                         icon: const Icon(Icons.arrow_back),
                         iconSize: 50,
                         alignment: Alignment.topLeft,
-                        onPressed: () {
+                        onPressed: () async{
+                          if (this.googleSignIn.currentUser!=null){
+                            await this.googleSignIn.signOut();
+
+
+                          }else if (this.auth.currentUser != null){
+
+                            await auth.signOut();
+
+                          }
                           Navigator.of(context).pushReplacement(SlideRightRoute(
-                              page:sign_in_user()
+                              page:SignInUser()
                           ));
                         }
                     ),
@@ -115,23 +129,23 @@ class AccountType extends StatelessWidget {
                                 onPressed: () async{
 
 
-                                  CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
-                                  if (userObj ==null){
+                                  CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
+                                  if (googleSignIn.currentUser ==null){
                                     Navigator.of(context).pushReplacement(SlideRightRoute(
-                                        page: Sign_Up_Teacher(userObj: userObj,)
+                                        page: SignUpTeacher(userObj: userObj,auth: this.auth,)
 
                                     ));
                                   }else{
 
-                                    DocumentSnapshot isTeacher = await Teachers.doc("${this.userObj.id}").get();
+                                    DocumentSnapshot isTeacher = await teachers.doc("${this.userObj.id}").get();
                                     if (isTeacher.exists){
                                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                                          page: Teacher_Homepage(isTeacher,s,"","")
+                                          page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn)
 
                                       ));
                                     }else{
                                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                                          page: Sign_Up_Teacher(userObj: userObj,)
+                                          page: SignUpTeacher(userObj: userObj,)
 
                                       ));
                                     }
@@ -171,13 +185,13 @@ class AccountType extends StatelessWidget {
                                     String fullname=userObj.displayName;
                                     Student student= Student(email, "password", "verifyPassword", fullname, "birthDate", "phoneNumber", "location",true);
                                     Navigator.of(context).pushReplacement(SlideRightRoute(
-                                        page: StudentActivity(student)
+                                        page: StudentActivity(student,googleSignIn)
 
                                     ));
                                   }else{
-                                    Student student= Student(_auth.currentUser.email, "password", "verifyPassword", "userObj.displayName", "birthDate", "phoneNumber", "location",true);
+                                    Student student= Student(this.auth.currentUser.email, "password", "verifyPassword", "userObj.displayName", "birthDate", "phoneNumber", "location",true);
                                     Navigator.of(context).pushReplacement(SlideRightRoute(
-                                        page: Sign_Up_Student(student:student)
+                                        page: SignUpStudent(student:student)
 
                                     ));
                                   }

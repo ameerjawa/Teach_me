@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_in.dart';
 
 
-class page1 extends StatelessWidget  {
+class Page1 extends StatelessWidget  {
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -44,7 +44,7 @@ class page1 extends StatelessWidget  {
             SizedBox(height: 30),
 
              SizedBox(height: 20.0,),
-            FlatButton(
+            TextButton(
               onPressed: () {
 
 
@@ -54,10 +54,10 @@ class page1 extends StatelessWidget  {
                 style: TextStyle(color: Colors.black, fontSize: 18.0),
               ),
             ),SizedBox(height: 20.0,),
-            FlatButton(
+            TextButton(
               onPressed: () {
                  Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                   builder: (context) => sign_in_user()
+                   builder: (context) => SignInUser()
 
                 ));
 

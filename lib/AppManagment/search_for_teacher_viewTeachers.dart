@@ -1,13 +1,12 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_StudentActivity.dart';
-import 'package:teach_me/DBManagment/firebase.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/routes/pageRouter.dart';
@@ -15,27 +14,31 @@ import 'search_for_teacher_StudentActivity.dart';
 
 
 
-class search_for_teacher_viewTeachers extends StatefulWidget {
-  @override
+// ignore: must_be_immutable
+class SearchForTeacherViewTeachers extends StatefulWidget {
   String selectedSubject;
   String selectedLocation;
+  GoogleSignIn googleSignIn;
   Student s;
   List<Teacher> teachers;
-  search_for_teacher_viewTeachers({ @required this.selectedSubject,@required this.selectedLocation,this.s,this.teachers}) : super();
-  _SearchforTeacherState createState() => _SearchforTeacherState(selectedSubject:this.selectedSubject,selectedLocation: this.selectedLocation ,s:this.s,teachers: this.teachers);
+  final auth;
+  SearchForTeacherViewTeachers({ @required this.selectedSubject,@required this.selectedLocation,this.s,this.teachers,this.googleSignIn,this.auth}) : super();
+  SearchForTeacherState createState() => SearchForTeacherState(selectedSubject:this.selectedSubject,selectedLocation: this.selectedLocation ,s:this.s,teachers: this.teachers);
 
 
 }
 
-class _SearchforTeacherState extends State<search_for_teacher_viewTeachers> {
-  bool showvalue=false;
+class SearchForTeacherState extends State<SearchForTeacherViewTeachers> {
+  bool showValue=false;
   String selectedSubject;
   String selectedLocation;
   Student s;
   List<Teacher> teachers;
+  GoogleSignIn googleSignIn;
   List<Teacher> teachersResult;
+  final auth;
 
-  _SearchforTeacherState({ @required this.selectedSubject,@required this.selectedLocation,this.s,this.teachers}) : super();
+  SearchForTeacherState({ @required this.selectedSubject,@required this.selectedLocation,this.s,this.teachers,this.googleSignIn,this.auth}) : super();
 
 
   Widget build(BuildContext context)  {
@@ -92,7 +95,7 @@ class _SearchforTeacherState extends State<search_for_teacher_viewTeachers> {
                               alignment: Alignment.topLeft,
                               onPressed: () {
                                 Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                    builder: (context) => search_for_teacher_StudentActivity(this.s)
+                                    builder: (context) => SearchForTeacherStudentActivity(this.s,this.googleSignIn,this.auth)
 
                                 ));
                               }
@@ -129,7 +132,7 @@ class _SearchforTeacherState extends State<search_for_teacher_viewTeachers> {
                            fontSize: 50,
                            fontWeight: FontWeight.bold
                          ),),
-                         Text("Here You Can Find Very Professional ${selectedSubject} Teachers"),
+                         Text("Here You Can Find Very Professional $selectedSubject Teachers"),
                        ],
                      ),
                    ),
@@ -155,7 +158,7 @@ class _SearchforTeacherState extends State<search_for_teacher_viewTeachers> {
 ,
 
 
-                 SingleChildScrollView(child: Container(height:500,child: TeachersList(this.selectedSubject,this.selectedLocation,this.s)))
+                 SingleChildScrollView(child: Container(height:500,child: TeachersList(this.selectedSubject,this.selectedLocation,this.s,this.auth,this.googleSignIn)))
 
 
 
@@ -174,16 +177,19 @@ class _SearchforTeacherState extends State<search_for_teacher_viewTeachers> {
 
 
 
+// ignore: must_be_immutable
 class TeachersList extends StatefulWidget  {
 
   String subject;
   String location;
   Student student;
+  final auth;
+  GoogleSignIn googleSignIn;
 
-  TeachersList(this.subject,this.location,this.student);
+  TeachersList(this.subject,this.location,this.student,this.auth,this.googleSignIn);
 
   @override
-  _TeachersListState createState() => _TeachersListState(student,subject,location);
+  _TeachersListState createState() => _TeachersListState(student,subject,location,this.auth,this.googleSignIn);
 }
 
 class _TeachersListState extends State<TeachersList> {
@@ -192,7 +198,10 @@ class _TeachersListState extends State<TeachersList> {
   String subject;
   String location;
   Student student;
-  _TeachersListState(this.student,this.subject,this.location);
+  GoogleSignIn googleSignIn;
+  final auth;
+
+  _TeachersListState(this.student,this.subject,this.location,this.auth,this.googleSignIn);
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -210,7 +219,7 @@ class _TeachersListState extends State<TeachersList> {
             return new ListTile(  contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                 onTap: (){
                   Navigator.of(context).pushReplacement(SlideRightRoute(
-                      page: Teacher_Homepage(document,this.student,this.subject,this.location)
+                      page: TeacherHomepage(document,this.student,this.subject,this.location,this.auth,this.googleSignIn)
                   ));
                 },
                 leading: Container(

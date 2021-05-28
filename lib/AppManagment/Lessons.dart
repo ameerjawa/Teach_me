@@ -1,13 +1,11 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:teach_me/AppManagment/page1.dart';
-import 'package:teach_me/AppManagment/sign_in.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
-import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
 import 'AddNewLesson.dart';
@@ -16,16 +14,19 @@ import 'Teacher_Homepage.dart';
 
 
 
+// ignore: must_be_immutable
 class Lessons extends StatefulWidget {
   Student student;
   String location;
   String subject;
+  final auth;
+  GoogleSignIn googleSignIn;
 
   DocumentSnapshot isTeacher;
-  Lessons(this.isTeacher);
+  Lessons(this.isTeacher,this.auth,this.googleSignIn);
 
   @override
-  LessonsDetails createState() => LessonsDetails(isTeacher);
+  LessonsDetails createState() => LessonsDetails(isTeacher,this.auth,this.googleSignIn);
 }
 
 class LessonsDetails extends State<Lessons> {
@@ -36,11 +37,12 @@ class LessonsDetails extends State<Lessons> {
 
   bool showvalue=false;
   DocumentSnapshot isTeacher;
+  GoogleSignIn googleSignIn;
 
-  final _auth = FirebaseAuth.instance;
+  final auth ;
 
 
-  LessonsDetails(this.isTeacher);
+  LessonsDetails(this.isTeacher,this.auth,this.googleSignIn);
 
 
 
@@ -50,17 +52,17 @@ class LessonsDetails extends State<Lessons> {
 
   Widget build(BuildContext context) {
 
-    String FullName= this.isTeacher.get(FieldPath(["FullName"]));
-    String Location= this.isTeacher.get(FieldPath(["Location"]));
-    String PhoneNumber= this.isTeacher.get(FieldPath(["PhoneNumber"]));
-    String Price= this.isTeacher.get(FieldPath(["Price"]));
+    // String FullName= this.isTeacher.get(FieldPath(["FullName"]));
+    // String Location= this.isTeacher.get(FieldPath(["Location"]));
+    // String PhoneNumber= this.isTeacher.get(FieldPath(["PhoneNumber"]));
+    // //String Price= this.isTeacher.get(FieldPath(["Price"]));
 
 
 
 
 
 
-    Teacher t = new Teacher("email", "password", "verifyPassword", FullName, "birthDate", PhoneNumber, Location, [], "detailsOnExperience","");
+    //Teacher t = new Teacher("email", "password", "verifyPassword", FullName, "birthDate", PhoneNumber, Location, [], "detailsOnExperience","");
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -107,7 +109,7 @@ class LessonsDetails extends State<Lessons> {
                             iconSize: 50,
                             onPressed: () {
                               Navigator.of(context).pushReplacement(SlideRightRoute(
-                                 page:Teacher_Homepage(isTeacher, student, subject, location)
+                                 page:TeacherHomepage(isTeacher, student, subject, location,this.auth,this.googleSignIn)
                               ));
 
                             }

@@ -1,39 +1,44 @@
-import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
-import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
-import '../my_flutter_app_icons.dart';
 
 
 
 
 
-class search_for_teacher_StudentActivity extends StatefulWidget {
+// ignore: must_be_immutable
+class SearchForTeacherStudentActivity extends StatefulWidget {
   Student student;
+  GoogleSignIn googleSignIn;
+  final auth;
 
-  search_for_teacher_StudentActivity(this.student);
+
+  SearchForTeacherStudentActivity(this.student,this.googleSignIn,this.auth);
   @override
-  _SearchforTeacherState createState() => _SearchforTeacherState(student);
+  SearchForTeacherState createState() => SearchForTeacherState(student,this.googleSignIn,this.auth);
 }
 
-class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
+class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
   bool showvalue=false;
   var controler = new TextEditingController();
   var controlersecond =new TextEditingController();
   List subjects = ["all","English","Math","maba","biology","physic","Hebrew","arabic"];
-  List Locations = ["all","Haifa","TelAviv","faradis","BatYam"];
+  List locations = ["all","Haifa","TelAviv","faradis","BatYam"];
   static String selectedSubject;
   String _selectedLocation;
+  final auth;
 
   Student student;
+  GoogleSignIn googleSignIn;
 
-  _SearchforTeacherState(this.student);
+
+  SearchForTeacherState(this.student,this.googleSignIn,this.auth);
 
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -81,7 +86,7 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                               alignment: Alignment.topLeft,
                               onPressed: () {
                                 Navigator.of(context).pushReplacement(SlideRightRoute(
-                                   page: StudentActivity(this.student)
+                                   page: StudentActivity(this.student,this.googleSignIn)
 
                                 ));
 
@@ -150,7 +155,7 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                                   }
 
                                   // The logic to find out which ones should appear
-                                  return Locations.where((suggestion) => suggestion
+                                  return locations.where((suggestion) => suggestion
                                       .toLowerCase()
                                       .startsWith(value.text.toLowerCase()));
                                 },
@@ -214,7 +219,7 @@ class _SearchforTeacherState extends State<search_for_teacher_StudentActivity> {
                            // }
 
                           Navigator.of(context).pushReplacement(SlideRightRoute(
-                              page: search_for_teacher_viewTeachers(selectedSubject:selectedSubject,selectedLocation: _selectedLocation,s: student,)
+                              page: SearchForTeacherViewTeachers(auth:this.auth,selectedSubject:selectedSubject,selectedLocation: _selectedLocation,s: student,googleSignIn: this.googleSignIn,)
 
                           ));
                         }

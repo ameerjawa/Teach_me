@@ -1,50 +1,45 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:teach_me/AppManagment/AccountType.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:gender_selection/gender_selection.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:teach_me/AppManagment/AccountType.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 import 'file:///D:/ameer/teach_me/lib/DBManagment/firebase.dart';
 
 import 'TeacherlessionsDetails.dart';
-import 'sign_in.dart';
 
 
 
-class Sign_Up_Teacher extends StatefulWidget {
+class SignUpTeacher extends StatefulWidget {
  final  GoogleSignInAccount userObj;
+ final auth;
 
-  const Sign_Up_Teacher({Key key, this.userObj}) : super(key: key);
+  const SignUpTeacher({Key key, this.userObj,this.auth}) : super(key: key);
 
   @override
-  _Sign_Up_TeacherState createState() => _Sign_Up_TeacherState(this.userObj);
+  SignUpTeacherState createState() => SignUpTeacherState(this.userObj,this.auth);
 }
 
-class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
+class SignUpTeacherState extends State<SignUpTeacher> {
   File imageFile;
   final dateController = TextEditingController();
-  String TeacherFullName,PhoneNumber,Location,BirthDate;
+  String teacherFullName,phoneNumber,location,birthDate;
   final databaseReference = FirebaseDatabase.instance.reference();
-  CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
-  final _auth= FirebaseAuth.instance;
+  CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
+  final auth;
   bool isTeacher=true;
  final GoogleSignInAccount userObj;
   final _formKey = GlobalKey<FormState>();
 
 
-  _Sign_Up_TeacherState(this.userObj);
+  SignUpTeacherState(this.userObj,this.auth);
 
 
 
@@ -166,7 +161,7 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
                               keyboardType: TextInputType.emailAddress,
                               textAlign: TextAlign.center,
                               onChanged: (value) {
-                                  TeacherFullName =value;
+                                  teacherFullName =value;
                               },
                               decoration: InputDecoration(
                                 fillColor: Colors.white60,
@@ -197,7 +192,7 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
 
                               textAlign: TextAlign.center,
                               onChanged: (value) {
-                                PhoneNumber=value;
+                                phoneNumber=value;
                               },
                               decoration: InputDecoration(
                                 fillColor: Colors.white60,
@@ -227,7 +222,7 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
 
                               textAlign: TextAlign.center,
                               onChanged: (value) {
-                                Location = value;
+                                location = value;
                               },
                               decoration: InputDecoration(
                                 fillColor: Colors.white60,
@@ -306,50 +301,50 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
                                   alignment: Alignment.topLeft,
                                   onPressed: () async {
                                     if (_formKey.currentState.validate()) {
-                                      String userId = userObj == null ? _auth
+                                      String userId = userObj == null ? this.auth
                                           .currentUser.uid.toString() : userObj
                                           .id;
                                       String email = userObj == null
-                                          ? _auth.currentUser.email.toString()
+                                          ? this.auth.currentUser.email.toString()
                                           : userObj.email;
                                       if (imageFile != null) {
                                         String imageUrl = await uploadImagetofireStorage(
-                                            imageFile, TeacherFullName, userId);
+                                            imageFile, teacherFullName, userId);
                                         Teacher newTeacher = Teacher(
                                             email,
                                             "",
                                             "",
-                                            TeacherFullName,
+                                            teacherFullName,
                                             dateController.text,
-                                            PhoneNumber,
-                                            Location,
+                                            phoneNumber,
+                                            location,
                                             [],
                                             "",
                                             imageUrl);
-                                        await newTeacher.signUpASTeacher(
-                                            newTeacher, Teachers, userId);
+                                         newTeacher.signUpASTeacher(
+                                            newTeacher, teachers, userId);
                                         Navigator.of(context).pushReplacement(
                                             SlideRightRoute(
-                                                page: TeacherlessionsDetail(
-                                                  userObj: userObj,)
+                                                page: TeacherLessonDetail(
+                                                  userObj: this.userObj,auth: this.auth,)
                                             ));
                                       } else {
                                         Teacher newTeacher = Teacher(
                                             email,
                                             "",
                                             "",
-                                            TeacherFullName,
+                                            teacherFullName,
                                             dateController.text,
-                                            PhoneNumber,
-                                            Location,
+                                            phoneNumber,
+                                            location,
                                             [],
                                             "",
                                             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU");
-                                        await newTeacher.signUpASTeacher(
-                                            newTeacher, Teachers, userId);
+                                         newTeacher.signUpASTeacher(
+                                            newTeacher, teachers, userId);
                                         Navigator.of(context).pushReplacement(
                                             SlideRightRoute(
-                                                page: TeacherlessionsDetail(
+                                                page: TeacherLessonDetail(
                                                   userObj: userObj,)
                                             ));
                                       }
@@ -392,17 +387,17 @@ class _Sign_Up_TeacherState extends State<Sign_Up_Teacher> {
     }
   }
 
-  Future<void> _getFromCamera() async {
-    PickedFile pickedFile = await ImagePicker().getImage(
-      source: ImageSource.camera,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
-    if (pickedFile != null) {
-      setState(() {
-        imageFile = File(pickedFile.path);
-      });
-    }
-  }
+  // Future<void> _getFromCamera() async {
+  //   PickedFile pickedFile = await ImagePicker().getImage(
+  //     source: ImageSource.camera,
+  //     maxWidth: 1800,
+  //     maxHeight: 1800,
+  //   );
+  //   if (pickedFile != null) {
+  //     setState(() {
+  //       imageFile = File(pickedFile.path);
+  //     });
+  //   }
+  // }
 
 }

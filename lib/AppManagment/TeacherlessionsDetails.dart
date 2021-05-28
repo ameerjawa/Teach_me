@@ -7,25 +7,28 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
-import '../DBManagment/firebase.dart';
-import 'AccountType.dart';
 import 'Teacher_Homepage.dart';
 
-class TeacherlessionsDetail extends StatefulWidget {
+// ignore: must_be_immutable
+class TeacherLessonDetail extends StatefulWidget {
   DocumentSnapshot isTeacher;
   GoogleSignInAccount userObj;
+  GoogleSignIn googleSignin;
+  final auth;
 
-  TeacherlessionsDetail({Key key, this.isTeacher, this.userObj})
+  TeacherLessonDetail({Key key, this.isTeacher, this.userObj,this.auth,this.googleSignin})
       : super(key: key);
 
   @override
   TeacherlessionsDetails createState() =>
-      TeacherlessionsDetails(isTeacher, userObj);
+      TeacherlessionsDetails(this.isTeacher, this.userObj,this.auth,this.googleSignin);
 }
 
-class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
-  String Subjects, TitleSentence, MoreDetails, Price, _selectedsubject;
-  List subjects = [
+class TeacherlessionsDetails extends State<TeacherLessonDetail> {
+  String subjects, titleSentence, moreDetails, price, selectedSubject;
+  final auth;
+  GoogleSignIn googleSignin;
+  List subjectsList = [
     "English",
     "Math",
     "maba",
@@ -34,15 +37,15 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
     "hebrew",
     "arabic"
   ];
-  bool CanGo = false;
+  bool canGo = false;
   DocumentSnapshot isTeacher;
   GoogleSignInAccount userObj;
   final _formKey = GlobalKey<FormState>();
 
-  TeacherlessionsDetails(this.isTeacher, this.userObj);
+  TeacherlessionsDetails(this.isTeacher, this.userObj,this.auth,this.googleSignin);
 
   Widget build(BuildContext context) {
-    CollectionReference Teachers =
+    CollectionReference teachers =
         FirebaseFirestore.instance.collection("Teachers");
 
     // This method is rerun every time setState is called, for instance as done
@@ -133,13 +136,13 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                             }
 
                             // The logic to find out which ones should appear
-                            return subjects.where((suggestion) => suggestion
+                            return subjectsList.where((suggestion) => suggestion
                                 .toLowerCase()
                                 .startsWith(value.text.toLowerCase()));
                           },
                           onSelected: (value) {
                             setState(() {
-                              _selectedsubject = value;
+                              selectedSubject = value;
                             });
                           },
                         ),
@@ -160,7 +163,7 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                             keyboardType: TextInputType.emailAddress,
                             textAlign: TextAlign.center,
                             onChanged: (value) {
-                              TitleSentence = value;
+                              titleSentence = value;
                             },
                             decoration: InputDecoration(
                               fillColor: Colors.white60,
@@ -185,7 +188,7 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                               keyboardType: TextInputType.emailAddress,
                               textAlign: TextAlign.center,
                               onChanged: (value) {
-                                MoreDetails = value;
+                                moreDetails = value;
                               },
                               decoration: InputDecoration(
                                 contentPadding: new EdgeInsets.symmetric(
@@ -214,15 +217,15 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                                 children: [
                                   // ignore: deprecated_member_use
                                   FlatButton(
+
                                     onPressed: () {
-                                      color:
-                                      CanGo ? Colors.red : Colors.green;
+
                                       setState(() {
-                                        CanGo = !CanGo;
+                                        canGo = !canGo;
                                       });
                                     },
                                     child: Text('Can'),
-                                    color: CanGo ? Colors.red : Colors.green,
+                                    color: canGo ? Colors.red : Colors.green,
                                   ),
                                 ],
                               )),
@@ -243,7 +246,7 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                                     },
                                     textAlign: TextAlign.center,
                                     onChanged: (value) {
-                                      Price = value;
+                                      price = value;
                                     },
                                     decoration: InputDecoration(
                                       contentPadding: new EdgeInsets.symmetric(
@@ -272,18 +275,18 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                               TextButton(
                                   onPressed: () async {
                                     FirebaseAuth auth = FirebaseAuth.instance;
-                                    String UserId = userObj != null
+                                    String userId = userObj != null
                                         ? userObj.id
                                         : auth.currentUser != null
                                             ? auth.currentUser.uid.toString()
                                             : "";
                                     DocumentSnapshot isTeacher =
-                                        await Teachers.doc("${UserId}").get();
+                                        await teachers.doc("$userId").get();
                                     Student s;
                                     Navigator.of(context).pushReplacement(
                                         SlideRightRoute(
-                                            page: Teacher_Homepage(
-                                                isTeacher, s, "", "")));
+                                            page: TeacherHomepage(
+                                                isTeacher, s, "", "",this.auth,this.googleSignin)));
                                   },
                                   child: Text(
                                     'skip',
@@ -306,30 +309,30 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                                       // TODO submit
                                       FirebaseAuth auth = FirebaseAuth.instance;
 
-                                      String UserId = userObj != null
+                                      String userId = userObj != null
                                           ? userObj.id
                                           : auth.currentUser != null
                                               ? auth.currentUser.uid.toString()
                                               : "";
                                       print(
-                                          "yes im hererere #################${UserId}");
+                                          "yes im hererere #################$userId");
                                       DocumentSnapshot isTeacher =
-                                          await Teachers.doc("${UserId}").get();
+                                          await teachers.doc("$userId").get();
 
-                                      String selectedSubject =
-                                          _selectedsubject != ""
-                                              ? _selectedsubject
+                                       selectedSubject =
+                                          selectedSubject != ""
+                                              ? selectedSubject
                                               : isTeacher["subjects"];
-                                      String titleSentence = TitleSentence != ""
-                                          ? TitleSentence
+                                       titleSentence = titleSentence != ""
+                                          ? titleSentence
                                           : isTeacher["Title Sentence"];
 
-                                      String moreDetails = MoreDetails != ""
-                                          ? MoreDetails
+                                      moreDetails = moreDetails != ""
+                                          ? moreDetails
                                           : isTeacher["More"];
 
-                                      String price = Price != ""
-                                          ? Price
+                                      price = price != ""
+                                          ? price
                                           : isTeacher["Price"];
 
                                       Map<String, dynamic> data = {
@@ -337,17 +340,17 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
                                         "Title Sentence": titleSentence,
                                         "More": moreDetails,
                                         "Price": price,
-                                        "CanGo": CanGo
+                                        "CanGo": canGo
                                       };
 
-                                      await MoreTeacherDet(
-                                          data, Teachers, UserId);
+                                      await moreTeacherDet(
+                                          data, teachers, userId);
 
                                       Student s;
                                       Navigator.of(context).pushReplacement(
                                           SlideRightRoute(
-                                              page: Teacher_Homepage(
-                                                  isTeacher, s, "", "")));
+                                              page: TeacherHomepage(
+                                                  isTeacher, s, "", "",this.auth,this.googleSignin)));
                                     }
                                   }),
                               Text(
@@ -374,8 +377,8 @@ class TeacherlessionsDetails extends State<TeacherlessionsDetail> {
   }
 }
 
-Future<void> MoreTeacherDet(Map<String, dynamic> data,
-    CollectionReference collectionReference, String UserId) async {
-  collectionReference.doc(UserId).update(data);
+Future<void> moreTeacherDet(Map<String, dynamic> data,
+    CollectionReference collectionReference, String userId) async {
+  collectionReference.doc(userId).update(data);
   return;
 }

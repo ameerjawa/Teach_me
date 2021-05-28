@@ -14,30 +14,31 @@ import 'package:teach_me/routes/pageRouter.dart';
 
 import '../DBManagment/firebase.dart';
 
-class Sign_Up_Student extends StatefulWidget {
+class SignUpStudent extends StatefulWidget {
   final Student student;
 
-  const Sign_Up_Student({Key key, this.student}) : super(key: key);
+  const SignUpStudent({Key key, this.student}) : super(key: key);
 
   @override
-  _Sign_up_student createState() => _Sign_up_student(student);
+  SignUpStudentState createState() => SignUpStudentState(student);
 }
 
-class _Sign_up_student extends State<Sign_Up_Student> {
+class SignUpStudentState extends State<SignUpStudent> {
   bool isMale = true;
   final dateController = TextEditingController();
   String studentfullname, phonenumber, location, grade;
-  CollectionReference Students =
+  CollectionReference students =
       FirebaseFirestore.instance.collection("Students");
   final _auth = FirebaseAuth.instance;
   File image;
   bool isTeacher = false;
   String googlePhotoUrl;
+  GoogleSignIn googleSignIn;
   Student student;
-  List Locations = ["all", "Haifa", "TelAviv", "faradis", "BatYam"];
+  List locations = ["all", "Haifa", "TelAviv", "faradis", "BatYam"];
   final _formKey = GlobalKey<FormState>();
 
-  _Sign_up_student(this.student);
+  SignUpStudentState(this.student);
 
   Widget build(BuildContext context) {
     // if (this._userObj!=null){
@@ -207,7 +208,7 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                               }
 
                               // The logic to find out which ones should appear
-                              return Locations.where((suggestion) => suggestion
+                              return locations.where((suggestion) => suggestion
                                   .toLowerCase()
                                   .startsWith(value.text.toLowerCase()));
                             },
@@ -298,30 +299,40 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                                         child: Container(
                                             child: Row(
                                           children: [
-                                            TextButton(
-                                              onPressed: () {
-                                                color:
-                                                isMale
-                                                    ? Colors.green
-                                                    : Colors.blue;
-                                                setState(() {
-                                                  isMale = true;
-                                                });
-                                              },
-                                              child: Text('Male'),
-                                            ),
-                                            TextButton(
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  color:
+                                                  isMale
+                                                      ? Colors.green
+                                                      : Colors.blue
+                                              ),
+                                              child: TextButton(
                                                 onPressed: () {
+
+                                                  setState(() {
+                                                    isMale = true;
+                                                  });
+                                                },
+                                                child: Text('Male'),
+                                              ),
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
                                                   color:
                                                   isMale
                                                       ? Colors.blue
-                                                      : Colors.green;
+                                                      : Colors.green
+                                              ),
+                                              child: TextButton(
+                                                  onPressed: () {
 
-                                                  setState(() {
-                                                    isMale = false;
-                                                  });
-                                                },
-                                                child: Text('Female'))
+
+                                                    setState(() {
+                                                      isMale = false;
+                                                    });
+                                                  },
+                                                  child: Text('Female')),
+                                            )
                                           ],
                                         )),
                                       ),
@@ -356,8 +367,8 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                                   phonenumber,
                                   location,
                                   isMale);
-                              await newStudent.signUpASStudent(
-                                  newStudent, Students, userId);
+                               newStudent.signUpASStudent(
+                                  newStudent, students, userId);
 
                               if (image != null) {
                                 uploadImagetofireStorage(
@@ -365,7 +376,7 @@ class _Sign_up_student extends State<Sign_Up_Student> {
                               }
                               Navigator.of(context).pushReplacement(
                                   SlideRightRoute(
-                                      page: StudentActivity(newStudent,)));
+                                      page: StudentActivity(newStudent,googleSignIn)));
                             }
                           }),
                     )

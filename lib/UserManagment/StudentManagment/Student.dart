@@ -2,7 +2,6 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
 import 'file:///D:/ameer/teach_me/lib/UserManagment/TeacherManagment/TeacherProfiles.dart';
 
@@ -15,7 +14,6 @@ class Student extends Userbg implements TeacherProfiles{
   int grade;
 
   Student(String email, String password, String verifyPassword, String fullName, String birthDate, String phoneNumber, String location, this.isMale) : super(email, password, verifyPassword, fullName, birthDate, phoneNumber, location);
-
 
 
 
@@ -36,15 +34,14 @@ class Student extends Userbg implements TeacherProfiles{
 
   //------------------------
   // Search for Teacher
-  @override
- Future<List<Teacher>> getTeacherDetails(String subject, String location) async  {
-
-
-    // return  await getTeachersDetailsFromFireBase(subject, location);
-  //
-
-
-  }
+ // Future<List<Teacher>> getTeacherDetails(String subject, String location) async  {
+ //
+ //
+ //    // return  await getTeachersDetailsFromFireBase(subject, location);
+ //  //
+ //
+ //
+ //  }
 
 
 

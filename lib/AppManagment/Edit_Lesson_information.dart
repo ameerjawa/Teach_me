@@ -1,37 +1,39 @@
 
 // ignore: camel_case_types
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
-import '../DBManagment/firebase.dart';
-import 'AccountType.dart';
 import 'Teacher_Homepage.dart';
 
+// ignore: must_be_immutable
 class EditLessonInformation extends StatefulWidget {
   DocumentSnapshot isTeacher;
-  EditLessonInformation({Key key,this.isTeacher}) : super(key: key);
+  final auth;
+  GoogleSignIn googleSignIn;
+  EditLessonInformation({Key key,this.isTeacher,this.auth,this.googleSignIn}) : super(key: key);
   @override
-  EditLessonInformationstate createState() => EditLessonInformationstate(isTeacher);
+  EditLessonInformationState createState() => EditLessonInformationState(isTeacher,this.auth,this.googleSignIn);
 }
 
-class EditLessonInformationstate extends State<EditLessonInformation> {
-  String Subjects,TitleSentence,MoreDetails,Price,_selectedsubject;
-  List subjects = ["English","Math","maba","biology","physic","hebrew","arabic"];
-  bool CanGo=false;
+class EditLessonInformationState extends State<EditLessonInformation> {
+  String subjects,titleSentence,moreDetails,price,selectedSubject;
+  List subjectsLists = ["English","Math","maba","biology","physic","hebrew","arabic"];
+  bool canGo=false;
   DocumentSnapshot isTeacher;
+  GoogleSignIn googleSignIn;
+  final auth;
 
 
-  EditLessonInformationstate(this.isTeacher);
+  EditLessonInformationState(this.isTeacher,this.auth,this.googleSignIn);
 
 
 
   Widget build(BuildContext context) {
-    CollectionReference Teachers = FirebaseFirestore.instance.collection("Teachers");
+    CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
 
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -123,13 +125,13 @@ class EditLessonInformationstate extends State<EditLessonInformation> {
                             }
 
                             // The logic to find out which ones should appear
-                            return subjects.where((suggestion) => suggestion
+                            return subjectsLists.where((suggestion) => suggestion
                                 .toLowerCase()
                                 .startsWith(value.text.toLowerCase()));
                           },
                           onSelected: (value) {
                             setState(() {
-                              _selectedsubject = value;
+                              selectedSubject = value;
                             });
                           },
                         ),
@@ -140,7 +142,7 @@ class EditLessonInformationstate extends State<EditLessonInformation> {
                         keyboardType: TextInputType.emailAddress,
                         textAlign: TextAlign.center,
                         onChanged: (value) {
-                          TitleSentence=value;
+                          titleSentence=value;
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.white60,
@@ -170,7 +172,7 @@ class EditLessonInformationstate extends State<EditLessonInformation> {
                           keyboardType: TextInputType.emailAddress,
                           textAlign: TextAlign.center,
                           onChanged: (value) {
-                            MoreDetails=value;
+                            moreDetails=value;
                           },
                           decoration: InputDecoration(
                             contentPadding: new EdgeInsets.symmetric(vertical: 75.0, horizontal: 10.0),
@@ -213,7 +215,7 @@ class EditLessonInformationstate extends State<EditLessonInformation> {
                                       FlatButton(onPressed: (){
 
                                         setState(() {
-                                          CanGo=!CanGo;
+                                          canGo=!canGo;
 
                                         });
 
@@ -222,7 +224,7 @@ class EditLessonInformationstate extends State<EditLessonInformation> {
                                       }, child: Text('Can',style:TextStyle(
                                         color: Colors.white70
                                       )),
-                                        color: CanGo ? Colors.green : Colors.red,),
+                                        color: canGo ? Colors.green : Colors.red,),
 
 
                                     ],
@@ -242,7 +244,7 @@ class EditLessonInformationstate extends State<EditLessonInformation> {
                                 child:TextFormField(
                                   textAlign: TextAlign.center,
                                   onChanged: (value) {
-                                    Price=value;
+                                    price=value;
                                   },
                                   decoration: InputDecoration(
                                     contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
@@ -274,7 +276,7 @@ class EditLessonInformationstate extends State<EditLessonInformation> {
 
                                   Student s;
                                   Navigator.of(context).pushReplacement(SlideRightRoute(
-                                      page: Teacher_Homepage(isTeacher,s,"","")
+                                      page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn)
                                   ));
                                 }, child:Text(
                                   'skip',
@@ -294,28 +296,28 @@ class EditLessonInformationstate extends State<EditLessonInformation> {
                                     alignment: Alignment.topLeft,
                                     onPressed: () async {
 
-                                      String UserId =this.isTeacher.id;
-                                      DocumentSnapshot isTeacher = await Teachers.doc("${UserId}").get();
+                                      String userId =this.isTeacher.id;
+                                      DocumentSnapshot isTeacher = await teachers.doc("$userId").get();
 
-                                      String selectedSubject=_selectedsubject!=""?_selectedsubject:isTeacher["subjects"];
-                                      String titleSentence=TitleSentence != ""?TitleSentence:isTeacher["Title Sentence"];
+                                     selectedSubject=selectedSubject!=""?selectedSubject:isTeacher["subjects"];
+                                      titleSentence=titleSentence != ""?titleSentence:isTeacher["Title Sentence"];
 
-                                      String moreDetails=MoreDetails != null?MoreDetails:isTeacher["More"];
-                                      print("ameer can go :::::${CanGo}");
-                                      CanGo = CanGo!=null?CanGo:isTeacher["CanGo"];
+                                       moreDetails=moreDetails != null?moreDetails:isTeacher["More"];
+                                      print("ameer can go :::::$canGo");
+                                      canGo = canGo!=null?canGo:isTeacher["CanGo"];
 
-                                      String price=Price != ""?Price:isTeacher["Price"];
+                                      price=price != ""?price:isTeacher["Price"];
 
-                                      Map <String,dynamic> data = {"subjects":selectedSubject,"CanGo":CanGo,"Title Sentence":titleSentence,"More":moreDetails,"Price":price,"CanGo":CanGo} ;
+                                      Map <String,dynamic> data = {"subjects":selectedSubject,"Title Sentence":titleSentence,"More":moreDetails,"Price":price,"CanGo":canGo} ;
 
 
 
-                                      await MoreTeacherDet(data,Teachers,UserId);
+                                      await moreTeacherDet(data,teachers,userId);
 
-                                      isTeacher = await   Teachers.doc(this.isTeacher.id).get();
+                                      isTeacher = await   teachers.doc(this.isTeacher.id).get();
                                       Student s;
                                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                                          page: Teacher_Homepage(isTeacher,s,"","")
+                                          page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn)
                                       ));
 
 
@@ -353,8 +355,8 @@ class EditLessonInformationstate extends State<EditLessonInformation> {
 }
 
 
-Future<void> MoreTeacherDet(Map <String,dynamic> data,CollectionReference collectionReference,String UserId)async{
-  collectionReference.doc(UserId).update(data);
+Future<void> moreTeacherDet(Map <String,dynamic> data,CollectionReference collectionReference,String userId)async{
+  collectionReference.doc(userId).update(data);
   return;
 
 }

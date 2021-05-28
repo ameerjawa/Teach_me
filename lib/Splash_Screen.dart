@@ -6,23 +6,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teach_me/AppManagment/sign_in.dart';
 import 'package:teach_me/routes/pageRouter.dart';
-import 'AppManagment/sign_up_user.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 
 
 class Splash extends StatefulWidget {
   @override
-  splashScreen createState() => splashScreen();
+  SplashScreen createState() => SplashScreen();
 }
-class splashScreen extends State<Splash>  {
+
+class SplashScreen extends State<Splash>  {
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     Timer(Duration(seconds: 3),()=>  Navigator.of(context).pushReplacement(ScaleRoute(
-       page: sign_in_user()
+       page: SignInUser()
     )));
   }
 

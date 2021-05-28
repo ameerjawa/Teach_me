@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:teach_me/UserManagment/Userbg.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
-// ignore: camel_case_types
+// ignore: camel_case_types, must_be_immutable
 class Sign_Up_User extends StatelessWidget {
   String email, password, verifypassword;
   final _formKey = GlobalKey<FormState>();
@@ -42,6 +42,7 @@ class Sign_Up_User extends StatelessWidget {
             // horizontal).
 
             children: <Widget>[
+              SizedBox(height: 30,),
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -50,7 +51,7 @@ class Sign_Up_User extends StatelessWidget {
                         iconSize: 50,
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
-                              SlideRightRoute(page: sign_in_user()));
+                              SlideRightRoute(page: SignInUser()));
                         })
                   ]),
               Container(
@@ -178,7 +179,7 @@ class Sign_Up_User extends StatelessWidget {
                   if (_formKey.currentState.validate()) {
                     Userbg user = Userbg(
                         email, password, verifypassword, "", "", "", "");
-                    await user.signUp(context);
+                     user.signUp(context,_auth);
                   }
                 },
 
@@ -186,7 +187,9 @@ class Sign_Up_User extends StatelessWidget {
                   'sign up',
                   style: TextStyle(fontSize: 20),
                 ),
+
               ),
+              SizedBox(height: 220,)
             ],
           ),
         ),

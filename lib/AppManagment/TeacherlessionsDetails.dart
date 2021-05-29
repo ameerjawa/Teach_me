@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:teach_me/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
@@ -57,7 +58,10 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(color: Colors.blue.shade200),
+        height: MediaQuery.of(context).size.height,
+        width:  MediaQuery.of(context).size.width,
+
+        decoration: MainBoxDecorationStyle,
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
 
@@ -93,6 +97,8 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                           Text(
                             'TeachMe',
                             style: TextStyle(
+                                fontFamily: 'Kaushan',
+
                                 fontWeight: FontWeight.bold,
                                 fontSize: 30,
                                 color: Colors.white),
@@ -172,12 +178,7 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                   borderRadius:
                                       new BorderRadius.circular(15.0)),
                               hintText: 'Enter a Title Sentence',
-                              hintStyle: TextStyle(
-                                color: const Color(0xCB101010),
-                                fontSize: null,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              ),
+                              hintStyle: InputTextStyle,
                             ),
                           ),
                           SizedBox(
@@ -199,12 +200,7 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                     borderRadius:
                                         new BorderRadius.circular(15.0)),
                                 hintText: 'More About you',
-                                hintStyle: TextStyle(
-                                  color: const Color(0xCB101010),
-                                  fontSize: null,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                ),
+                                hintStyle: InputTextStyle,
                               ),
                             ),
                           ),
@@ -257,110 +253,106 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                           borderRadius:
                                               new BorderRadius.circular(15.0)),
                                       hintText: 'Price',
-                                      hintStyle: TextStyle(
-                                        color: const Color(0xCB101010),
-                                        fontSize: null,
-                                        fontWeight: FontWeight.w700,
-                                        fontStyle: FontStyle.normal,
-                                      ),
+                                      hintStyle: InputTextStyle,
                                     ),
                                   )),
                               SizedBox(
                                 width: 30,
                               ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              TextButton(
-                                  onPressed: () async {
-                                    FirebaseAuth auth = FirebaseAuth.instance;
-                                    String userId = userObj != null
-                                        ? userObj.id
-                                        : auth.currentUser != null
-                                            ? auth.currentUser.uid.toString()
-                                            : "";
-                                    DocumentSnapshot isTeacher =
-                                        await teachers.doc("$userId").get();
-                                    Student s;
-                                    Navigator.of(context).pushReplacement(
-                                        SlideRightRoute(
-                                            page: TeacherHomepage(
-                                                isTeacher, s, "", "",this.auth,this.googleSignin)));
-                                  },
-                                  child: Text(
-                                    'skip',
-                                    textAlign: TextAlign.center,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
-                                  ))
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              IconButton(
-                                  icon: const Icon(Icons.arrow_forward),
-                                  iconSize: 50,
-                                  alignment: Alignment.topLeft,
-                                  onPressed: () async {
-                                    if (_formKey.currentState.validate()) {
-                                      // TODO submit
-                                      FirebaseAuth auth = FirebaseAuth.instance;
+                              Column(
+                                children: [
+                                  IconButton(
+                                      icon: const Icon(Icons.arrow_forward),
+                                      iconSize: 50,
+                                      alignment: Alignment.topLeft,
+                                      onPressed: () async {
+                                        if (_formKey.currentState.validate()) {
+                                          // TODO submit
+                                          FirebaseAuth auth = FirebaseAuth.instance;
 
-                                      String userId = userObj != null
-                                          ? userObj.id
-                                          : auth.currentUser != null
+                                          String userId = userObj != null
+                                              ? userObj.id
+                                              : auth.currentUser != null
                                               ? auth.currentUser.uid.toString()
                                               : "";
-                                      print(
-                                          "yes im hererere #################$userId");
-                                      DocumentSnapshot isTeacher =
+                                          print(
+                                              "yes im hererere #################$userId");
+                                          DocumentSnapshot isTeacher =
                                           await teachers.doc("$userId").get();
 
-                                       selectedSubject =
+                                          selectedSubject =
                                           selectedSubject != ""
                                               ? selectedSubject
                                               : isTeacher["subjects"];
-                                       titleSentence = titleSentence != ""
-                                          ? titleSentence
-                                          : isTeacher["Title Sentence"];
+                                          titleSentence = titleSentence != ""
+                                              ? titleSentence
+                                              : isTeacher["Title Sentence"];
 
-                                      moreDetails = moreDetails != ""
-                                          ? moreDetails
-                                          : isTeacher["More"];
+                                          moreDetails = moreDetails != ""
+                                              ? moreDetails
+                                              : isTeacher["More"];
 
-                                      price = price != ""
-                                          ? price
-                                          : isTeacher["Price"];
+                                          price = price != ""
+                                              ? price
+                                              : isTeacher["Price"];
 
-                                      Map<String, dynamic> data = {
-                                        "subjects": selectedSubject,
-                                        "Title Sentence": titleSentence,
-                                        "More": moreDetails,
-                                        "Price": price,
-                                        "CanGo": canGo
-                                      };
+                                          Map<String, dynamic> data = {
+                                            "subjects": selectedSubject,
+                                            "Title Sentence": titleSentence,
+                                            "More": moreDetails,
+                                            "Price": price,
+                                            "CanGo": canGo
+                                          };
 
-                                      await moreTeacherDet(
-                                          data, teachers, userId);
+                                          await moreTeacherDet(
+                                              data, teachers, userId);
 
-                                      Student s;
-                                      Navigator.of(context).pushReplacement(
-                                          SlideRightRoute(
-                                              page: TeacherHomepage(
-                                                  isTeacher, s, "", "",this.auth,this.googleSignin)));
-                                    }
-                                  }),
-                              Text(
-                                'Next',
-                                textAlign: TextAlign.center,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              )
+                                          Student s;
+                                          Navigator.of(context).pushReplacement(
+                                              SlideRightRoute(
+                                                  page: TeacherHomepage(
+                                                      isTeacher, s, "", "",this.auth,this.googleSignin)));
+                                        }
+                                      }),
+                                  Text(
+                                    'Next',
+                                    textAlign: TextAlign.center,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              ),
                             ],
                           ),
+                          // Column(
+                          //   children: [
+                          //     // TextButton(
+                          //     //     onPressed: () async {
+                          //     //       FirebaseAuth auth = FirebaseAuth.instance;
+                          //     //       String userId = userObj != null
+                          //     //           ? userObj.id
+                          //     //           : auth.currentUser != null
+                          //     //               ? auth.currentUser.uid.toString()
+                          //     //               : "";
+                          //     //       DocumentSnapshot isTeacher =
+                          //     //           await teachers.doc("$userId").get();
+                          //     //       Student s;
+                          //     //       Navigator.of(context).pushReplacement(
+                          //     //           SlideRightRoute(
+                          //     //               page: TeacherHomepage(
+                          //     //                   isTeacher, s, "", "",this.auth,this.googleSignin)));
+                          //     //     },
+                          //     //     child: Text(
+                          //     //       'skip',
+                          //     //       textAlign: TextAlign.center,
+                          //     //       overflow: TextOverflow.ellipsis,
+                          //     //       style: TextStyle(
+                          //     //           fontWeight: FontWeight.bold,
+                          //     //           fontSize: 20),
+                          //     //     ))
+                          //   ],
+                          // ),
+
                         ]),
                       )
                     ],

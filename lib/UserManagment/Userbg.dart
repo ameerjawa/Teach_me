@@ -5,7 +5,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:teach_me/AppManagment/AccountType.dart';
 
 
 
@@ -25,15 +24,16 @@ class Userbg{
 
   void signUp(BuildContext context,final auth)async {
     try{
-      if (this.password == this.verifyPassword){
-        final newUser = await  auth.createUserWithEmailAndPassword(email: this.email, password: this.password);
-        if(newUser != null){
 
-          Navigator.of(context).pushReplacement(CupertinoPageRoute(
-              builder: (context) => AccountType(auth: auth,)
-          ));
-        }
-      }
+        // final newUser = await
+        //
+        // if(newUser != null){
+        //
+        //   Navigator.of(context).pushReplacement(CupertinoPageRoute(
+        //       builder: (context) => AccountType(auth: auth,)
+        //   ));
+        // }
+
 
     }
     catch(e){

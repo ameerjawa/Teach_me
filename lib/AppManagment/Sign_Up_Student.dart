@@ -9,6 +9,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:teach_me/AppManagment/AccountType.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
+import 'package:teach_me/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
@@ -54,7 +55,10 @@ class SignUpStudentState extends State<SignUpStudent> {
     // than having to individually change instances of widgets.
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(color: Colors.blue.shade200),
+        height: MediaQuery.of(context).size.height,
+        width:  MediaQuery.of(context).size.width,
+
+        decoration: MainBoxDecorationStyle,
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
 
@@ -106,6 +110,8 @@ class SignUpStudentState extends State<SignUpStudent> {
                               Text(
                                 'TeachMe',
                                 style: TextStyle(
+                                    fontFamily: 'Kaushan',
+
                                     fontWeight: FontWeight.bold,
                                     fontSize: 25,
                                     color: Colors.white),
@@ -168,12 +174,7 @@ class SignUpStudentState extends State<SignUpStudent> {
 
                               //_userObj != null?_userObj.displayName:
                               hintText: "FullName",
-                              hintStyle: TextStyle(
-                                color: const Color(0xCB101010),
-                                fontSize: null,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              ),
+                              hintStyle: InputTextStyle,
                             ),
                           ),
                           SizedBox(height: 10),
@@ -190,12 +191,7 @@ class SignUpStudentState extends State<SignUpStudent> {
                                   borderRadius:
                                       new BorderRadius.circular(15.0)),
                               hintText: "Phone Number",
-                              hintStyle: TextStyle(
-                                color: const Color(0xCB101010),
-                                fontSize: null,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              ),
+                              hintStyle: InputTextStyle,
                             ),
                           ),
                           SizedBox(height: 10),
@@ -239,12 +235,7 @@ class SignUpStudentState extends State<SignUpStudent> {
                                   borderRadius:
                                       new BorderRadius.circular(15.0)),
                               hintText: 'enter your grade',
-                              hintStyle: TextStyle(
-                                color: const Color(0xCB101010),
-                                fontSize: null,
-                                fontWeight: FontWeight.w700,
-                                fontStyle: FontStyle.normal,
-                              ),
+                              hintStyle: InputTextStyle,
                             ),
                           ),
                           SizedBox(
@@ -285,12 +276,7 @@ class SignUpStudentState extends State<SignUpStudent> {
                                                     new BorderRadius.circular(
                                                         15.0)),
                                             hintText: 'Birth Date',
-                                            hintStyle: TextStyle(
-                                              color: const Color(0xCB101010),
-                                              fontSize: null,
-                                              fontWeight: FontWeight.w700,
-                                              fontStyle: FontStyle.normal,
-                                            ),
+                                            hintStyle: InputTextStyle,
                                           ),
                                         ),
                                       ),

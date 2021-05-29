@@ -39,7 +39,8 @@ class Page1 extends StatelessWidget  {
             SizedBox(height: 15.0,),
             Text(
               'TeachMe',
-              style: TextStyle(fontSize: 45),
+              style: TextStyle(fontSize: 45                               , fontFamily: 'Kaushan'
+              ),
             ),
             SizedBox(height: 30),
 

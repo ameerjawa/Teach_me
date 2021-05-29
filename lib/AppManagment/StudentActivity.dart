@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_StudentActivity.dart';
+import 'package:teach_me/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
@@ -32,45 +32,44 @@ class StudentActivity extends StatelessWidget {
     return Scaffold(
 
       body: Container(
-        decoration: BoxDecoration(
-            color: Colors.blue.shade200
-        ),
+        height: MediaQuery.of(context).size.height,
+        width:  MediaQuery.of(context).size.width,
+
+        decoration: MainBoxDecorationStyle,
         child: Center(
 
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
-            child: SingleChildScrollView(
-                child: Column(
-                  // Column is also a layout widget. It takes a list of children and
-                  // arranges them vertically. By default, it sizes itself to fit its
-                  // children horizontally, and tries to be as tall as its parent.
-                  //
-                  // Invoke "debug painting" (press "p" in the console, choose the
-                  // "Toggle Debug Paint" action from the Flutter Inspector in Android
-                  // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-                  // to see the wireframe for each widget.
-                  //
-                  // Column has various properties to control how it sizes itself and
-                  // how it positions its children. Here we use mainAxisAlignment to
-                  // center the children vertically; the main axis here is the vertical
-                  // axis because Columns are vertical (the cross axis would be
-                  // horizontal).
+            child: Column(
+                mainAxisAlignment:MainAxisAlignment.center,
 
-                    children: <Widget>[
-                Container(child: SvgPicture.asset("assets/images/bookimage.svg",
-                    allowDrawingOutsideViewBox: true,
-                    matchTextDirection: true,
-                    color: Colors.blue.shade900,
-                    height: 250,
-                    width: 400)),
+              // Column is also a layout widget. It takes a list of children and
+              // arranges them vertically. By default, it sizes itself to fit its
+              // children horizontally, and tries to be as tall as its parent.
+              //
+              // Invoke "debug painting" (press "p" in the console, choose the
+              // "Toggle Debug Paint" action from the Flutter Inspector in Android
+              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+              // to see the wireframe for each widget.
+              //
+              // Column has various properties to control how it sizes itself and
+              // how it positions its children. Here we use mainAxisAlignment to
+              // center the children vertically; the main axis here is the vertical
+              // axis because Columns are vertical (the cross axis would be
+              // horizontal).
+
+                children: <Widget>[
+            Container(child:Image.asset("assets/images/newlogologo.jpeg",matchTextDirection: true,height: 160,width: 250),
+            ),
 
             Text(
               'TeachMe',
-              style: TextStyle(fontSize: 45),
+              style: TextStyle(fontSize: 45,                                fontFamily: 'Kaushan',
+              ),
             ),
             SizedBox(height: 30),
             Text(student.email != null ? student.email : "your email",
-                style: TextStyle(fontSize: 20, color: Colors.white)
+            style: TextStyle(fontSize: 20, color: Colors.white)
             ),
             SizedBox(height: 10),
 
@@ -78,33 +77,33 @@ class StudentActivity extends StatelessWidget {
               height: 100,
               width: 250,
               decoration: BoxDecoration(
-                color: Colors.blue.shade500,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20.0) ,
-                    topRight: Radius.circular(100.0),
-                    bottomLeft: Radius.circular(100.0),
-                    bottomRight: Radius.circular(20.0)
-                ),
-                //  borderRadius: BorderRadius.circular(30),
+            color: Colors.blue.shade500,
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20.0) ,
+                topRight: Radius.circular(100.0),
+                bottomLeft: Radius.circular(100.0),
+                bottomRight: Radius.circular(20.0)
+            ),
+            //  borderRadius: BorderRadius.circular(30),
               ),
 
               child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacement(ScaleRoute(
-                      page: SearchForTeacherStudentActivity(
-                          this.student, this.googleSignIn, this._auth)
+            onPressed: () {
+              Navigator.of(context).pushReplacement(ScaleRoute(
+                  page: SearchForTeacherStudentActivity(
+                      this.student, this.googleSignIn, this._auth)
 
-                  ));
-                },
+              ));
+            },
 
-                child:
-                Text("Search For Teacher",
-                    style: TextStyle(fontSize: 20, color: Colors.white))
-                ,
-                // padding: EdgeInsets.only(top:40.0,bottom: 40.0,right: 80.0,left: 80.0),
-                // shape: new RoundedRectangleBorder(
-                //   borderRadius: new BorderRadius.circular(30.0),
-                // ),
+            child:
+            Text("Search For Teacher",
+                style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: BtnFont))
+            ,
+            // padding: EdgeInsets.only(top:40.0,bottom: 40.0,right: 80.0,left: 80.0),
+            // shape: new RoundedRectangleBorder(
+            //   borderRadius: new BorderRadius.circular(30.0),
+            // ),
 
 
               ),
@@ -127,7 +126,7 @@ class StudentActivity extends StatelessWidget {
             onPressed: (){},
             child:
             Text("Level Exams",
-                style: TextStyle(fontSize: 20, color: Colors.white))
+            style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: BtnFont))
             ,
             // padding: EdgeInsets.only(top:40.0,bottom: 40.0,right: 80.0,left: 80.0),
             // shape: new RoundedRectangleBorder(
@@ -158,7 +157,7 @@ class StudentActivity extends StatelessWidget {
 
             },
             child:
-            Text("Courses", style: TextStyle(fontSize: 20, color: Colors.white))
+            Text("Courses", style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: BtnFont))
             ,
             // padding: EdgeInsets.only(top:40.0,bottom: 40.0,right: 80.0,left: 80.0),
             // shape: new RoundedRectangleBorder(
@@ -172,9 +171,9 @@ class StudentActivity extends StatelessWidget {
         TextButton(
           onPressed: () =>
               showDialog(
-                context: context,
-                builder: (context) =>
-                    SureLogout(auth: _auth, googleSignin: googleSignIn),
+            context: context,
+            builder: (context) =>
+                SureLogout(auth: _auth, googleSignin: googleSignIn),
 
               ),
           child: Text(
@@ -185,8 +184,7 @@ class StudentActivity extends StatelessWidget {
 
 
         ],
-      ),
-    ),)
+      ),)
     ,
     )
     ,
@@ -270,6 +268,7 @@ class SureLogout extends StatelessWidget {
                           }
                         } else {
                           try {
+
                             await this.googleSignin.signOut();
 
 

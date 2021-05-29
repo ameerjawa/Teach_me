@@ -1,5 +1,7 @@
 
 
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ import 'package:teach_me/AppManagment/Lessons.dart';
 import 'package:teach_me/AppManagment/Search_for_student.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
+import 'package:teach_me/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 
 
@@ -68,11 +71,12 @@ class HomepageteacherState extends State<TeacherHomepage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-
       body: Container(
-        decoration: BoxDecoration(
-            color: Colors.blue.shade200
-        ),
+        height: MediaQuery.of(context).size.height,
+        width:  MediaQuery.of(context).size.width,
+
+        decoration: MainBoxDecorationStyle,
+
         child: Padding(
           padding: const EdgeInsets.all(5.0),
 
@@ -119,13 +123,15 @@ class HomepageteacherState extends State<TeacherHomepage> {
                               SizedBox(
                                 height: 11,
                               ),
-                              Icon(Icons.book, size:70, color: Colors.black),
+                              Image.asset("assets/images/newlogologo.jpeg",matchTextDirection: true,height: 80,width: 120),
                               Text(
                                 'TeachMe',
                                 style: TextStyle(
+                                    fontFamily: 'Kaushan',
+
                                     fontWeight: FontWeight.bold,
                                     fontSize: 25,
-                                    color: Colors.black),
+                                    color: Colors.white),
                               ),  ]),
 
 
@@ -250,12 +256,8 @@ class HomepageteacherState extends State<TeacherHomepage> {
                         ],
                       ),
                     ),
-                  ),
-                  student!=null? Container(
-                    height: 170
-                  ):
-                      SizedBox(height: 50,),
-                      Row(
+                  ),SizedBox(height: 50,),
+                  student!=null?Container():Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           TextButton(
@@ -301,7 +303,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                             ),
                             onPressed: () {
                               Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                  builder: (context) => EditProfileForTeacher(isTeacher: isTeacher,)
+                                  builder: (context) => EditProfileForTeacher(isTeacher: isTeacher,googleSignIn: this.googleSignIn,)
                               ));
 
                             },
@@ -314,8 +316,8 @@ class HomepageteacherState extends State<TeacherHomepage> {
 
 
                         ],
-                      ),
-                      SizedBox(height: 70,),
+                      )
+                     // SizedBox(height: 70,),
 
 
 

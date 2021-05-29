@@ -9,6 +9,7 @@ import 'package:firebase_database/firebase_database.dart';
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:teach_me/Constants/constants.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 import 'file:///D:/ameer/teach_me/lib/DBManagment/firebase.dart';
@@ -53,9 +54,10 @@ class SignUpTeacherState extends State<SignUpTeacher> {
     // than having to individually change instances of widgets.
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-            color: Colors.blue.shade200
-        ),
+        height: MediaQuery.of(context).size.height,
+        width:  MediaQuery.of(context).size.width,
+
+        decoration: MainBoxDecorationStyle,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
 
@@ -98,6 +100,8 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                             Text(
                               'TeachMe',
                               style: TextStyle(
+                                  fontFamily: 'Kaushan',
+
                                   fontWeight: FontWeight.bold,
                                   fontSize: 30,
                                   color: Colors.white),
@@ -171,12 +175,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                 ),
 
                                 hintText: 'Full Name',
-                                hintStyle: TextStyle(
-                                  color: const Color(0xCB101010),
-                                  fontSize: null,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                ),
+                                hintStyle: InputTextStyle,
 
 
                               ),
@@ -201,12 +200,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                     borderRadius: new BorderRadius.circular(15.0)
                                 ),
                                 hintText: 'Phone Number',
-                                hintStyle: TextStyle(
-                                  color: const Color(0xCB101010),
-                                  fontSize: null,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                ),
+                                hintStyle: InputTextStyle,
 
 
                               ),
@@ -231,12 +225,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                     borderRadius: new BorderRadius.circular(15.0)
                                 ),
                                 hintText: 'Location',
-                                hintStyle: TextStyle(
-                                  color: const Color(0xCB101010),
-                                  fontSize: null,
-                                  fontWeight: FontWeight.w700,
-                                  fontStyle: FontStyle.normal,
-                                ),
+                                hintStyle: InputTextStyle,
                               ),
                             ),
                             SizedBox(height: 10,),
@@ -273,12 +262,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                       borderRadius: new BorderRadius.circular(15.0)
                                   ),
                                   hintText: 'Birth Date',
-                                  hintStyle: TextStyle(
-                                    color: const Color(0xCB101010),
-                                    fontSize: null,
-                                    fontWeight: FontWeight.w700,
-                                    fontStyle: FontStyle.normal,
-                                  ),
+                                  hintStyle:InputTextStyle,
                                 ),
                               ),
                             ),
@@ -357,7 +341,6 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
-                                SizedBox(height: 80,)
                               ],
                             ),
 

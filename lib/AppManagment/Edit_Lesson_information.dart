@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:teach_me/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
@@ -46,9 +47,10 @@ class EditLessonInformationState extends State<EditLessonInformation> {
     return Scaffold(
 
       body: Container(
-        decoration: BoxDecoration(
-            color: Colors.blue.shade200
-        ),
+        height: MediaQuery.of(context).size.height,
+        width:  MediaQuery.of(context).size.width,
+
+        decoration: MainBoxDecorationStyle,
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
 
@@ -81,10 +83,11 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                           SizedBox(
                             height: 25,
                           ),
-                          Icon(Icons.book, size: 110, color: Colors.white),
+                          Image.asset("assets/images/newlogologo.jpeg",matchTextDirection: true,height: 80,width: 120),
                           Text(
                             'TeachMe',
                             style: TextStyle(
+                                fontFamily: 'Kaushan',
                                 fontWeight: FontWeight.bold,
                                 fontSize: 30,
                                 color: Colors.white),
@@ -152,12 +155,7 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                           ),
 
                           hintText: 'Enter a Title Sentence',
-                          hintStyle: TextStyle(
-                            color: const Color(0xCB101010),
-                            fontSize: null,
-                            fontWeight: FontWeight.w700,
-                            fontStyle: FontStyle.normal,
-                          ),
+                          hintStyle: InputTextStyle,
 
 
                         ),
@@ -185,12 +183,7 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                             hintText: 'More About you',
 
 
-                            hintStyle: TextStyle(
-                              color: const Color(0xCB101010),
-                              fontSize: null,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
-                            ),
+                            hintStyle: InputTextStyle,
 
 
 
@@ -257,12 +250,7 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                                     hintText: 'Price',
 
 
-                                    hintStyle: TextStyle(
-                                      color: const Color(0xCB101010),
-                                      fontSize: null,
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
-                                    ),
+                                    hintStyle: InputTextStyle,
 
 
 

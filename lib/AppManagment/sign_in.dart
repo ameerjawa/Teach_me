@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:teach_me/AppManagment/AccountType.dart';
 import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
+import 'package:teach_me/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_up_user.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 
 
@@ -100,9 +100,10 @@ class _MyHomePageState extends State<SignInUser> {
     return  Scaffold(
 
         body:Container(
-          decoration: BoxDecoration(
-            color: Colors.blue.shade200
-          ),
+          height: MediaQuery.of(context).size.height,
+          width:  MediaQuery.of(context).size.width,
+
+          decoration: MainBoxDecorationStyle,
           child: Center(
 
             // Center is a layout widget. It takes a single child and positions it
@@ -127,11 +128,11 @@ class _MyHomePageState extends State<SignInUser> {
                 children: <Widget>[
 
                   // Container(child: Icon(FontAwesomeIcons.swatchbook, size: 30,color :Colors.white)),
-                  Container(child: SvgPicture.asset("assets/images/bookimage.svg",allowDrawingOutsideViewBox: true,matchTextDirection: true,color: Colors.blue.shade900,height: 250,width: 400)),
+                  Container(child: Image.asset("assets/images/newlogologo.jpeg",matchTextDirection: true,height: 200,width: 250)),
 
                   Text(
                     'TeachMe',
-                    style: TextStyle(fontWeight: FontWeight.bold ,  fontSize: 50,color:Colors.white),
+                    style: TextStyle(fontWeight: FontWeight.bold ,fontFamily: 'Kaushan',  fontSize: 50,color:Colors.white),
                   ),
                   SizedBox(height: 50),
                   Center(
@@ -154,18 +155,14 @@ class _MyHomePageState extends State<SignInUser> {
                                   } ,
                                   keyboardType: TextInputType.emailAddress,
                                   decoration: InputDecoration(
-                                    fillColor: Colors.white60, filled: true,
+                                    fillColor: Inputfillcolor, filled: true,
                                     border: OutlineInputBorder(
+
                                         borderRadius: new BorderRadius.circular(15.0)
                                     ),
 
                                     hintText: 'Enter your email' ,
-                                    hintStyle: TextStyle(
-                                      color: const Color(0xCB101010),
-                                      fontSize: null,
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
-                                    ),
+                                    hintStyle: InputTextStyle,
 
 
                                   ),
@@ -185,17 +182,12 @@ class _MyHomePageState extends State<SignInUser> {
                                     obscureText: true,
 
                                   decoration: InputDecoration(
-                                    fillColor: Colors.white60, filled: true,
+                                    fillColor: Inputfillcolor, filled: true,
                                     border: OutlineInputBorder(
                                         borderRadius: new BorderRadius.circular(15.0)
                                     ),
                                     hintText: 'Enter your password',
-                                    hintStyle: TextStyle(
-                                      color: const Color(0xCB101010),
-                                      fontSize: null,
-                                      fontWeight: FontWeight.w700,
-                                      fontStyle: FontStyle.normal,
-                                    ),
+                                    hintStyle: InputTextStyle,
 
 
                                   ),
@@ -207,12 +199,7 @@ class _MyHomePageState extends State<SignInUser> {
                   ) ,
                   SizedBox(height: 5),
                   ElevatedButton(
-                    // color: Colors.white60,
-                    // textColor: Colors.black,
-                    // shape: RoundedRectangleBorder(
-                    //   side: BorderSide(color: Colors.black,width: 1.8),
-                    //   borderRadius: BorderRadius.circular(10),
-                    // ),
+
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.white60),
                       textStyle: MaterialStateProperty.all(TextStyle(
@@ -280,7 +267,7 @@ class _MyHomePageState extends State<SignInUser> {
   ,
                     child: const Text(
                       'sign in',
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: BtnFontSize,fontFamily: BtnFont),
                     ),
                   ),
 
@@ -299,7 +286,9 @@ class _MyHomePageState extends State<SignInUser> {
                   Text("OR",
                   style: TextStyle(
                     color: Colors.white,
+                    fontSize: 15,
                     fontWeight: FontWeight.bold
+                      ,fontFamily: BtnFont
                   ),),
                   SizedBox(height: 16),
 
@@ -317,9 +306,10 @@ class _MyHomePageState extends State<SignInUser> {
                       onPressed: () async {
 
                         bool isLogedin=  await   _login();
+
                         if (isLogedin == true)
                         {
-                          print(_userObj.id);
+
                           Navigator.of(context).pushReplacement(SlideRightRoute(
                               page: AccountType(googleSignIn: _googleSignIn,userObj: _userObj,)
                           ));
@@ -343,7 +333,7 @@ class _MyHomePageState extends State<SignInUser> {
 
                       } , child:Text(
                         'sign up',
-                        style: TextStyle(fontSize: 20,  decoration: TextDecoration.underline,),
+                        style: TextStyle(fontSize: BtnFontSize,  decoration: TextDecoration.underline,fontFamily: BtnFont),
                       ), ),
 
                     ],

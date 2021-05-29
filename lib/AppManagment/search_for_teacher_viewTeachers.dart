@@ -7,6 +7,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_StudentActivity.dart';
+import 'package:teach_me/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/routes/pageRouter.dart';
@@ -56,9 +57,10 @@ class SearchForTeacherState extends State<SearchForTeacherViewTeachers> {
     return Scaffold(
 
       body: Container(
-        decoration: BoxDecoration(
-            color: Colors.blue.shade200
-        ),
+        height: MediaQuery.of(context).size.height,
+        width:  MediaQuery.of(context).size.width,
+
+        decoration: MainBoxDecorationStyle,
         child: Padding(
           padding: const EdgeInsets.all(5.0),
 
@@ -106,10 +108,12 @@ class SearchForTeacherState extends State<SearchForTeacherViewTeachers> {
                                   SizedBox(
                                     height: 11,
                                   ),
-                                  Icon(Icons.book, size: 60, color: Colors.black),
+                                  Image.asset("assets/images/newlogologo.jpeg",matchTextDirection: true,height: 50,width: 120),
                                   Text(
                                     'TeachMe',
                                     style: TextStyle(
+                                        fontFamily: 'Kaushan',
+
                                         fontWeight: FontWeight.bold,
                                         fontSize: 25,
                                         color: Colors.black),
@@ -121,7 +125,6 @@ class SearchForTeacherState extends State<SearchForTeacherViewTeachers> {
                     ),
 
 
-                    SizedBox(height: 10,),
                    Padding(
                      padding: const EdgeInsets.all(15.0),
                      child: Column(
@@ -158,7 +161,7 @@ class SearchForTeacherState extends State<SearchForTeacherViewTeachers> {
 ,
 
 
-                 SingleChildScrollView(child: Container(height:500,child: TeachersList(this.selectedSubject,this.selectedLocation,this.s,this.auth,this.googleSignIn)))
+                 SingleChildScrollView(child: Container(height: 500,child: TeachersList(this.selectedSubject,this.selectedLocation,this.s,this.auth,this.googleSignIn)))
 
 
 
@@ -258,7 +261,7 @@ class _TeachersListState extends State<TeachersList> {
                       direction: Axis.horizontal,
                     ),
                     SizedBox(width: 5,),
-                    Text(document["subjects"], style: TextStyle(color: Colors.white))
+                    Text(document["subjects"]!=null?document["subjects"]:"subject", style: TextStyle(color: Colors.white))
                   ],
                 ),
                 trailing:

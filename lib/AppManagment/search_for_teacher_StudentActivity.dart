@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
+import 'package:teach_me/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
@@ -50,78 +50,106 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
     return Scaffold(
 
       body: Container(
-        decoration: BoxDecoration(
-            color: Colors.blue.shade200
-        ),
+        height: MediaQuery.of(context).size.height,
+        width:  MediaQuery.of(context).size.width,
+
+        decoration: MainBoxDecorationStyle,
         child: Padding(
           padding: const EdgeInsets.all(5.0),
 
           // Center is a layout widget. It takes a single child and positions it
           // in the middle of the parent.
           child: SingleChildScrollView(
-              child: Column(
-                // Column is also a layout widget. It takes a list of children and
-                // arranges them vertically. By default, it sizes itself to fit its
-                // children horizontally, and tries to be as tall as its parent.
-                //
-                // Invoke "debug painting" (press "p" in the console, choose the
-                // "Toggle Debug Paint" action from the Flutter Inspector in Android
-                // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-                // to see the wireframe for each widget.
-                //
-                // Column has various properties to control how it sizes itself and
-                // how it positions its children. Here we use mainAxisAlignment to
-                // center the children vertically; the main axis here is the vertical
-                // axis because Columns are vertical (the cross axis would be
-                // horizontal).
-                //mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(height: 25,),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          IconButton(
-                              icon: const Icon(Icons.arrow_back),
-                              iconSize: 50,
-                              alignment: Alignment.topLeft,
-                              onPressed: () {
-                                Navigator.of(context).pushReplacement(SlideRightRoute(
-                                   page: StudentActivity(this.student,this.googleSignIn)
+            child: Column(
+              // Column is also a layout widget. It takes a list of children and
+              // arranges them vertically. By default, it sizes itself to fit its
+              // children horizontally, and tries to be as tall as its parent.
+              //
+              // Invoke "debug painting" (press "p" in the console, choose the
+              // "Toggle Debug Paint" action from the Flutter Inspector in Android
+              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+              // to see the wireframe for each widget.
+              //
+              // Column has various properties to control how it sizes itself and
+              // how it positions its children. Here we use mainAxisAlignment to
+              // center the children vertically; the main axis here is the vertical
+              // axis because Columns are vertical (the cross axis would be
+              // horizontal).
+              //mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: 25,),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        IconButton(
+                            icon: const Icon(Icons.arrow_back),
+                            iconSize: 50,
+                            onPressed: () {
+                              Navigator.of(context).pushReplacement(SlideRightRoute(
+                                 page: StudentActivity(this.student,this.googleSignIn)
 
-                                ));
+                              ));
 
-                              }
+                            }
+                        ),
+
+
+                            ],
                           ),
 
-                          Container(child: Row())
-                              ],
-                            ),
-
-                              Center(
-                              child: Column(
-                              children: [
-                                Container(child: SvgPicture.asset("assets/images/bookimage.svg",allowDrawingOutsideViewBox: true,matchTextDirection: true,color: Colors.blue.shade900,height: 250,width: 400)),
-
-                                Text(
-                              'TeachMe',
-                              style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Colors.black),
-                              ),  ]),
-                        ),
-                    SizedBox(height: 70,),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(
-                          children: <Widget>[
                             Center(
-                              child: Text(
-                                "Subject",style:TextStyle(color:Colors.black,fontSize: 20),
-                              ),
+                            child: Column(
+                            children: [
+                              Container(child: Image.asset("assets/images/newlogologo.jpeg",matchTextDirection: true,height: 160,width: 250)),
+
+                              Text(
+                            'TeachMe',
+                            style: TextStyle(
+                                fontFamily: 'Kaushan',
+
+                                fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                            color: Colors.white),
+                            ),  ]),
+                      ),
+                  SizedBox(height: 70,),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                        children: <Widget>[
+                          Center(
+                            child: Text(
+                              "Subject",style:TextStyle(color:Colors.black,fontSize: 20),
                             ),
-                            SizedBox(height: 4,),
-                            Autocomplete(
+                          ),
+                          SizedBox(height: 4,),
+                          Autocomplete(
+                            optionsBuilder: (TextEditingValue value) {
+                              // When the field is empty
+                              if (value.text.isEmpty) {
+                                return [];
+                              }
+
+                              // The logic to find out which ones should appear
+                              return subjects.where((suggestion) => suggestion
+                                  .toLowerCase()
+                                  .startsWith(value.text.toLowerCase()));
+                            },
+                            onSelected: (value) {
+                              setState(() {
+                                selectedSubject = value;
+                              });
+                            },
+                          ),
+                          SizedBox(height: 10,),
+                          Center(
+                            child: Text(
+                              "City",style:TextStyle(color:Colors.black,fontSize: 20),
+                            ),
+                          ),
+                          SizedBox(height: 4,),
+                          Container(
+                            child: Autocomplete(
                               optionsBuilder: (TextEditingValue value) {
                                 // When the field is empty
                                 if (value.text.isEmpty) {
@@ -129,107 +157,81 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
                                 }
 
                                 // The logic to find out which ones should appear
-                                return subjects.where((suggestion) => suggestion
+                                return locations.where((suggestion) => suggestion
                                     .toLowerCase()
                                     .startsWith(value.text.toLowerCase()));
                               },
                               onSelected: (value) {
                                 setState(() {
-                                  selectedSubject = value;
+                                  _selectedLocation = value;
                                 });
                               },
                             ),
-                            SizedBox(height: 10,),
-                            Center(
-                              child: Text(
-                                "City",style:TextStyle(color:Colors.black,fontSize: 20),
-                              ),
-                            ),
-                            SizedBox(height: 4,),
-                            Container(
-                              child: Autocomplete(
-                                optionsBuilder: (TextEditingValue value) {
-                                  // When the field is empty
-                                  if (value.text.isEmpty) {
-                                    return [];
-                                  }
-
-                                  // The logic to find out which ones should appear
-                                  return locations.where((suggestion) => suggestion
-                                      .toLowerCase()
-                                      .startsWith(value.text.toLowerCase()));
-                                },
-                                onSelected: (value) {
-                                  setState(() {
-                                    _selectedLocation = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                          //  Text(_selectedAnimal != null
-                            //    ? _selectedAnimal
-                              //  : 'Type something (a, b, c, etc)'),
-                          ]),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Row(
-                        children: [
-                          Text("By Your Place",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black,
-                            ),
-
-
-
                           ),
-                          Checkbox(
-                            value: this.showvalue,
-                            onChanged: (bool value) {
-                              setState(() {
-                                this.showvalue = value;
-                              });
-                            },
+                          SizedBox(
+                            height: 20,
                           ),
-                        ],
-                      ),
+                        //  Text(_selectedAnimal != null
+                          //    ? _selectedAnimal
+                            //  : 'Type something (a, b, c, etc)'),
+                        ]),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Row(
+                      children: [
+                        Text("By Your Place",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+
+
+
+                        ),
+                        Checkbox(
+                          value: this.showvalue,
+                          onChanged: (bool value) {
+                            setState(() {
+                              this.showvalue = value;
+                            });
+                          },
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 50,),
+                  ),
+                  SizedBox(height: 50,),
 
-                    IconButton(
-                        icon: const Icon(Icons.done),
-                        iconSize: 50,
-                        alignment: Alignment.bottomCenter,
-                        onPressed: () async{
+                  IconButton(
+                      icon: const Icon(Icons.done),
+                      iconSize: 50,
+                      alignment: Alignment.bottomCenter,
+                      onPressed: () async{
 
 
-                           //  //List<Teacher> TeachersList= await student.getTeacherDetails(selectedSubject, _selectedLocation);
-                           //
-                           //  print(TeachersList.first.fullName);
-                           //
-                           // if(TeachersList==null){
-                           //   print("here ------------> Nulll");
-                           // }
-                           // else{
-                           //   print("here -----------> NOT NULL");
-                           // }
+                         //  //List<Teacher> TeachersList= await student.getTeacherDetails(selectedSubject, _selectedLocation);
+                         //
+                         //  print(TeachersList.first.fullName);
+                         //
+                         // if(TeachersList==null){
+                         //   print("here ------------> Nulll");
+                         // }
+                         // else{
+                         //   print("here -----------> NOT NULL");
+                         // }
 
-                          Navigator.of(context).pushReplacement(SlideRightRoute(
-                              page: SearchForTeacherViewTeachers(auth:this.auth,selectedSubject:selectedSubject,selectedLocation: _selectedLocation,s: student,googleSignIn: this.googleSignIn,)
+                        Navigator.of(context).pushReplacement(SlideRightRoute(
+                            page: SearchForTeacherViewTeachers(auth:this.auth,selectedSubject:selectedSubject,selectedLocation: _selectedLocation,s: student,googleSignIn: this.googleSignIn,)
 
-                          ));
-                        }
-                    ),
+                        ));
+                      }
+                  ),
 
 
 
 
     ]),
-        ),
+          ),
     ),
       ),
     );

@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/Sign_Up_Student.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
+import 'package:teach_me/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
@@ -39,10 +39,10 @@ class AccountType extends StatelessWidget {
     return Scaffold(
 
       body: Container(
-        height:1000,
-          decoration: BoxDecoration(
-              color: Colors.blue.shade200
-          ),
+        height:MediaQuery.of(context).size.height,
+        width:  MediaQuery.of(context).size.width,
+
+        decoration: MainBoxDecorationStyle,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
 
@@ -76,11 +76,11 @@ class AccountType extends StatelessWidget {
                         iconSize: 50,
                         alignment: Alignment.topLeft,
                         onPressed: () async{
-                          if (this.googleSignIn.currentUser!=null){
+                          if (this.googleSignIn!=null){
                             await this.googleSignIn.signOut();
 
 
-                          }else if (this.auth.currentUser != null){
+                          }else if (this.auth != null){
 
                             await auth.signOut();
 
@@ -91,12 +91,13 @@ class AccountType extends StatelessWidget {
                         }
                     ),
                      ]),
-                    Container(child: SvgPicture.asset("assets/images/bookimage.svg",allowDrawingOutsideViewBox: true,matchTextDirection: true,color: Colors.blue.shade900,height: 220,width: 350)),
+                    Container(child: Image.asset("assets/images/newlogologo.jpeg",matchTextDirection: true,height: 200,width: 250)),
 
                     Text(
                       'TeachMe',
                       style: TextStyle(fontWeight: FontWeight.bold,
                           fontSize: 50,
+                          fontFamily: 'Kaushan',
                           color: Colors.white),
                     ),
                     SizedBox(height: 100),
@@ -123,14 +124,16 @@ class AccountType extends StatelessWidget {
                                   textStyle: TextStyle(
                                       color: Colors.black,
                                       fontSize: 40,
-                                      fontStyle: FontStyle.italic
+                                      fontStyle: FontStyle.italic,
+                                      fontFamily: BtnFont
+
                                   ),
                                 ),
                                 onPressed: () async{
 
 
                                   CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
-                                  if (googleSignIn.currentUser ==null){
+                                  if (googleSignIn ==null){
                                     Navigator.of(context).pushReplacement(SlideRightRoute(
                                         page: SignUpTeacher(userObj: userObj,auth: this.auth,)
 
@@ -176,7 +179,8 @@ class AccountType extends StatelessWidget {
                                   textStyle: TextStyle(
                                       color: Colors.black,
                                       fontSize: 40,
-                                      fontStyle: FontStyle.italic
+                                      fontStyle: FontStyle.italic,
+                                    fontFamily: BtnFont
                                   ),
                                 ),
                                 onPressed: () {

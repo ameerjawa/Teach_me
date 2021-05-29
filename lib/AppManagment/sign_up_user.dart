@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:teach_me/Constants/constants.dart';
 
-import 'package:teach_me/UserManagment/Userbg.dart';
+import 'package:teach_me/Virefy.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 
 // ignore: camel_case_types, must_be_immutable
@@ -23,7 +24,10 @@ class Sign_Up_User extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(color: Colors.blue.shade200),
+        height: MediaQuery.of(context).size.height,
+        width:  MediaQuery.of(context).size.width,
+
+        decoration: MainBoxDecorationStyle,
         child: SingleChildScrollView(
           child: Column(
             // Column is also a layout widget. It takes a list of children and
@@ -65,6 +69,8 @@ class Sign_Up_User extends StatelessWidget {
               Text(
                 'TeachMe',
                 style: TextStyle(
+                    fontFamily: 'Kaushan',
+
                     fontWeight: FontWeight.bold,
                     fontSize: 50,
                     color: Colors.white),
@@ -95,12 +101,7 @@ class Sign_Up_User extends StatelessWidget {
                                 borderRadius:
                                     new BorderRadius.circular(15.0)),
                             hintText: 'Enter your email',
-                            hintStyle: TextStyle(
-                              color: const Color(0xCB101010),
-                              fontSize: null,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
-                            ),
+                            hintStyle: InputTextStyle,
                           ),
                         ),
                         SizedBox(height: 10),
@@ -123,12 +124,7 @@ class Sign_Up_User extends StatelessWidget {
                                 borderRadius:
                                     new BorderRadius.circular(15.0)),
                             hintText: 'Enter new password',
-                            hintStyle: TextStyle(
-                              color: const Color(0xCB101010),
-                              fontSize: null,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
-                            ),
+                            hintStyle: InputTextStyle,
                           ),
                         ),
                         SizedBox(height: 10),
@@ -139,9 +135,10 @@ class Sign_Up_User extends StatelessWidget {
                             verifypassword = value;
                           },
                           validator: (value) {
-                            if (value.isEmpty || value == null) {
-                              return "ReType Your Password";
-                            }
+                            if (value.isEmpty || value == null)
+                                  return "ReType Your Password";
+                            if(value!=password)
+                                  return'Passwords not Match';
                             return null;
                           },
                           decoration: InputDecoration(
@@ -151,12 +148,7 @@ class Sign_Up_User extends StatelessWidget {
                                 borderRadius:
                                     new BorderRadius.circular(15.0)),
                             hintText: 'Verify your password',
-                            hintStyle: TextStyle(
-                              color: const Color(0xCB101010),
-                              fontSize: null,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.normal,
-                            ),
+                            hintStyle: InputTextStyle,
                           ),
                         ),
                       ]),
@@ -177,19 +169,27 @@ class Sign_Up_User extends StatelessWidget {
                         TextStyle(color: Colors.blue))),
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
-                    Userbg user = Userbg(
-                        email, password, verifypassword, "", "", "", "");
-                     user.signUp(context,_auth);
+
+                    _auth.createUserWithEmailAndPassword(email: this.email, password: this.password).then((value)  {
+                      Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                          builder: (context) => VerifyEmail()
+                      ));
+                    });
+
+                      // Userbg user = Userbg(
+                      //     email, password, verifypassword, "", "", "", "");
+                      // user.signUp(context,_auth);
+
+
                   }
                 },
 
                 child: const Text(
                   'sign up',
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: BtnFontSize,fontFamily: BtnFont),
                 ),
 
               ),
-              SizedBox(height: 220,)
             ],
           ),
         ),

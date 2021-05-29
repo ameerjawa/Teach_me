@@ -8,6 +8,8 @@ import 'package:teach_me/AppManagment/sign_in.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
+import 'Constants/constants.dart';
+
 
 
 class Splash extends StatefulWidget {
@@ -37,9 +39,7 @@ class SplashScreen extends State<Splash>  {
     return Scaffold(
 
       body: Container(
-        decoration: BoxDecoration(
-            color: Colors.blue.shade200
-        ),
+        decoration: MainBoxDecorationStyle,
         child: Center(
 
           // Center is a layout widget. It takes a single child and positions it
@@ -64,19 +64,17 @@ class SplashScreen extends State<Splash>  {
 
             children: <Widget>[
               Container(
-                width: 150.0,
-                height: 150.0,
+
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                  color: Colors.blue,
+
                 ),
-                child: Image.asset("assets/images/logo.jpg")
+                child: Image.asset("assets/images/newlogologo.jpeg",width: 250,height: 250,)
               ),
-              SizedBox(height: 20),
               Text(
 
                 'TeachMe',
-                style: TextStyle(fontWeight: FontWeight.bold ,  fontSize: 50,color:Colors.white),
+                style: TextStyle(fontWeight: FontWeight.bold , fontFamily: 'Kaushan', fontSize: 50,color:Colors.white),
               ),
             SizedBox(height: 20),
               SpinKitRipple(color: Colors.black,)

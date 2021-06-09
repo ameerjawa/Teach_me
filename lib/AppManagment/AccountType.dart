@@ -131,11 +131,15 @@ class AccountType extends StatelessWidget {
                                 ),
                                 onPressed: () async{
 
+                                  CollectionReference citiescollection=FirebaseFirestore.instance.collection("Cities");
+                                  DocumentSnapshot<Object> cities= await citiescollection.doc("eF4F8hC9Y6QJjm1fRXXN").get();
+                                  List<dynamic> citiesList=cities.get("cities");
+
 
                                   CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
                                   if (googleSignIn ==null){
                                     Navigator.of(context).pushReplacement(SlideRightRoute(
-                                        page: SignUpTeacher(userObj: userObj,auth: this.auth,)
+                                        page: SignUpTeacher(userObj: userObj,auth: this.auth,cities:citiesList)
 
                                     ));
                                   }else{
@@ -148,7 +152,7 @@ class AccountType extends StatelessWidget {
                                       ));
                                     }else{
                                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                                          page: SignUpTeacher(userObj: userObj,)
+                                          page: SignUpTeacher(userObj: userObj,cities:citiesList)
 
                                       ));
                                     }

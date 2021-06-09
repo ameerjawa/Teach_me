@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:teach_me/AppManagment/CoursesHomepage.dart';
 import 'package:teach_me/AppManagment/search_for_teacher_StudentActivity.dart';
 import 'package:teach_me/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
@@ -88,10 +90,26 @@ class StudentActivity extends StatelessWidget {
               ),
 
               child: TextButton(
-            onPressed: () {
+            onPressed: () async{
+
+
+
+              CollectionReference Subjectscollection =
+              FirebaseFirestore.instance.collection("Subjects");
+
+
+              DocumentSnapshot<Object> subjects= await Subjectscollection.doc("rFoR8RQBWc49Rx159ljf").get();
+              List<dynamic> subjectsList=subjects.get("subjects");
+              CollectionReference citiescollection=FirebaseFirestore.instance.collection("Cities");
+              DocumentSnapshot<Object> cities= await citiescollection.doc("eF4F8hC9Y6QJjm1fRXXN").get();
+              List<dynamic> citiesList=cities.get("cities");
+
+
+
+
               Navigator.of(context).pushReplacement(ScaleRoute(
                   page: SearchForTeacherStudentActivity(
-                      this.student, this.googleSignIn, this._auth)
+                      this.student, this.googleSignIn, this._auth,subjectsList,citiesList)
 
               ));
             },
@@ -155,6 +173,11 @@ class StudentActivity extends StatelessWidget {
 
             onPressed: (){
 
+              Navigator.of(context).pushReplacement(ScaleRoute(
+                  page: CoursesHomePage(
+                    student,googleSignIn)
+
+              ));
             },
             child:
             Text("Courses", style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: BtnFont))

@@ -12,9 +12,10 @@ import 'package:teach_me/routes/pageRouter.dart';
 class Sign_Up_User extends StatelessWidget {
   String email, password, verifypassword;
   final _formKey = GlobalKey<FormState>();
+  final auth = FirebaseAuth.instance;
 
   Widget build(BuildContext context) {
-    final _auth = FirebaseAuth.instance;
+
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -170,9 +171,9 @@ class Sign_Up_User extends StatelessWidget {
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
 
-                    _auth.createUserWithEmailAndPassword(email: this.email, password: this.password).then((value)  {
+                    auth.createUserWithEmailAndPassword(email: this.email, password: this.password).then((value)  {
                       Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                          builder: (context) => VerifyEmail()
+                          builder: (context) => VerifyEmail(this.auth)
                       ));
                     });
 

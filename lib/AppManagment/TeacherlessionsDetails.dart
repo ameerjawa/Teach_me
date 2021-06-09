@@ -15,35 +15,28 @@ class TeacherLessonDetail extends StatefulWidget {
   DocumentSnapshot isTeacher;
   GoogleSignInAccount userObj;
   GoogleSignIn googleSignin;
+  List<dynamic> subjects;
   final auth;
 
-  TeacherLessonDetail({Key key, this.isTeacher, this.userObj,this.auth,this.googleSignin})
+  TeacherLessonDetail({Key key, this.isTeacher, this.userObj,this.auth,this.googleSignin,this.subjects})
       : super(key: key);
 
   @override
   TeacherlessionsDetails createState() =>
-      TeacherlessionsDetails(this.isTeacher, this.userObj,this.auth,this.googleSignin);
+      TeacherlessionsDetails(this.isTeacher, this.userObj,this.auth,this.googleSignin,this.subjects);
 }
 
 class TeacherlessionsDetails extends State<TeacherLessonDetail> {
-  String subjects, titleSentence, moreDetails, price, selectedSubject;
+  String  titleSentence, moreDetails, price, selectedSubject;
   final auth;
   GoogleSignIn googleSignin;
-  List subjectsList = [
-    "English",
-    "Math",
-    "maba",
-    "biology",
-    "physic",
-    "hebrew",
-    "arabic"
-  ];
+  List<dynamic> subjects;
   bool canGo = false;
   DocumentSnapshot isTeacher;
   GoogleSignInAccount userObj;
   final _formKey = GlobalKey<FormState>();
 
-  TeacherlessionsDetails(this.isTeacher, this.userObj,this.auth,this.googleSignin);
+  TeacherlessionsDetails(this.isTeacher, this.userObj,this.auth,this.googleSignin,this.subjects);
 
   Widget build(BuildContext context) {
     CollectionReference teachers =
@@ -142,7 +135,7 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                             }
 
                             // The logic to find out which ones should appear
-                            return subjectsList.where((suggestion) => suggestion
+                            return this.subjects.where((suggestion) => suggestion
                                 .toLowerCase()
                                 .startsWith(value.text.toLowerCase()));
                           },
@@ -268,33 +261,34 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                       onPressed: () async {
                                         if (_formKey.currentState.validate()) {
                                           // TODO submit
-                                          FirebaseAuth auth = FirebaseAuth.instance;
+
 
                                           String userId = userObj != null
                                               ? userObj.id
-                                              : auth.currentUser != null
-                                              ? auth.currentUser.uid.toString()
+                                              : this.auth != null
+                                              ? this.auth.currentUser.uid.toString()
                                               : "";
                                           print(
                                               "yes im hererere #################$userId");
                                           DocumentSnapshot isTeacher =
                                           await teachers.doc("$userId").get();
 
-                                          selectedSubject =
-                                          selectedSubject != ""
-                                              ? selectedSubject
-                                              : isTeacher["subjects"];
-                                          titleSentence = titleSentence != ""
-                                              ? titleSentence
-                                              : isTeacher["Title Sentence"];
-
-                                          moreDetails = moreDetails != ""
-                                              ? moreDetails
-                                              : isTeacher["More"];
-
-                                          price = price != ""
-                                              ? price
-                                              : isTeacher["Price"];
+                                          // selectedSubject =
+                                          // selectedSubject != ""
+                                          //     ? selectedSubject
+                                          //     : 'isTeacher["subjects"]';
+                                          // titleSentence = titleSentence != ""
+                                          //     ? titleSentence
+                                          //     : 'isTeacher["Title Sentence"]';
+                                          //
+                                          // moreDetails = moreDetails != ""
+                                          //     ? moreDetails
+                                          //     : 'isTeacher["More"]';
+                                          //
+                                          // price = price != ""
+                                          //     ? price
+                                          //     : 'isTeacher["Price"]';
+                                          // canGo = canGo!=null?canGo:'isTeacher["CanGo"]';
 
                                           Map<String, dynamic> data = {
                                             "subjects": selectedSubject,
@@ -324,34 +318,7 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                               ),
                             ],
                           ),
-                          // Column(
-                          //   children: [
-                          //     // TextButton(
-                          //     //     onPressed: () async {
-                          //     //       FirebaseAuth auth = FirebaseAuth.instance;
-                          //     //       String userId = userObj != null
-                          //     //           ? userObj.id
-                          //     //           : auth.currentUser != null
-                          //     //               ? auth.currentUser.uid.toString()
-                          //     //               : "";
-                          //     //       DocumentSnapshot isTeacher =
-                          //     //           await teachers.doc("$userId").get();
-                          //     //       Student s;
-                          //     //       Navigator.of(context).pushReplacement(
-                          //     //           SlideRightRoute(
-                          //     //               page: TeacherHomepage(
-                          //     //                   isTeacher, s, "", "",this.auth,this.googleSignin)));
-                          //     //     },
-                          //     //     child: Text(
-                          //     //       'skip',
-                          //     //       textAlign: TextAlign.center,
-                          //     //       overflow: TextOverflow.ellipsis,
-                          //     //       style: TextStyle(
-                          //     //           fontWeight: FontWeight.bold,
-                          //     //           fontSize: 20),
-                          //     //     ))
-                          //   ],
-                          // ),
+
 
                         ]),
                       )

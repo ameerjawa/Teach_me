@@ -95,9 +95,21 @@ class SearchForTeacherState extends State<SearchForTeacherViewTeachers> {
                               icon: const Icon(Icons.arrow_back),
                               iconSize: 50,
                               alignment: Alignment.topLeft,
-                              onPressed: () {
+                              onPressed: ()async {
+
+                                CollectionReference Subjectscollection =
+                                FirebaseFirestore.instance.collection("Subjects");
+
+                                DocumentSnapshot<Object> subjects= await Subjectscollection.doc("rFoR8RQBWc49Rx159ljf").get();
+                                List<dynamic> subjectsList=subjects.get("subjects");
+
+                                CollectionReference citiescollection=FirebaseFirestore.instance.collection("Cities");
+                                DocumentSnapshot<Object> cities= await citiescollection.doc("eF4F8hC9Y6QJjm1fRXXN").get();
+                                List<dynamic> citiesList=cities.get("cities");
+
+
                                 Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                    builder: (context) => SearchForTeacherStudentActivity(this.s,this.googleSignIn,this.auth)
+                                    builder: (context) => SearchForTeacherStudentActivity(this.s,this.googleSignIn,this.auth,subjectsList,citiesList)
 
                                 ));
                               }

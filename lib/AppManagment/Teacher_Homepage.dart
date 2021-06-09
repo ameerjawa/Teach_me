@@ -54,12 +54,11 @@ class HomepageteacherState extends State<TeacherHomepage> {
 
 
   Widget build(BuildContext context) {
-    print(this.isTeacher["FullName"]);
-    print(this.isTeacher["Location"]);
-   // print(this.isTeacher["More"]);
-    print(this.isTeacher["subjects"]);
-    print(this.isTeacher["CanGo"]);
-    print(this.isTeacher["PhoneNumber"]);
+     print(this.isTeacher["FullName"]);
+    // print(this.isTeacher["Location"]);
+    // print(this.isTeacher["subjects"]);
+    // print(this.isTeacher["CanGo"]);
+    // print(this.isTeacher["PhoneNumber"]);
 
 
 
@@ -142,19 +141,30 @@ class HomepageteacherState extends State<TeacherHomepage> {
 
 
                   SizedBox(height: 30,),
-                  Text(isTeacher["FullName"]!=null?this.isTeacher["FullName"]:"name",
+                  Text(this.isTeacher["FullName"]!=null?this.isTeacher["FullName"]:"name",
                       style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 35,
                       color: Colors.white),
                    ),
                   SizedBox(height: 10,),
-                  Text("${this.isTeacher["subjects"]!=null?this.isTeacher["subjects"]:""} Teacher ",
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15,
-                        color: Colors.white),
-                  ),
+
+
+                  /////////
+                  ///
+                  /// problem with the Text down below!!!! |
+                  ///                                     \/
+                  ///                                     |
+                  ///                                    \/
+                  /// //
+
+
+                  // Text("${this.isTeacher["subjects"]!=null?this.isTeacher["subjects"]:""} Teacher ",
+                  //   style: TextStyle(
+                  //       fontWeight: FontWeight.normal,
+                  //       fontSize: 15,
+                  //       color: Colors.white),
+                  // ),
                   SingleChildScrollView(
                     child: Container(
 
@@ -183,11 +193,11 @@ class HomepageteacherState extends State<TeacherHomepage> {
                           ),
                           SizedBox(height: 30,),
 
-                          // Text('Still have no lessons',
-                          //       style: TextStyle(
-                          //       fontWeight: FontWeight.bold,
-                          //       fontSize: 15,
-                          //       color: Colors.black),),
+                          Text('Still have no lessons',
+                                style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                                color: Colors.black),),
 
 
                           Text(
@@ -198,6 +208,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                             ),
                           ),
                           SizedBox(height: 7,),
+
                           Text(
                               "PhoneNumber :  ${this.isTeacher["PhoneNumber"]!=null?this.isTeacher["PhoneNumber"]:""}",
                             style: TextStyle(
@@ -206,13 +217,13 @@ class HomepageteacherState extends State<TeacherHomepage> {
                             ),
                           ),
                           SizedBox(height: 7,),
-                          Text(
-                              "More About Me : ${this.isTeacher["More"]!=null?this.isTeacher["More"]:""}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20
-                            ),
-                          ),
+                          // Text(
+                          //     "More About Me : ${this.isTeacher["More"]!=null?this.isTeacher["More"]:""}",
+                          //   style: TextStyle(
+                          //       fontWeight: FontWeight.bold,
+                          //       fontSize: 20
+                          //   ),
+                          // ),
                           SizedBox(height: 100,)
                           ,   Row(
                               children:<Widget>[
@@ -233,15 +244,24 @@ class HomepageteacherState extends State<TeacherHomepage> {
 
                                           // ignore: deprecated_member_use
 
-                                            Text(
-                                      this.isTeacher["CanGo"]==null?"": this.isTeacher["CanGo"] ? "Can" :
-                                            "Can't"
-                                      ,
 
-                                              style: TextStyle(
-                                            fontSize: 30,
-                                            color: this.isTeacher["CanGo"]==null?"":this.isTeacher["CanGo"] ? Colors.green : Colors.red)
-                                               ),
+                                          /////////
+                                          ///
+                                          /// problem with the Text down below!!!! |
+                                          ///                                     \/
+                                          ///                                     |
+                                          ///                                    \/
+                                          /// //
+
+                                      // //       Text(
+                                      // // this.isTeacher["CanGo"]==null?"": this.isTeacher["CanGo"] ? "Can" :
+                                      // //       "Can't"
+                                      // // ,
+                                      //
+                                      //       //   style: TextStyle(
+                                      //       // fontSize: 30,
+                                      //       // color: this.isTeacher["CanGo"]==null?"":this.isTeacher["CanGo"] ? Colors.green : Colors.red)
+                                      //          ),
 
 
 
@@ -337,7 +357,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
         iconSize: 50,
       onPressed: ()=>showDialog(
         context: context,
-        builder: (context) => SureLogout(auth:_auth,googleSignin: this.googleSignIn,),
+        builder: (context) => SureLogout(auth:this._auth,googleSignin: this.googleSignIn,),
 
       ),
 

@@ -21,11 +21,12 @@ import 'TeacherlessionsDetails.dart';
 class SignUpTeacher extends StatefulWidget {
  final  GoogleSignInAccount userObj;
  final auth;
+ List<dynamic> cities;
 
-  const SignUpTeacher({Key key, this.userObj,this.auth}) : super(key: key);
+   SignUpTeacher({Key key, this.userObj,this.auth,this.cities}) : super(key: key);
 
   @override
-  SignUpTeacherState createState() => SignUpTeacherState(this.userObj,this.auth);
+  SignUpTeacherState createState() => SignUpTeacherState(this.userObj,this.auth,this.cities);
 }
 
 class SignUpTeacherState extends State<SignUpTeacher> {
@@ -36,11 +37,12 @@ class SignUpTeacherState extends State<SignUpTeacher> {
   CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
   final auth;
   bool isTeacher=true;
+  List<dynamic> cities;
  final GoogleSignInAccount userObj;
   final _formKey = GlobalKey<FormState>();
 
 
-  SignUpTeacherState(this.userObj,this.auth);
+  SignUpTeacherState(this.userObj,this.auth,this.cities);
 
 
 
@@ -206,28 +208,48 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                               ),
                             ),
                             SizedBox(height: 10),
-                            TextFormField(
-                              validator: (value) {
-                                if (value.isEmpty || value == null) {
-                                  return "Must Type Location";
-                                }
-                                return null;
-                              },
+                            Container(
+                              child: Autocomplete(
+                                optionsBuilder: (TextEditingValue value) {
+                                  // When the field is empty
+                                  if (value.text.isEmpty) {
+                                    return [];
+                                  }
 
-                              textAlign: TextAlign.center,
-                              onChanged: (value) {
-                                location = value;
-                              },
-                              decoration: InputDecoration(
-                                fillColor: Colors.white60,
-                                filled: true,
-                                border: OutlineInputBorder(
-                                    borderRadius: new BorderRadius.circular(15.0)
-                                ),
-                                hintText: 'Location',
-                                hintStyle: InputTextStyle,
+                                  // The logic to find out which ones should appear
+                                  return this.cities.where((suggestion) => suggestion
+                                      .toLowerCase()
+                                      .startsWith(value.text.toLowerCase()));
+                                },
+                                onSelected: (value) {
+                                  setState(() {
+                                    location = value;
+                                  });
+                                },
                               ),
                             ),
+                            // TextFormField(
+                            //   validator: (value) {
+                            //     if (value.isEmpty || value == null) {
+                            //       return "Must Type Location";
+                            //     }
+                            //     return null;
+                            //   },
+                            //
+                            //   textAlign: TextAlign.center,
+                            //   onChanged: (value) {
+                            //     location = value;
+                            //   },
+                            //   decoration: InputDecoration(
+                            //     fillColor: Colors.white60,
+                            //     filled: true,
+                            //     border: OutlineInputBorder(
+                            //         borderRadius: new BorderRadius.circular(15.0)
+                            //     ),
+                            //     hintText: 'Location',
+                            //     hintStyle: InputTextStyle,
+                            //   ),
+                            // ),
                             SizedBox(height: 10,),
 
 
@@ -285,12 +307,19 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                   alignment: Alignment.topLeft,
                                   onPressed: () async {
                                     if (_formKey.currentState.validate()) {
-                                      String userId = userObj == null ? this.auth
-                                          .currentUser.uid.toString() : userObj
+                                      String userId = this.userObj == null ? this.auth
+                                          .currentUser.uid.toString() : this.userObj
                                           .id;
-                                      String email = userObj == null
+                                      String email = this.userObj == null
                                           ? this.auth.currentUser.email.toString()
-                                          : userObj.email;
+                                          : this.userObj.email;
+                                      CollectionReference Subjectscollection =
+                                      FirebaseFirestore.instance.collection("Subjects");
+
+
+                                      DocumentSnapshot<Object> subjects= await Subjectscollection.doc("rFoR8RQBWc49Rx159ljf").get();
+                                      List<dynamic> subjectsList=subjects.get("subjects");
+
                                       if (imageFile != null) {
                                         String imageUrl = await uploadImagetofireStorage(
                                             imageFile, teacherFullName, userId);
@@ -310,7 +339,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                         Navigator.of(context).pushReplacement(
                                             SlideRightRoute(
                                                 page: TeacherLessonDetail(
-                                                  userObj: this.userObj,auth: this.auth,)
+                                                  userObj: this.userObj,auth: this.auth,subjects: subjectsList,)
                                             ));
                                       } else {
                                         Teacher newTeacher = Teacher(
@@ -329,7 +358,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                         Navigator.of(context).pushReplacement(
                                             SlideRightRoute(
                                                 page: TeacherLessonDetail(
-                                                  userObj: userObj,)
+                                                  userObj: userObj,auth: this.auth,subjects: subjectsList,)
                                             ));
                                       }
                                     }

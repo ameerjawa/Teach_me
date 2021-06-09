@@ -10,15 +10,20 @@ import 'package:teach_me/routes/pageRouter.dart';
 
 
 class VerifyEmail extends StatefulWidget {
+  final auth;
+
+  VerifyEmail(this.auth);
   @override
-  _VerifyState createState() => _VerifyState();
+  _VerifyState createState() => _VerifyState(this.auth);
 }
 
 class _VerifyState extends State<VerifyEmail> {
 
-  final auth = FirebaseAuth.instance;
+  final auth;
   User user;
   Timer timer;
+
+  _VerifyState(this.auth);
 
   @override
   void initState() {
@@ -92,7 +97,7 @@ checkEmailVerified();
     if(user.emailVerified){
       timer.cancel();
       Navigator.of(context).pushReplacement(CupertinoPageRoute(
-          builder: (context) => AccountType()
+          builder: (context) => AccountType(auth: this.auth,)
       ));
     }
 

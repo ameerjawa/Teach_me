@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:teach_me/AppManagment/CourseCategoryPage.dart';
 import 'package:teach_me/AppManagment/CourseDetailsScreen.dart';
 import 'package:teach_me/AppManagment/StudentActivity.dart';
 import 'package:teach_me/Constants/constants.dart';
@@ -11,21 +15,33 @@ import 'package:teach_me/routes/pageRouter.dart';
 class CoursesHomePage extends StatefulWidget {
   Student student;
   GoogleSignIn googleSignIn;
+  var resultcat;
 
 
-  CoursesHomePage(this.student,this.googleSignIn);
+  CoursesHomePage(this.student,this.googleSignIn,this.resultcat);
   @override
-  _coursesHomePageState createState() => _coursesHomePageState(student,googleSignIn);
+  _coursesHomePageState createState() => _coursesHomePageState(student,googleSignIn,this.resultcat);
 }
 
 class _coursesHomePageState extends State<CoursesHomePage> {
   Student student;
   GoogleSignIn googleSignIn;
+  var  resultcat;
 
 
-  _coursesHomePageState(this.student,this.googleSignIn);
+
+
+
+  _coursesHomePageState(this.student,this.googleSignIn,this.resultcat);
   @override
   Widget build(BuildContext context) {
+
+
+
+
+
+
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -46,6 +62,9 @@ class _coursesHomePageState extends State<CoursesHomePage> {
 
                       page: StudentActivity(student,this.googleSignIn)
                     ));
+
+
+
 
                   }
 
@@ -89,13 +108,19 @@ class _coursesHomePageState extends State<CoursesHomePage> {
                 ],
               )
               ,SizedBox(height: 50,),
-              Expanded(child: StaggeredGridView.countBuilder(crossAxisCount: 2,itemCount: categories.length,crossAxisSpacing: 20,mainAxisSpacing: 20, itemBuilder: (context,index){
+              Expanded(child: StaggeredGridView.countBuilder(crossAxisCount: 2,itemCount: this.resultcat.length,crossAxisSpacing: 20,mainAxisSpacing: 20, itemBuilder: (context,index){
 
                 return GestureDetector(
-                  onTap: (){
+                  onTap: ()async{
+
+                    QuerySnapshot<Map<String, dynamic>> catcourses= await FirebaseFirestore.instance.collection("CoursesData").doc(this.resultcat[index]["name"]).collection("Courses").get();
+
+
                     Navigator.of(context).pushReplacement(SlideRightRoute(
 
-                        page: CourseDetailsScreen(student,googleSignIn,categories[index])
+
+
+                        page: CourseCategoryPage(student,googleSignIn,this.resultcat[index]["name"],this.resultcat[index]["Courses"],catcourses)
                     ));
                   },
                   child: Container(
@@ -108,7 +133,7 @@ class _coursesHomePageState extends State<CoursesHomePage> {
 
                       borderRadius: BorderRadius.circular(10),
                       image: DecorationImage(
-                        image: AssetImage(categories[index].image),
+                        image: AssetImage('assets/images/download.jpg'),
                         fit: BoxFit.fill
                       )
                     ),
@@ -117,12 +142,14 @@ class _coursesHomePageState extends State<CoursesHomePage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(categories[index].name,style: TextStyle(
+
+                          Text(resultcat[index]["name"],style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20
 
                           ),),
-                          Text("${categories[index].numofCourses} Courses",style: TextStyle(
+
+                          Text("${resultcat[index]["Courses"]} Courses",style: TextStyle(
                             fontWeight: FontWeight.w600,color: Colors.black87
                           ),)
 

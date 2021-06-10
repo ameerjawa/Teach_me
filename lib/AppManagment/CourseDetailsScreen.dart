@@ -1,19 +1,45 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:teach_me/AppManagment/CourseCategoryPage.dart';
 import 'package:teach_me/AppManagment/CoursesHomepage.dart';
 import 'package:teach_me/DBManagment/Category.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class CourseDetailsScreen extends StatelessWidget {
+// ignore: must_be_immutable
+class CourseDetailsScreen extends StatefulWidget {
 
-
+  String name;
+  int coursescount;
   Student student;
   GoogleSignIn googleSignIn;
-  Category category;
+  QuerySnapshot<Map<String, dynamic>> resultcat;
+  Map<String, dynamic> course;
 
-  CourseDetailsScreen(this.student,this.googleSignIn,this.category);
+
+
+  CourseDetailsScreen(this.student,this.googleSignIn,this.name,this.coursescount,this.resultcat,this.course);
+
+
+
+  @override
+  _CourseDetailsScreenState createState() => _CourseDetailsScreenState();
+}
+
+class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
+  bool _ispressed=false;
+
+  @override
+  void setState(fn) {
+    // TODO: implement setState
+    super.setState(fn);
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +52,7 @@ class CourseDetailsScreen extends StatelessWidget {
         image: DecorationImage(
 
 
-          image: AssetImage(this.category.image),
+          image: AssetImage('assets/images/download.jpg'),
           alignment: Alignment.topRight
 
 
@@ -45,7 +71,7 @@ class CourseDetailsScreen extends StatelessWidget {
                         iconSize: 50,
                         onPressed: () {
                           Navigator.of(context).pushReplacement(SlideRightRoute(
-                              page:CoursesHomePage(student,googleSignIn)
+                              page:CourseCategoryPage(widget.student,widget.googleSignIn,this.widget.name,this.widget.coursescount, widget.resultcat)
                           ));
 
                         }
@@ -56,7 +82,7 @@ class CourseDetailsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 46,),
 
-                   Text(this.category.name,style: TextStyle(
+                   Text(this.widget.course["CourseName"],style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,fontSize: 30
                   ),),
@@ -98,108 +124,241 @@ class CourseDetailsScreen extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(child: Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: Colors.white
-            ),
-            child: SingleChildScrollView(
-              child: Stack(
-                children:[Padding(padding: EdgeInsets.all(30),child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text("Course content",style: TextStyle(
-                      fontWeight: FontWeight.bold,fontSize: 20
-                    ),),
-                    SizedBox(height: 20,),
-                  CourseContent(number: "01",duration: 5.25,title: "Welcome to the Course",isDone: true,),
-                    SizedBox(height: 5,),
-                    CourseContent(number: "02",duration: 3.25,title: "Welcome to second",),
-                    SizedBox(height: 5,),
-                    CourseContent(number: "03",duration: 4.55,title: "Welcome to the third",),
-                    SizedBox(height: 5,),
-                    CourseContent(number: "04",duration: 5.55,title: "Welcome to the four",),
-                    SizedBox(height: 5,),
-                    CourseContent(number: "05",duration: 2.25,title: "Welcome to the intro",),
-                    SizedBox(height: 5,),
-                    CourseContent(number: "01",duration: 5.25,title: "Welcome to the Course",isDone: true,),
-                    SizedBox(height: 5,),
-                    CourseContent(number: "02",duration: 3.25,title: "Welcome to second",),
-                    SizedBox(height: 5,),
-                    CourseContent(number: "03",duration: 4.55,title: "Welcome to the third",),
-                    SizedBox(height: 5,),
-                    CourseContent(number: "04",duration: 5.55,title: "Welcome to the four",),
-                    SizedBox(height: 5,),
-                    CourseContent(number: "05",duration: 2.25,title: "Welcome to the intro",),
-                    CourseContent(number: "01",duration: 5.25,title: "Welcome to the Course",isDone: true,),
-                    SizedBox(height: 5,),
-                    CourseContent(number: "02",duration: 3.25,title: "Welcome to second",),
-                    SizedBox(height: 5,),
-                    CourseContent(number: "03",duration: 4.55,title: "Welcome to the third",),
-                    SizedBox(height: 5,),
-                    CourseContent(number: "04",duration: 5.55,title: "Welcome to the four",),
-                    SizedBox(height: 5,),
-                    CourseContent(number: "05",duration: 2.25,title: "Welcome to the intro",),
-                  ],
-
-                ),),
-
-
-                ]
-              ),
-            ),
-          ),),
-          Positioned(
-            right: 0,
-            left: 0,
-            bottom: 0,
+          Expanded(
             child: Container(
-              padding: EdgeInsets.all(20),
+              height:double.infinity,
 
-              height: 100,
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(40),
-                  boxShadow: [BoxShadow(
-                      offset: Offset(0,4),
-                      blurRadius: 50,
-                      color: Colors.black26
-                  )]
+                borderRadius: BorderRadius.circular(50),
+                color: Colors.white
               ),
-              child: Row(
+              child: Padding(padding: EdgeInsets.all(30),child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    padding: EdgeInsets.all(14),
-                    height: 56,
-                    width: 80,
-                    decoration: BoxDecoration(
-                        color: Color(0xFFFFEDEE),
-                        borderRadius: BorderRadius.circular(40)
-                    ),
-                    child: Icon(Icons.shopping_bag_outlined),
-                  ),
-                  SizedBox(width: 20,),
-                  Expanded(
-                      child:Container(
-                        alignment: Alignment.center,
-                        height: 56,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40)
-                                ,color: Colors.pinkAccent
+                  Text("Course content",style: TextStyle(
+                    fontWeight: FontWeight.bold,fontSize: 20
+                  ),),
+                  SizedBox(height: 20,),
+                Flexible(
+                  flex: 1,
+                  child: ListView.builder(
+                    itemCount: this.widget.course["videoscount"],
+                         // shrinkWrap: true,
+                        itemBuilder: (context, position) {
+                      int number=0;
+
+                      String videoId;
+                      videoId = YoutubePlayer.convertUrlToId(this.widget.course["Videos"][position]);
+
+
+
+
+                      YoutubePlayerController _controller = YoutubePlayerController(
+                        initialVideoId: videoId,
+                        flags: YoutubePlayerFlags(
                         ),
-                        child: Text(
-                          "Enroll Now",style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold
-                        ),
-                        ),
-                      ))
+                      );
+
+
+                          return Column(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border:Border(bottom: BorderSide(
+                                    color: Colors.black26,
+                                    width: 1.0,
+                                  ))
+                                ),
+
+                                child: Padding(
+
+
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,                            children:<Widget>[
+                                      Row(
+                                        children: [
+                                          Text("${position<9?number:''}${position+1}",style: TextStyle(
+                                              fontWeight: FontWeight.bold,fontSize: 32
+                                          ),
+                                          ),
+                                          SizedBox(width: 20,),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+
+                                            children: <Widget>[
+                                              Text("${this.widget.course["Titles"][position]}")
+                                              ,
+                                              Text("5.25 mins",style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black26
+                                              ),),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+
+
+
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            shape:BoxShape.circle
+                                            ,color: Colors.greenAccent.withOpacity(true?1:0.5)
+                                        ),
+                                        child: Icon(Icons.play_arrow,color: Colors.white,),
+                                      )
+
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              YoutubePlayer(controller: _controller,liveUIColor: Colors.amber,)
+                            ],
+                          );
+                        },
+                  ) )
+
+
+                 //    ListView.builder(
+                 //      // shrinkWrap: true,
+                 //     itemBuilder: (context, position) {
+                 //       return Card(
+                 //         child: Padding(
+                 //           padding: const EdgeInsets.all(16.0),
+                 //           child: Text(position.toString(), style: TextStyle(fontSize: 22.0),),
+                 //         ),
+                 //       );
+                 //     },
+                 //            )
+                 //
+                 //
+                 //
+                 //
+                 //
+                 //
+
+
+                  // StaggeredGridView.countBuilder(crossAxisCount: 1,itemCount: this.course["videocount"],mainAxisSpacing: 20, itemBuilder: (context,index){
+                  //
+                  //   return GestureDetector(
+                  //     onTap: (){
+                  //
+                  //       Navigator.of(context).pushReplacement(SlideRightRoute(
+                  //
+                  //           // page: CourseDetailsScreen(student,googleSignIn,this.name,this.coursescount,this.catcourses,this.catcourses.docs.elementAt(index).data())
+                  //       ));
+                  //     },
+                  //     child:  CourseContent(number: "${++index}",duration: 3.25,title: this.course["Titles"][index],),
+                  //
+                  //   );
+                  // }, staggeredTileBuilder: (index)=>StaggeredTile.fit(1)),
+                  // SingleChildScrollView(
+                  //   child: ListView.separated(
+                  //     itemBuilder: (context, position) {
+                  //       return ListTile(onTap: (){
+                  //         setState(() {_ispressed=!_ispressed;});
+                  //       },leading: CourseContent(number: "${++position}",duration: 3.25,title: this.widget.course["Titles"][position],));
+                  //     },
+                  //     separatorBuilder: (context, position) {
+                  //       return Container();
+                  //     },
+                  //     itemCount: 1,
+                  //   ),
+                  // ),
+
+
+                  //
+                  // CourseContent(number: "01",duration: 5.25,title: "Welcome to the Course",isDone: true,),
+                  // SizedBox(height: 5,),
+                  //
+                  //
+                  //
+                  //
+                  // CourseContent(number: "02",duration: 3.25,title: "Welcome to second",),
+                  // SizedBox(height: 5,),
+                  // CourseContent(number: "03",duration: 4.55,title: "Welcome to the third",),
+                  // SizedBox(height: 5,),
+                  // CourseContent(number: "04",duration: 5.55,title: "Welcome to the four",),
+                  // SizedBox(height: 5,),
+                  // CourseContent(number: "05",duration: 2.25,title: "Welcome to the intro",),
+                  // SizedBox(height: 5,),
+                  // CourseContent(number: "01",duration: 5.25,title: "Welcome to the Course",isDone: true,),
+                  // SizedBox(height: 5,),
+                  // CourseContent(number: "02",duration: 3.25,title: "Welcome to second",),
+                  // SizedBox(height: 5,),
+                  // CourseContent(number: "03",duration: 4.55,title: "Welcome to the third",),
+                  // SizedBox(height: 5,),
+                  // CourseContent(number: "04",duration: 5.55,title: "Welcome to the four",),
+                  // SizedBox(height: 5,),
+                  // CourseContent(number: "05",duration: 2.25,title: "Welcome to the intro",),
+                  // CourseContent(number: "01",duration: 5.25,title: "Welcome to the Course",isDone: true,),
+                  // SizedBox(height: 5,),
+                  // CourseContent(number: "02",duration: 3.25,title: "Welcome to second",),
+                  // SizedBox(height: 5,),
+                  // CourseContent(number: "03",duration: 4.55,title: "Welcome to the third",),
+                  // SizedBox(height: 5,),
+                  // CourseContent(number: "04",duration: 5.55,title: "Welcome to the four",),
+                  // SizedBox(height: 5,),
+                  // CourseContent(number: "05",duration: 2.25,title: "Welcome to the intro",),
                 ],
-              ),
+
+              ),),
             ),
-          )
+          ),
+          // Positioned(
+          //   right: 0,
+          //   left: 0,
+          //   bottom: 0,
+          //   child: Container(
+          //     padding: EdgeInsets.all(20),
+          //
+          //     height: 100,
+          //     width: double.infinity,
+          //     decoration: BoxDecoration(
+          //         color: Colors.white,
+          //         borderRadius: BorderRadius.circular(40),
+          //         boxShadow: [BoxShadow(
+          //             offset: Offset(0,4),
+          //             blurRadius: 50,
+          //             color: Colors.black26
+          //         )]
+          //     ),
+          //     child: Row(
+          //       children: <Widget>[
+          //         Container(
+          //           padding: EdgeInsets.all(14),
+          //           height: 56,
+          //           width: 80,
+          //           decoration: BoxDecoration(
+          //               color: Color(0xFFFFEDEE),
+          //               borderRadius: BorderRadius.circular(40)
+          //           ),
+          //           child: Icon(Icons.shopping_bag_outlined),
+          //         ),
+          //         SizedBox(width: 20,),
+          //         Expanded(
+          //             child:Container(
+          //               alignment: Alignment.center,
+          //               height: 56,
+          //               decoration: BoxDecoration(
+          //                   borderRadius: BorderRadius.circular(40)
+          //                       ,color: Colors.pinkAccent
+          //               ),
+          //               child: Text(
+          //                 "Enroll Now",style: TextStyle(
+          //                   color: Colors.white,
+          //                   fontWeight: FontWeight.bold
+          //               ),
+          //               ),
+          //             ))
+          //       ],
+          //     ),
+          //   ),
+          // )
 
         ],
       ),

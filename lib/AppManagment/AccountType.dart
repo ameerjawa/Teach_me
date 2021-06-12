@@ -187,7 +187,11 @@ class AccountType extends StatelessWidget {
                                     fontFamily: BtnFont
                                   ),
                                 ),
-                                onPressed: () {
+                                onPressed: () async{
+                                  CollectionReference citiescollection=FirebaseFirestore.instance.collection("Cities");
+                                  DocumentSnapshot<Object> cities= await citiescollection.doc("eF4F8hC9Y6QJjm1fRXXN").get();
+                                  List<dynamic> citiesList=cities.get("cities");
+
                                   if(userObj!=null){
                                     String email = userObj.email;
                                     String fullname=userObj.displayName;
@@ -199,7 +203,7 @@ class AccountType extends StatelessWidget {
                                   }else{
                                     Student student= Student(this.auth.currentUser.email, "password", "verifyPassword", "userObj.displayName", "birthDate", "phoneNumber", "location",true);
                                     Navigator.of(context).pushReplacement(SlideRightRoute(
-                                        page: SignUpStudent(student:student)
+                                        page: SignUpStudent(student:student,citiesList:citiesList)
 
                                     ));
                                   }

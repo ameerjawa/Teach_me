@@ -68,23 +68,23 @@ flutter:
   fonts:
      - family: Schyler
        fonts:
-          - asset: fonts/MyFlutterApp.ttf
+          - asset: assets/fonts/MyFlutterApp.ttf
      - family: Kaushan
        fonts:
-          - asset: fonts/KaushanScript-Regular.ttf
+          - asset: assets/fonts/KaushanScript-Regular.ttf
 
      - family: NothingYouCouldDo
        fonts:
-             - asset: fonts/NothingYouCouldDo-Regular.ttf
-             - weight: 700
+          - asset: assets/fonts/NothingYouCouldDo-Regular.ttf
+          - weight: 700
      - family: EncodeSansExpanded-Medium
        fonts:
-             - asset: fonts/EncodeSansExpanded-Medium.ttf
-             - weight: 700
+          - asset: assets/fonts/EncodeSansExpanded-Medium.ttf
+          - weight: 700
      - family: WendyOne-Regular
        fonts:
-             - asset: fonts/WendyOne-Regular.ttf
-             - weight: 700
+          - asset: assets/fonts/WendyOne-Regular.ttf
+          - weight: 700
   assets:
    - assets/images/
   # The following line ensures that the Material Icons font is

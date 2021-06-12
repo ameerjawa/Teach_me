@@ -17,11 +17,12 @@ import '../DBManagment/firebase.dart';
 
 class SignUpStudent extends StatefulWidget {
   final Student student;
+  List<dynamic> citiesList;
 
-  const SignUpStudent({Key key, this.student}) : super(key: key);
+   SignUpStudent({Key key, this.student,this.citiesList}) : super(key: key);
 
   @override
-  SignUpStudentState createState() => SignUpStudentState(student);
+  SignUpStudentState createState() => SignUpStudentState(student,this.citiesList);
 }
 
 class SignUpStudentState extends State<SignUpStudent> {
@@ -36,10 +37,11 @@ class SignUpStudentState extends State<SignUpStudent> {
   String googlePhotoUrl;
   GoogleSignIn googleSignIn;
   Student student;
+  List<dynamic> citiesList;
   List locations = ["all", "Haifa", "TelAviv", "faradis", "BatYam"];
   final _formKey = GlobalKey<FormState>();
 
-  SignUpStudentState(this.student);
+  SignUpStudentState(this.student,this.citiesList);
 
   Widget build(BuildContext context) {
     // if (this._userObj!=null){
@@ -204,7 +206,7 @@ class SignUpStudentState extends State<SignUpStudent> {
                               }
 
                               // The logic to find out which ones should appear
-                              return locations.where((suggestion) => suggestion
+                              return this.citiesList.where((suggestion) => suggestion
                                   .toLowerCase()
                                   .startsWith(value.text.toLowerCase()));
                             },

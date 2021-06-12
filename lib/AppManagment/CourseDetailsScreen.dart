@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/CourseCategoryPage.dart';
-import 'package:teach_me/AppManagment/CoursesHomepage.dart';
-import 'package:teach_me/DBManagment/Category.dart';
+
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -33,6 +31,13 @@ class CourseDetailsScreen extends StatefulWidget {
 class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
   bool _ispressed=false;
 
+
+
+
+
+
+
+
   @override
   void setState(fn) {
     // TODO: implement setState
@@ -42,6 +47,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
         body: Container(
       height: MediaQuery.of(context).size.height,
@@ -146,19 +153,23 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                     itemCount: this.widget.course["videoscount"],
                          // shrinkWrap: true,
                         itemBuilder: (context, position) {
-                      int number=0;
-
-                      String videoId;
-                      videoId = YoutubePlayer.convertUrlToId(this.widget.course["Videos"][position]);
-
+                        int number=0;
+                        String videoId;
+                        videoId = YoutubePlayer.convertUrlToId(this.widget.course["Videos"][position]);
 
 
 
-                      YoutubePlayerController _controller = YoutubePlayerController(
-                        initialVideoId: videoId,
-                        flags: YoutubePlayerFlags(
-                        ),
-                      );
+
+                        YoutubePlayerController _controller = YoutubePlayerController(
+                          initialVideoId: videoId,
+                          flags: YoutubePlayerFlags(
+                              autoPlay :false
+                          ),
+                        );
+
+
+
+
 
 
                           return Column(
@@ -202,21 +213,44 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
 
 
 
-                                      Container(
-                                        width: 40,
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                            shape:BoxShape.circle
-                                            ,color: Colors.greenAccent.withOpacity(true?1:0.5)
+                                      GestureDetector(
+                                        onTap: (){
+                                          setState(() {_ispressed=!_ispressed; });
+                                        },
+                                        child: Container(
+                                          width: 40,
+                                          height: 40,
+                                          decoration: BoxDecoration(
+                                              shape:BoxShape.circle
+                                              ,color: Colors.greenAccent.withOpacity(true?1:0.5)
+                                          ),
+                                          child: Icon(Icons.play_arrow,color: Colors.white,),
                                         ),
-                                        child: Icon(Icons.play_arrow,color: Colors.white,),
                                       )
 
                                     ],
                                   ),
                                 ),
                               ),
-                              YoutubePlayer(controller: _controller,liveUIColor: Colors.amber,)
+                              // _ispressed?YoutubePlayer(controller: _controller,liveUIColor: Colors.amber,):Container(height: 0,)
+                              YoutubePlayerBuilder(player: YoutubePlayer(controller: _controller,liveUIColor: Colors.amber,),builder: (context,player){
+                                return Column(
+                                  children: [
+                                    player,
+                                  ],
+                                );
+
+
+                              },),
+                              Container(
+                                decoration: BoxDecoration(
+                                    border:Border(bottom: BorderSide(
+                                      color: Colors.black26,
+                                      width: 1.0,
+                                    ))
+                                ),
+                                height: 10,
+                              ),
                             ],
                           );
                         },

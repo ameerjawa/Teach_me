@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/CourseCategoryPage.dart';
+import 'package:teach_me/AppManagment/showVideoFromCourse.dart';
 
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/routes/pageRouter.dart';
@@ -30,6 +31,8 @@ class CourseDetailsScreen extends StatefulWidget {
 
 class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
   bool _ispressed=false;
+  YoutubePlayerController _controller;
+
 
 
 
@@ -49,7 +52,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
   Widget build(BuildContext context) {
 
 
-    return Scaffold(
+
+      return Scaffold(
         body: Container(
       height: MediaQuery.of(context).size.height,
       width:  MediaQuery.of(context).size.width,
@@ -65,7 +69,9 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
 
         )
       ),
-      child: Column(
+      child:   YoutubePlayerBuilder(onEnterFullScreen: (){
+
+      },player: YoutubePlayer(controller: _controller,), builder:(context,player){ return Column(
         children: [
           Padding(
             padding: EdgeInsets.only(left: 20,top: 50,right: 20),
@@ -149,10 +155,15 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                   SizedBox(height: 20,),
                 Flexible(
                   flex: 1,
-                  child: ListView.builder(
+                  child: this.widget.course["videoscount"]==0?Center(child: Text("No Video Found")):ListView.builder(
                     itemCount: this.widget.course["videoscount"],
                          // shrinkWrap: true,
                         itemBuilder: (context, position) {
+
+
+
+
+
                         int number=0;
                         String videoId;
                         videoId = YoutubePlayer.convertUrlToId(this.widget.course["Videos"][position]);
@@ -160,12 +171,6 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
 
 
 
-                        YoutubePlayerController _controller = YoutubePlayerController(
-                          initialVideoId: videoId,
-                          flags: YoutubePlayerFlags(
-                              autoPlay :false
-                          ),
-                        );
 
 
 
@@ -187,7 +192,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
 
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,                            children:<Widget>[
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween, children:<Widget>[
                                       Row(
                                         children: [
                                           Text("${position<9?number:''}${position+1}",style: TextStyle(
@@ -215,7 +220,12 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
 
                                       GestureDetector(
                                         onTap: (){
-                                          setState(() {_ispressed=!_ispressed; });
+                                          Navigator.of(context).push(
+                                              SlideRightRoute(
+                                                  page: ShowVideoFromCourse(videoId,this.widget.course)
+                                              ));
+
+
                                         },
                                         child: Container(
                                           width: 40,
@@ -232,16 +242,12 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                   ),
                                 ),
                               ),
-                              // _ispressed?YoutubePlayer(controller: _controller,liveUIColor: Colors.amber,):Container(height: 0,)
-                              YoutubePlayerBuilder(player: YoutubePlayer(controller: _controller,liveUIColor: Colors.amber,),builder: (context,player){
-                                return Column(
-                                  children: [
-                                    player,
-                                  ],
-                                );
+                               // _ispressed?YoutubePlayer(controller: _controller,liveUIColor: Colors.amber,):Container
 
+                              //  YoutubePlayer(controller: _controller,liveUIColor: Colors.amber,
+                              // //   progressIndicatorColor: Colors.white,
+                              // ),
 
-                              },),
                               Container(
                                 decoration: BoxDecoration(
                                     border:Border(bottom: BorderSide(
@@ -395,7 +401,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
           // )
 
         ],
-      ),
+      );}),
 
     ));
   }

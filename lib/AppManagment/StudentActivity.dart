@@ -18,6 +18,7 @@ import 'sign_in.dart';
 class StudentActivity extends StatelessWidget {
   Student student;
   GoogleSignIn googleSignIn;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
 
   final _auth = FirebaseAuth.instance;
@@ -33,6 +34,7 @@ class StudentActivity extends StatelessWidget {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      key: _scaffoldKey,
 
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -170,30 +172,38 @@ class StudentActivity extends StatelessWidget {
           //  borderRadius: BorderRadius.circular(30),
           ),
           child: TextButton(
-
-
             onPressed: ()async{
 
-
-              // List<String> Titles=["HTML & CSS Crash Course Tutorial #1 - Introduction","HTML & CSS Crash Course Tutorial #2 - HTML Basics","HTML & CSS Crash Course Tutorial #3 - HTML Forms","HTML & CSS Crash Course Tutorial #4 - CSS Basics","HTML & CSS Crash Course Tutorial #5 - CSS Classes & Selectors","HTML & CSS Crash Course Tutorial #6 - HTML 5 Semantics","HTML & CSS Crash Course Tutorial #7 - Chrome Dev Tools","HTML & CSS Crash Course Tutorial #8 - CSS Layout & Position","HTML & CSS Crash Course Tutorial #9 - Pseudo Classes & Elements","HTML & CSS Crash Course Tutorial #10 - Intro to Media Queries","HTML & CSS Crash Course Tutorial #11 - Next Steps"];
-              // List<String> Videos= ["https://www.youtube.com/watch?v=hu-q2zYwEYs&list=PL4cUxeGkcC9ivBf_eKCPIAYXWzLlPAm6G","https://www.youtube.com/watch?v=mbeT8mpmtHA&list=PL4cUxeGkcC9ivBf_eKCPIAYXWzLlPAm6G&index=2","https://www.youtube.com/watch?v=YwbIeMlxZAU&list=PL4cUxeGkcC9ivBf_eKCPIAYXWzLlPAm6G&index=3","https://www.youtube.com/watch?v=D3iEE29ZXRM&list=PL4cUxeGkcC9ivBf_eKCPIAYXWzLlPAm6G&index=4","https://www.youtube.com/watch?v=FHZn6706e3Q&list=PL4cUxeGkcC9ivBf_eKCPIAYXWzLlPAm6G&index=5","https://www.youtube.com/watch?v=kGW8Al_cga4&list=PL4cUxeGkcC9ivBf_eKCPIAYXWzLlPAm6G&index=6","https://www.youtube.com/watch?v=25R1Jl5P7Mw&list=PL4cUxeGkcC9ivBf_eKCPIAYXWzLlPAm6G&index=7","https://www.youtube.com/watch?v=XQaHAAXIVg8&list=PL4cUxeGkcC9ivBf_eKCPIAYXWzLlPAm6G&index=8","https://www.youtube.com/watch?v=FMu2cKWD90g&list=PL4cUxeGkcC9ivBf_eKCPIAYXWzLlPAm6G&index=9","https://www.youtube.com/watch?v=Xig7NsIE6DI&list=PL4cUxeGkcC9ivBf_eKCPIAYXWzLlPAm6G&index=10","https://www.youtube.com/watch?v=qES0HypsUK0&list=PL4cUxeGkcC9ivBf_eKCPIAYXWzLlPAm6G&index=11"];
+                     ////////////////// ADD Courses To DB ///////////////////////
 
 
+              // await  FirebaseFirestore.instance.collection("CoursesData").doc("Math").collection("Courses").add(
+              //     {"CourseName":"Partial Differential Equations","Titles":Titles,"Videos":Videos,"videoscount":10});
+              _scaffoldKey.currentState.showSnackBar(
+                  new SnackBar(duration: new Duration(seconds: 3), content:
+                  new Row(
+                    children: <Widget>[
+                      new CircularProgressIndicator(),
+                      SizedBox(width: 30,),
+                      new Text(" Moving to Courses ")
+                    ],
+                  ),
+                  ));
 
-            // await  FirebaseFirestore.instance.collection("CoursesData").doc("Html").collection("Courses").add(
-            //       {"CourseName":"Html & css","Titles":Titles,"Videos":Videos});
+              var resultcat=  await getcategoriesFromFireBase();
+
+                  Navigator.of(context).pushReplacement(SlideRightRoute(
+                      page: CoursesHomePage(
+                          student,googleSignIn,resultcat)
+
+                  ));
 
 
 
 
-              var resultcat=await getcategoriesFromFireBase();
 
 
-              Navigator.of(context).pushReplacement(ScaleRoute(
-                  page: CoursesHomePage(
-                    student,googleSignIn,resultcat)
 
-              ));
             },
             child:
             Text("Courses", style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: BtnFont))

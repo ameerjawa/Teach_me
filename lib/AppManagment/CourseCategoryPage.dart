@@ -38,6 +38,8 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
 
 
   Student student;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
 
   _CourseCategoryPageState(this.student,this.googleSignIn,this.name,this.coursescount,this.catcourses);
 
@@ -48,6 +50,7 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
 
 
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width:  MediaQuery.of(context).size.width,
@@ -64,11 +67,27 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
                   iconSize: 30,
                   onPressed: () async{
 
-                    var resultcat=await getcategoriesFromFireBase();
+
+                    _scaffoldKey.currentState.showSnackBar(
+                        new SnackBar(duration: new Duration(seconds: 3), content:
+                        new Row(
+                          children: <Widget>[
+                            new CircularProgressIndicator(),
+                            SizedBox(width: 30,),
+                            new Text(" Moving to Courses ")
+                          ],
+                        ),
+                        ));
+
+                    var resultcat=  await getcategoriesFromFireBase();
+
                     Navigator.of(context).pushReplacement(SlideRightRoute(
 
-                      page: CoursesHomePage(student,this.googleSignIn,resultcat)
+                        page: CoursesHomePage(student,this.googleSignIn,resultcat)
                     ));
+
+
+
 
 
 

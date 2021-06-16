@@ -4,17 +4,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:teach_me/AppManagment/AccountType.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/UsersScreens/Account_Type_Screen.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:teach_me/Constants/constants.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
-import 'package:teach_me/routes/pageRouter.dart';
-import 'file:///D:/ameer/teach_me/lib/DBManagment/firebase.dart';
+import 'package:teach_me/AppManagment/routes/pageRouter.dart';
+import 'file:///D:/ameer/teach_me/lib/DBManagment/FireBase_Service.dart';
 
-import 'TeacherlessionsDetails.dart';
+import 'Sign_Up_Lessions_Details_Screen.dart';
 
 
 

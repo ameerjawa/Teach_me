@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
-import 'package:teach_me/Constants/constants.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 

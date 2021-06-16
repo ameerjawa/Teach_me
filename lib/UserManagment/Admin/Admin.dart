@@ -3,7 +3,7 @@
 import 'package:teach_me/DBManagment/Course.dart';
 import 'package:teach_me/DBManagment/Exam.dart';
 
-import '../../DBManagment/firebase.dart';
+import '../../DBManagment/FireBase_Service.dart';
 import '../Userbg.dart';
 
 class Admin extends Userbg{

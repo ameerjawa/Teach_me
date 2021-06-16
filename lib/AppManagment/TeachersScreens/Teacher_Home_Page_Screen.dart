@@ -7,12 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:teach_me/AppManagment/EditProfile_For_Teacher.dart';
-import 'package:teach_me/AppManagment/Lessons.dart';
-import 'package:teach_me/AppManagment/Search_for_student.dart';
-import 'package:teach_me/AppManagment/StudentActivity.dart';
-import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
-import 'package:teach_me/Constants/constants.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Edit_Profile_For_Teacher_Screen.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Lessons/Lessons_Screen.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Search_.For_Student_Screen.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Student_Activity_Home_Screen.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Search_For_Teacher_Result_Second_Screen.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 
 

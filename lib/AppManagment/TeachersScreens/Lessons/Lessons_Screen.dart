@@ -4,13 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:teach_me/Constants/constants.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
-import 'package:teach_me/routes/pageRouter.dart';
+import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
-import 'AddNewLesson.dart';
-import 'Teacher_Homepage.dart';
+import 'Add_New_Lesson_Screen.dart';
+import '../Teacher_Home_Page_Screen.dart';
 
 
 

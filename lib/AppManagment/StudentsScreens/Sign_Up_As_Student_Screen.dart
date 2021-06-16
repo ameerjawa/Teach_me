@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:teach_me/AppManagment/AccountType.dart';
-import 'package:teach_me/AppManagment/StudentActivity.dart';
-import 'package:teach_me/Constants/constants.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/UsersScreens/Account_Type_Screen.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Student_Activity_Home_Screen.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
-import 'package:teach_me/routes/pageRouter.dart';
+import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
-import '../DBManagment/firebase.dart';
+import '../../DBManagment/FireBase_Service.dart';
 
 class SignUpStudent extends StatefulWidget {
   final Student student;

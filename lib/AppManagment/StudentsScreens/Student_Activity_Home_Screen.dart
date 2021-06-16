@@ -3,15 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:teach_me/AppManagment/CoursesHomepage.dart';
-import 'package:teach_me/AppManagment/search_for_teacher_StudentActivity.dart';
-import 'package:teach_me/Constants/constants.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/CoursesScreens/Courses_Home_Screen.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Search_For_Teacher_First_Screen.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/DBManagment/Category.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
-import 'package:teach_me/routes/pageRouter.dart';
+import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
 
-import 'sign_in.dart';
+import '../UsersScreens/Sign_in_Screen.dart';
 
 
 // ignore: must_be_immutable

@@ -1,16 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:teach_me/AppManagment/CourseCategoryPage.dart';
-import 'package:teach_me/AppManagment/CourseDetailsScreen.dart';
-import 'package:teach_me/AppManagment/StudentActivity.dart';
-import 'package:teach_me/Constants/constants.dart';
-import 'package:teach_me/DBManagment/Category.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/CoursesScreens/Courses_in_Category_Screen.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Student_Activity_Home_Screen.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:teach_me/routes/pageRouter.dart';
+import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
 class CoursesHomePage extends StatefulWidget {
   Student student;

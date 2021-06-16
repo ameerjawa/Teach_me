@@ -2,8 +2,7 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:teach_me/DBManagment/firebase.dart';
+
 
 class Category{
   final String name;

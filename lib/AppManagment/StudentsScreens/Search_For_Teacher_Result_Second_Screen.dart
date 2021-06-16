@@ -5,13 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
-import 'package:teach_me/AppManagment/search_for_teacher_StudentActivity.dart';
-import 'package:teach_me/Constants/constants.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
-import 'package:teach_me/routes/pageRouter.dart';
-import 'search_for_teacher_StudentActivity.dart';
+import 'package:teach_me/AppManagment/routes/pageRouter.dart';
+import 'Search_For_Teacher_First_Screen.dart';
 
 
 

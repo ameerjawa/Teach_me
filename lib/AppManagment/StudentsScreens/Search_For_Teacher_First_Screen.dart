@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:teach_me/AppManagment/StudentActivity.dart';
-import 'package:teach_me/AppManagment/search_for_teacher_viewTeachers.dart';
-import 'package:teach_me/Constants/constants.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Student_Activity_Home_Screen.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Search_For_Teacher_Result_Second_Screen.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
-import 'package:teach_me/routes/pageRouter.dart';
+import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
 // ignore: must_be_immutable
 class SearchForTeacherStudentActivity extends StatefulWidget {

@@ -1,18 +1,18 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/Sign_Up_Student.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Sign_Up_As_Student_Screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:teach_me/AppManagment/StudentActivity.dart';
-import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
-import 'package:teach_me/Constants/constants.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Student_Activity_Home_Screen.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
-import 'package:teach_me/routes/pageRouter.dart';
+import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
 
-import 'Sign_Up_Teacher.dart';
-import 'sign_in.dart';
+import '../TeachersScreens/Sign_Up_As_Teacher_Screen.dart';
+import 'Sign_in_Screen.dart';
 
 // ignore: must_be_immutable
 class AccountType extends StatelessWidget {

@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:teach_me/DBManagment/Lession.dart';
 import 'file:///D:/ameer/teach_me/lib/UserManagment/TeacherManagment/TeacherProfiles.dart';
 
-import '../../DBManagment/firebase.dart';
+import '../../DBManagment/FireBase_Service.dart';
 import '../Userbg.dart';
 
 class Teacher extends Userbg with TeacherProfiles{

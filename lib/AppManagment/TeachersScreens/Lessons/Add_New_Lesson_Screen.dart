@@ -7,10 +7,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:teach_me/Constants/constants.dart';
-import 'package:teach_me/routes/pageRouter.dart';
-import '../DBManagment/firebase.dart';
-import 'Lessons.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
+import 'package:teach_me/AppManagment/routes/pageRouter.dart';
+import '../../../DBManagment/FireBase_Service.dart';
+import 'Lessons_Screen.dart';
 
 // ignore: must_be_immutable
 class AddNewLesson extends StatefulWidget {

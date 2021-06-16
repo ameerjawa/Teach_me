@@ -9,12 +9,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:teach_me/AppManagment/Teacher_Homepage.dart';
-import 'package:teach_me/Constants/constants.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
-import 'package:teach_me/routes/pageRouter.dart';
-import 'Edit_Lesson_information.dart';
-import 'file:///D:/ameer/teach_me/lib/DBManagment/firebase.dart';
+import 'package:teach_me/AppManagment/routes/pageRouter.dart';
+import 'Update_Lesson_information_Screen.dart';
+import 'file:///D:/ameer/teach_me/lib/DBManagment/FireBase_Service.dart';
 
 
 

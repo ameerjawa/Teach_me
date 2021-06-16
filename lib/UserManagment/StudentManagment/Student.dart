@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'file:///D:/ameer/teach_me/lib/UserManagment/TeacherManagment/TeacherProfiles.dart';
 
-import '../../DBManagment/firebase.dart';
+import '../../DBManagment/FireBase_Service.dart';
 import '../Userbg.dart';
 
 class Student extends Userbg implements TeacherProfiles{

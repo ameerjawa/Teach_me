@@ -4,11 +4,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:teach_me/AppManagment/sign_in.dart';
-import 'package:teach_me/routes/pageRouter.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/UsersScreens/Sign_in_Screen.dart';
+import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import 'Constants/constants.dart';
+import '../../AppManagment/Constants/constants.dart';
 
 
 

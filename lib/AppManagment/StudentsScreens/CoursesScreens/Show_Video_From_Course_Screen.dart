@@ -2,8 +2,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:teach_me/AppManagment/CourseDetailsScreen.dart';
-import 'package:teach_me/routes/pageRouter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ShowVideoFromCourse extends StatefulWidget {

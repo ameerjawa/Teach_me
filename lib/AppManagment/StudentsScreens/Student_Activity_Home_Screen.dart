@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'ExamsScreens/Exams_Home_Screen.dart';
+import 'Search_for_Teacher_ScreenS/Search_For_Teacher_First_Screen.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/CoursesScreens/Courses_Home_Screen.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Search_For_Teacher_First_Screen.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Search_for_Teacher_ScreenS/Search_For_Teacher_First_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/DBManagment/Category.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
@@ -16,6 +18,7 @@ import '../UsersScreens/Sign_in_Screen.dart';
 
 // ignore: must_be_immutable
 class StudentActivity extends StatelessWidget {
+
   Student student;
   GoogleSignIn googleSignIn;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -144,7 +147,12 @@ class StudentActivity extends StatelessWidget {
           //  borderRadius: BorderRadius.circular(30),
         ),
           child: TextButton(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.of(context).pushReplacement(ScaleRoute(
+                  page: ExamsHomeScreen()
+
+              ));
+            },
             child:
             Text("Level Exams",
             style: TextStyle(fontSize: 20, color: Colors.white,fontFamily: BtnFont))

@@ -11,7 +11,7 @@ import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Edit_Profile_
 import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Lessons/Lessons_Screen.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Search_.For_Student_Screen.dart';
 import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Student_Activity_Home_Screen.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Search_For_Teacher_Result_Second_Screen.dart';
+import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Search_for_Teacher_Screens/Search_For_Teacher_Result_Second_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 

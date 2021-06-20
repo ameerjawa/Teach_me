@@ -67,6 +67,8 @@ var resultcategories=getcategoriesFromFireBase();
 
 
 
+
+
 getCoursesFromFireBaseincategory(){
 
 }

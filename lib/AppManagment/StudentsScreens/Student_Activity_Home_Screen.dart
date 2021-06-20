@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:teach_me/DBManagment/Exam.dart';
+import 'package:teach_me/DBManagment/FireBase_Service.dart';
 import 'ExamsScreens/Exams_Home_Screen.dart';
 import 'Search_for_Teacher_ScreenS/Search_For_Teacher_First_Screen.dart';
 import 'CoursesScreens/Courses_Home_Screen.dart';
@@ -146,9 +148,23 @@ class StudentActivity extends StatelessWidget {
           //  borderRadius: BorderRadius.circular(30),
         ),
           child: TextButton(
-            onPressed: (){
+            onPressed: ()async{
+
+                List<dynamic> result=[];
+
+
+            await  getExamsFromFireBase().then((value) => {
+
+              result.add(value)
+
+              });
+
+
+
+
+            print(result[0][1]);
               Navigator.of(context).pushReplacement(ScaleRoute(
-                  page: ExamsHomeScreen()
+                  page: ExamsHomeScreen(student,googleSignIn,result)
 
               ));
             },

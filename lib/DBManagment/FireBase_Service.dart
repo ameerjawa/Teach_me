@@ -101,7 +101,7 @@ Future<List<dynamic>> getCoursesFromFireBase(String subject)async
 
 
 
-Future<List<dynamic>> getExamsFromFireBase(String subject)async{
+Future<List<dynamic>> getExamsFromFireBase()async{
 
 
 
@@ -110,9 +110,9 @@ Future<List<dynamic>> getExamsFromFireBase(String subject)async{
     QuerySnapshot exams = await FirebaseFirestore.instance.collection(
         "Exams").get();
     exams.docs.forEach((element) {
-      if (element.get(FieldPath(["ExamSubject"])) == subject) {
+
         resultExams.add(element.data());
-      }
+
     });
     return resultExams;
 

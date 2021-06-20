@@ -1,5 +1,8 @@
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/widgets.dart';
+
 class Exam{
   final String examName;
   final String examSubject;
@@ -9,4 +12,25 @@ class Exam{
   Exam(this.examName, this.examSubject, this.questions, this.answers);
 
 
+
+
+
+
+
 }
+
+// Future<List<Map<String,dynamic>>> getExamsFromFireBase() async {
+//   QuerySnapshot<dynamic> d = await FirebaseFirestore.instance.collection(
+//       'Exams').get();
+//   List<dynamic> examsList = [];
+//
+//   d.docs.forEach((element) {
+//     examsList.add(element);
+//   });
+//
+//
+//
+//
+//   debugPrint( examsList.toString());
+//
+// }

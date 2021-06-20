@@ -65,7 +65,7 @@ class Student extends Userbg implements TeacherProfiles{
   Future<List<dynamic>> searchForExams(String subject) async {
 
 
-    return await getExamsFromFireBase(subject);
+    return await getExamsFromFireBase();
 
   }
 

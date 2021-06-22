@@ -13,6 +13,10 @@ class ResultScreen extends StatefulWidget {
 
 class _ResultScreenState extends State<ResultScreen> with  SingleTickerProviderStateMixin {
 
+
+  List<String> images=["assets/images/bad.png","assets/images/good.png","assets/images/success.png"];
+  List<String> messages=["You Should Try Hard","You Can Do Better","You Did Very Will"];
+  String image="",message="";
   AnimationController _controller;
   Animation<double> _anim;
   final Rainbow _rb = Rainbow(spectrum: const [
@@ -30,6 +34,8 @@ class _ResultScreenState extends State<ResultScreen> with  SingleTickerProviderS
   ], rangeStart: 0.0, rangeEnd: 200.0);
 
 
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -39,6 +45,16 @@ class _ResultScreenState extends State<ResultScreen> with  SingleTickerProviderS
       vsync: this,
     )..forward()..repeat();
     _anim = bgValue.animate(_controller);
+    if((this.widget.mark*4)<50){
+      image=images[0];
+      message=messages[0];
+    }else if (50<=(this.widget.mark*4) && (this.widget.mark*4)<80){
+      image=images[1];
+      message=messages[1];
+    }else{
+      image=images[2];
+      message=messages[2];
+    }
 
   }
   Animatable<double> bgValue = Tween<double>(begin: 0.0, end: 30.0);
@@ -62,18 +78,21 @@ class _ResultScreenState extends State<ResultScreen> with  SingleTickerProviderS
 
           Expanded(flex: 6,
 
-          child: Center(
+          child: Padding(
+            padding: EdgeInsets.only(top: 30),
 
             child: Container(
 
 
                 decoration: BoxDecoration(
+                  
                   image: DecorationImage(
+                    
                     alignment: Alignment.center,
                     image: AssetImage(
 
-                       'assets/images/image2.jpg'),
-                    fit: BoxFit.fill,
+                       image),
+                    fit: BoxFit.contain,
                   ),
                   shape: BoxShape.circle,
 
@@ -101,7 +120,7 @@ class _ResultScreenState extends State<ResultScreen> with  SingleTickerProviderS
 
                         ),
                         padding: EdgeInsets.all(24.0),
-                        child: Text('congratulations You  Scored ${this.widget.mark*4}/100 marks',
+                        child: Text('${message} \n You  Scored ${this.widget.mark*4>100?100:this.widget.mark*4}/100 marks',
                         textAlign: TextAlign.center,
                         style: TextStyle( fontWeight: FontWeight.w600,fontSize: 30.0, fontFamily: 'Times New Roman',color: _rb[(_anim.value - 2) % 10]),), //shift one color backward
                       );

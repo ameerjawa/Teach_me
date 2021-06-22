@@ -134,6 +134,15 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                               return [];
                             }
 
+
+                            /********
+                             *
+                             * helper with mult selection
+                             * https://www.youtube.com/watch?v=8FVkuixvNHc
+                             * $---TODO---$
+                             *
+                             *******/
+
                             // The logic to find out which ones should appear
                             return this.subjects.where((suggestion) => suggestion
                                 .toLowerCase()

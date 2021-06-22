@@ -23,6 +23,8 @@ class _coursesHomePageState extends State<CoursesHomePage> {
   Student student;
   GoogleSignIn googleSignIn;
   var  resultcat;
+  String selectedCourse="";
+
 
 
 
@@ -32,7 +34,7 @@ class _coursesHomePageState extends State<CoursesHomePage> {
   @override
   Widget build(BuildContext context) {
 
-
+    var filteredlistcat=this.resultcat;
 
 
 
@@ -89,7 +91,17 @@ class _coursesHomePageState extends State<CoursesHomePage> {
                       Icons.search
                     ),
                     SizedBox(width: 20,),
-                    Text("Search for any Course",)
+                    TextField(onChanged: (value){
+
+                      setState(() {
+                        selectedCourse=value;
+
+                      });
+
+                    },decoration: InputDecoration(
+                      hintText: "Search for any Course",
+
+                    ),)
                   ],
                 ),
               ),
@@ -105,6 +117,8 @@ class _coursesHomePageState extends State<CoursesHomePage> {
               )
               ,SizedBox(height: 50,),
               Expanded(child: StaggeredGridView.countBuilder(crossAxisCount: 2,itemCount: this.resultcat.length,crossAxisSpacing: 20,mainAxisSpacing: 20, itemBuilder: (context,index){
+
+
 
                 return GestureDetector(
                   onTap: ()async{

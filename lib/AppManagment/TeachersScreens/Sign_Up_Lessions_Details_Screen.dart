@@ -127,33 +127,45 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                         height: 4,
                       ),
                       Container(
-                        child: Autocomplete(
-                          optionsBuilder: (TextEditingValue value) {
-                            // When the field is empty
-                            if (value.text.isEmpty) {
-                              return [];
-                            }
-
-
-                            /********
-                             *
-                             * helper with mult selection
-                             * https://www.youtube.com/watch?v=8FVkuixvNHc
-                             * $---TODO---$
-                             *
-                             *******/
-
-                            // The logic to find out which ones should appear
-                            return this.subjects.where((suggestion) => suggestion
-                                .toLowerCase()
-                                .startsWith(value.text.toLowerCase()));
+                        child: ListTile(
+                          onTap: (){
+                            // Navigator.pushReplacement(context, ScaleRoute(
+                            //   page: Subjects_Screen()
+                            // ));
                           },
-                          onSelected: (value) {
-                            setState(() {
-                              selectedSubject = value;
-                            });
-                          },
+                          title:Text(
+                              "Subjects",
+                            overflow:TextOverflow.ellipsis,
+                          ) ,
+                          trailing: Icon(Icons.arrow_drop_down),
                         ),
+                        // child: Autocomplete(
+                        //   optionsBuilder: (TextEditingValue value) {
+                        //     // When the field is empty
+                        //     if (value.text.isEmpty) {
+                        //       return [];
+                        //     }
+                        //
+                        //
+                        //     /********
+                        //      *
+                        //      * helper with mult selection
+                        //      * https://www.youtube.com/watch?v=8FVkuixvNHc
+                        //      * $---TODO---$
+                        //      *
+                        //      *******/
+                        //
+                        //     // The logic to find out which ones should appear
+                        //     return this.subjects.where((suggestion) => suggestion
+                        //         .toLowerCase()
+                        //         .startsWith(value.text.toLowerCase()));
+                        //   },
+                        //   onSelected: (value) {
+                        //     setState(() {
+                        //       selectedSubject = value;
+                        //     });
+                        //   },
+                        // ),
                       ),
                       SizedBox(
                         height: 15,
@@ -314,7 +326,7 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                           Navigator.of(context).pushReplacement(
                                               SlideRightRoute(
                                                   page: TeacherHomepage(
-                                                      isTeacher, s, "", "",this.auth,this.googleSignin)));
+                                                      isTeacher, s, "", "",this.auth,this.googleSignin,false)));
                                         }
                                       }),
                                   Text(
@@ -343,7 +355,11 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+
 }
+
+
 
 Future<void> moreTeacherDet(Map<String, dynamic> data,
     CollectionReference collectionReference, String userId) async {

@@ -264,7 +264,7 @@ class EditLessonInformationState extends State<EditLessonInformation> {
 
                                   Student s;
                                   Navigator.of(context).pushReplacement(SlideRightRoute(
-                                      page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn)
+                                      page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn,false)
                                   ));
                                 }, child:Text(
                                   'skip',
@@ -305,7 +305,7 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                                       isTeacher = await   teachers.doc(this.isTeacher.id).get();
                                       Student s;
                                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                                          page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn)
+                                          page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn,false)
                                       ));
 
 

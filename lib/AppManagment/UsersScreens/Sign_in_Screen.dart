@@ -229,7 +229,7 @@ class _MyHomePageState extends State<SignInUser> {
 
                               Student s;
                               Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                  builder: (context) => TeacherHomepage(isTeacher,s,"","",auth,this._googleSignIn)
+                                  builder: (context) => TeacherHomepage(isTeacher,s,"","",auth,this._googleSignIn,false)
                               ));
                             }else{
                               DocumentSnapshot student = await students.doc("${userCredential.user.uid}").get();

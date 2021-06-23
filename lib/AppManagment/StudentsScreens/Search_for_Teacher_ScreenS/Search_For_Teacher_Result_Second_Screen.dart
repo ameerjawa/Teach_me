@@ -20,16 +20,16 @@ class SearchForTeacherViewTeachers extends StatefulWidget {
   String selectedLocation;
   GoogleSignIn googleSignIn;
   Student s;
+  bool teacherCan;
   List<Teacher> teachers;
   final auth;
-  SearchForTeacherViewTeachers({ @required this.selectedSubject,@required this.selectedLocation,this.s,this.teachers,this.googleSignIn,this.auth}) : super();
+  SearchForTeacherViewTeachers({ @required this.selectedSubject,@required this.selectedLocation,this.s,this.teachers,this.googleSignIn,this.auth,this.teacherCan}) : super();
   SearchForTeacherState createState() => SearchForTeacherState(selectedSubject:this.selectedSubject,selectedLocation: this.selectedLocation ,s:this.s,teachers: this.teachers);
 
 
 }
 
 class SearchForTeacherState extends State<SearchForTeacherViewTeachers> {
-  bool showValue=false;
   String selectedSubject;
   String selectedLocation;
   Student s;
@@ -67,116 +67,106 @@ class SearchForTeacherState extends State<SearchForTeacherViewTeachers> {
           // in the middle of the parent.
 
 
-              child: Column(
-                // Column is also a layout widget. It takes a list of children and
-                // arranges them vertically. By default, it sizes itself to fit its
-                // children horizontally, and tries to be as tall as its parent.
-                //
-                // Invoke "debug painting" (press "p" in the console, choose the
-                // "Toggle Debug Paint" action from the Flutter Inspector in Android
-                // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-                // to see the wireframe for each widget.
-                //
-                // Column has various properties to control how it sizes itself and
-                // how it positions its children. Here we use mainAxisAlignment to
-                // center the children vertically; the main axis here is the vertical
-                // axis because Columns are vertical (the cross axis would be
-                // horizontal).
-                //mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(height: 20,),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          IconButton(
-                              icon: const Icon(Icons.arrow_back),
-                              iconSize: 50,
-                              alignment: Alignment.topLeft,
-                              onPressed: ()async {
+              child: SingleChildScrollView(
+                child: Column(
+                  // Column is also a layout widget. It takes a list of children and
+                  // arranges them vertically. By default, it sizes itself to fit its
+                  // children horizontally, and tries to be as tall as its parent.
+                  //
+                  // Invoke "debug painting" (press "p" in the console, choose the
+                  // "Toggle Debug Paint" action from the Flutter Inspector in Android
+                  // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+                  // to see the wireframe for each widget.
+                  //
+                  // Column has various properties to control how it sizes itself and
+                  // how it positions its children. Here we use mainAxisAlignment to
+                  // center the children vertically; the main axis here is the vertical
+                  // axis because Columns are vertical (the cross axis would be
+                  // horizontal).
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      SizedBox(height: 20,),
+                      Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            IconButton(
+                                icon: const Icon(Icons.arrow_back),
+                                iconSize: 50,
+                                alignment: Alignment.topLeft,
+                                onPressed: ()async {
 
-                                CollectionReference Subjectscollection =
-                                FirebaseFirestore.instance.collection("Subjects");
+                                  CollectionReference Subjectscollection =
+                                  FirebaseFirestore.instance.collection("Subjects");
 
-                                DocumentSnapshot<Object> subjects= await Subjectscollection.doc("rFoR8RQBWc49Rx159ljf").get();
-                                List<dynamic> subjectsList=subjects.get("subjects");
+                                  DocumentSnapshot<Object> subjects= await Subjectscollection.doc("rFoR8RQBWc49Rx159ljf").get();
+                                  List<dynamic> subjectsList=subjects.get("subjects");
 
-                                CollectionReference citiescollection=FirebaseFirestore.instance.collection("Cities");
-                                DocumentSnapshot<Object> cities= await citiescollection.doc("eF4F8hC9Y6QJjm1fRXXN").get();
-                                List<dynamic> citiesList=cities.get("cities");
-
-
-                                Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                    builder: (context) => SearchForTeacherStudentActivity(this.s,this.googleSignIn,this.auth,subjectsList,citiesList)
-
-                                ));
-                              }
-                          ),
-
-                           Column(
-                                children: [
-                                  SizedBox(
-                                    height: 11,
-                                  ),
-                                  Image.asset("assets/images/newlogologo.jpeg",matchTextDirection: true,height: 50,width: 120),
-                                  Text(
-                                    'TeachMe',
-                                    style: TextStyle(
-                                        fontFamily: 'Kaushan',
-
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 25,
-                                        color: Colors.black),
-                                  ),  ]),
+                                  CollectionReference citiescollection=FirebaseFirestore.instance.collection("Cities");
+                                  DocumentSnapshot<Object> cities= await citiescollection.doc("eF4F8hC9Y6QJjm1fRXXN").get();
+                                  List<dynamic> citiesList=cities.get("cities");
 
 
-                        ],
-                      ),
-                    ),
+                                  Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                                      builder: (context) => SearchForTeacherStudentActivity(this.s,this.googleSignIn,this.auth,subjectsList,citiesList)
+
+                                  ));
+                                }
+                            ),
+
+                             Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 11,
+                                    ),
+                                    Image.asset("assets/images/newlogologo.jpeg",matchTextDirection: true,height: 50,width: 120),
+                                    Text(
+                                      'TeachMe',
+                                      style: TextStyle(
+                                          fontFamily: 'Kaushan',
+
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 25,
+                                          color: Colors.black),
+                                    ),  ]),
 
 
-                   Padding(
-                     padding: const EdgeInsets.all(15.0),
-                     child: Column(
-                       children: [
-                         Text(selectedSubject != null?selectedSubject:"Subject",
-                         style: TextStyle(
-                           color: Colors.blue,
-                           fontSize: 50,
-                           fontWeight: FontWeight.bold
-                         ),),
-                         Text("Here You Can Find Very Professional $selectedSubject Teachers"),
-                       ],
-                     ),
-                   ),
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for(var i=0 ; i<4 ; i++)
-                      TextButton(
-                        style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                          ],
                         ),
-                        onPressed: () { },
-                        child: Text('point ${(i+3)}'),
                       ),
-                    ]
-                  ),
-                ),
 
-              )
+
+                     Padding(
+                       padding: const EdgeInsets.all(15.0),
+                       child: Column(
+                         children: [
+                           Text(selectedSubject != null?selectedSubject:"Subject",
+                           style: TextStyle(
+                             color: Colors.blue,
+                             fontSize: 50,
+                             fontWeight: FontWeight.bold
+                           ),),
+                           Text("Here You Can Find Very Professional $selectedSubject Teachers"),
+                         ],
+                       ),
+                     ),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Center(
+
+                  ),
+
+                )
 ,
 
 
-                 SingleChildScrollView(child: Container(height: 500,child: TeachersList(this.selectedSubject,this.selectedLocation,this.s,this.auth,this.googleSignIn)))
+                   SingleChildScrollView(child: Container(height: 500,child: TeachersList(this.selectedSubject,this.selectedLocation,this.s,this.auth,this.googleSignIn,this.widget.teacherCan)))
 
 
 
-                  ]),
+                    ]),
+              ),
 
 
           ),
@@ -195,12 +185,13 @@ class SearchForTeacherState extends State<SearchForTeacherViewTeachers> {
 class TeachersList extends StatefulWidget  {
 
   String subject;
+  bool showValue;
   String location;
   Student student;
   final auth;
   GoogleSignIn googleSignIn;
 
-  TeachersList(this.subject,this.location,this.student,this.auth,this.googleSignIn);
+  TeachersList(this.subject,this.location,this.student,this.auth,this.googleSignIn,this.showValue);
 
   @override
   _TeachersListState createState() => _TeachersListState(student,subject,location,this.auth,this.googleSignIn);
@@ -224,16 +215,17 @@ class _TeachersListState extends State<TeachersList> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return new StreamBuilder<QuerySnapshot>(
-      stream:this.widget.location=="all" && this.widget.subject=="all"? FirebaseFirestore.instance.collection('Teachers').snapshots():FirebaseFirestore.instance.collection('Teachers').where("Location",isEqualTo: this.widget.location).where("subjects",isEqualTo: this.widget.subject).snapshots(),
+      stream:this.widget.location=="all" && this.widget.subject=="all"? FirebaseFirestore.instance.collection('Teachers').snapshots():this.widget.showValue?FirebaseFirestore.instance.collection('Teachers').where("Location",isEqualTo: this.widget.location).where("subjects",isEqualTo: this.widget.subject).where("CanGo",isEqualTo: true).snapshots():FirebaseFirestore.instance.collection('Teachers').where("Location",isEqualTo: this.widget.location).where("subjects",isEqualTo: this.widget.subject).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return new Text('Loading...');
         return new ListView(
           children: snapshot.data.docs.map((DocumentSnapshot document) {
+            print(this.widget.showValue);
 
             return new ListTile(  contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                 onTap: (){
                   Navigator.of(context).pushReplacement(SlideRightRoute(
-                      page: TeacherHomepage(document,this.student,this.subject,this.location,this.auth,this.googleSignIn)
+                      page: TeacherHomepage(document,this.student,this.subject,this.location,this.auth,this.googleSignIn,this.widget.showValue)
                   ));
                 },
                 leading: Container(

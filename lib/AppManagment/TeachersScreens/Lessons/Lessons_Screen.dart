@@ -109,7 +109,7 @@ class LessonsDetails extends State<Lessons> {
                           iconSize: 50,
                           onPressed: () {
                             Navigator.of(context).pushReplacement(SlideRightRoute(
-                               page:TeacherHomepage(isTeacher, student, subject, location,this.auth,this.googleSignIn)
+                               page:TeacherHomepage(isTeacher, student, subject, location,this.auth,this.googleSignIn,false)
                             ));
 
                           }

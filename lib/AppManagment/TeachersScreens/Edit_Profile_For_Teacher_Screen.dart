@@ -99,7 +99,7 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                             onPressed: () {
                               Student s;
                               Navigator.of(context).pushReplacement(SlideRightRoute(
-                                  page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn)
+                                  page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn,false)
                               ));
                             }
                         ),

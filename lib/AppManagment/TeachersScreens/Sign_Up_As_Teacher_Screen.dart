@@ -209,6 +209,11 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                             ),
                             SizedBox(height: 10),
                             Container(
+
+                              decoration: BoxDecoration(
+                                borderRadius: new BorderRadius.circular(15.0),
+                                color: Colors.white60
+                              ),
                               child: Autocomplete(
                                 optionsBuilder: (TextEditingValue value) {
                                   // When the field is empty

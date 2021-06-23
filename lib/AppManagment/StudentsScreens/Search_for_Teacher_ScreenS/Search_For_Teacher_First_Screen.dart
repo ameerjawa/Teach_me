@@ -59,6 +59,7 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
           // in the middle of the parent.
           child: SingleChildScrollView(
             child: Column(
+
                 // Column is also a layout widget. It takes a list of children and
                 // arranges them vertically. By default, it sizes itself to fit its
                 // children horizontally, and tries to be as tall as its parent.
@@ -187,7 +188,7 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
                     child: Row(
                       children: [
                         Text(
-                          "By Your Place",
+                          "just Teachers who \ncan come to your home",
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.black,
@@ -223,13 +224,18 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
                         //   print("here -----------> NOT NULL");
                         // }
 
-                        Navigator.of(context).pushReplacement(SlideRightRoute(
+                        Navigator.of(context).pushReplacement(ScaleRoute(
                             page: SearchForTeacherViewTeachers(
+
                           auth: this.auth,
                           selectedSubject: selectedSubject,
                           selectedLocation: _selectedLocation,
                           s: student,
                           googleSignIn: this.googleSignIn,
+                              teacherCan: this.showvalue,
+
+
+
                         )));
                         // CollectionReference  cities=FirebaseFirestore.instance.collection("Cities");
                         //

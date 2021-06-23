@@ -19,10 +19,11 @@ class TeacherHomepage extends StatefulWidget {
   String subject, location;
   Student student;
   final auth;
+  bool showvalue;
   GoogleSignIn googleSignIn;
 
   TeacherHomepage(this.isTeacher, this.student, this.subject, this.location,
-      this.auth, this.googleSignIn);
+      this.auth, this.googleSignIn,this.showvalue);
 
   @override
   HomepageteacherState createState() => HomepageteacherState(
@@ -159,6 +160,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                       child: Column(
                         children: [
                           RatingBarIndicator(
+
                             rating: this.isTeacher["Rating"] != null
                                 ? this.isTeacher["Rating"]
                                 : 0.0,
@@ -349,7 +351,8 @@ class HomepageteacherState extends State<TeacherHomepage> {
               builder: (context) => SearchForTeacherViewTeachers(
                   s: student,
                   selectedSubject: subject,
-                  selectedLocation: location)));
+                  selectedLocation: location
+             , teacherCan: this.showvalue,)));
         });
   }
 }

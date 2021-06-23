@@ -147,7 +147,7 @@ class AccountType extends StatelessWidget {
                                     DocumentSnapshot isTeacher = await teachers.doc("${this.userObj.id}").get();
                                     if (isTeacher.exists){
                                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                                          page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn)
+                                          page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn,false)
 
                                       ));
                                     }else{

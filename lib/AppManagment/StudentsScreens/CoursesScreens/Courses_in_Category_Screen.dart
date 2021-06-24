@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/CoursesScreens/Courses_Home_Screen.dart';
+import 'package:teach_me/AppManagment/StudentsScreens/CoursesScreens/Courses_Home_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:teach_me/DBManagment/Category.dart';

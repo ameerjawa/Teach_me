@@ -5,11 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Edit_Profile_For_Teacher_Screen.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Lessons/Lessons_Screen.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Search_.For_Student_Screen.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Student_Activity_Home_Screen.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/StudentsScreens/Search_for_Teacher_Screens/Search_For_Teacher_Result_Second_Screen.dart';
+import 'package:teach_me/AppManagment/TeachersScreens/Edit_Profile_For_Teacher_Screen.dart';
+import 'package:teach_me/AppManagment/TeachersScreens/Lessons/Lessons_Screen.dart';
+import 'package:teach_me/AppManagment/TeachersScreens/Search_.For_Student_Screen.dart';
+import 'package:teach_me/AppManagment/StudentsScreens/Student_Activity_Home_Screen.dart';
+import 'package:teach_me/AppManagment/StudentsScreens/Search_for_Teacher_Screens/Search_For_Teacher_Result_Second_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 
@@ -36,6 +36,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
   String subject, location;
   Student student;
   final _auth;
+  String subjectsintext="";
 
   GoogleSignIn googleSignIn;
 
@@ -43,7 +44,13 @@ class HomepageteacherState extends State<TeacherHomepage> {
       this.location, this._auth, this.googleSignIn);
 
   Widget build(BuildContext context) {
+
     print(this.isTeacher["FullName"]);
+    for (int i=0;i<this.isTeacher["subjects"].length;i++){
+
+      subjectsintext+="${this.isTeacher["subjects"][i].toString()} - ";
+    }
+
     // print(this.isTeacher["Location"]);
     // print(this.isTeacher["subjects"]);
     // print(this.isTeacher["CanGo"]);
@@ -141,12 +148,12 @@ class HomepageteacherState extends State<TeacherHomepage> {
                   ///                                    \/
                   /// //
 
-                  // Text("${this.isTeacher["subjects"]!=null?this.isTeacher["subjects"]:""} Teacher ",
-                  //   style: TextStyle(
-                  //       fontWeight: FontWeight.normal,
-                  //       fontSize: 15,
-                  //       color: Colors.white),
-                  // ),
+                  Text("${subjectsintext!=null?subjectsintext:""} Teacher ",
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 15,
+                        color: Colors.white),
+                  ),
                   SingleChildScrollView(
                     child: Container(
                       height: 440,
@@ -163,7 +170,8 @@ class HomepageteacherState extends State<TeacherHomepage> {
 
                             rating: this.isTeacher["Rating"] != null
                                 ? this.isTeacher["Rating"]
-                                : 0.0,
+                                :
+                               0.0,
                             itemBuilder: (context, index) => Icon(
                               Icons.star,
                               color: Colors.amber,
@@ -184,20 +192,20 @@ class HomepageteacherState extends State<TeacherHomepage> {
                                 color: Colors.black),
                           ),
 
-                          Text(
-                            "City : ${this.isTeacher["Location"] != null ? this.isTeacher["Location"] : ""}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          ),
+                          // Text(
+                          //   "City : ${this.isTeacher["Location"] != null ? this.isTeacher["Location"] : ""}",
+                          //   style: TextStyle(
+                          //       fontWeight: FontWeight.bold, fontSize: 20),
+                          // ),
                           SizedBox(
                             height: 7,
                           ),
 
-                          Text(
-                            "PhoneNumber :  ${this.isTeacher["PhoneNumber"] != null ? this.isTeacher["PhoneNumber"] : ""}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          ),
+                          // Text(
+                          //   "PhoneNumber :  ${this.isTeacher["PhoneNumber"] != null ? this.isTeacher["PhoneNumber"] : ""}",
+                          //   style: TextStyle(
+                          //       fontWeight: FontWeight.bold, fontSize: 20),
+                          // ),
                           SizedBox(
                             height: 7,
                           ),
@@ -218,30 +226,30 @@ class HomepageteacherState extends State<TeacherHomepage> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(15.0),
-                              child: Container(
-                                child: Text(
-                                    this.isTeacher["CanGo"] == null
-                                        ? ""
-                                        : this.isTeacher["CanGo"]
-                                            ? "Can"
-                                            : "Can't",
-                                    style: TextStyle(
-                                        fontSize: 30,
-                                        color: this.isTeacher["CanGo"] == null
-                                            ? ""
-                                            : this.isTeacher["CanGo"]
-                                                ? Colors.green
-                                                : Colors.red)),
-
-                                /*
-                                          ///
-                                          /// problem with the Text up below!!!! |
-                                          ///                                     \/
-                                          ///                                     |
-                                          ///                                    \/
-                                          /// //
-                                           */
-                              ),
+                              // child: Container(
+                              //   child: Text(
+                              //       this.isTeacher["CanGo"] == null
+                              //           ? ""
+                              //           : this.isTeacher["CanGo"]
+                              //               ? "Can"
+                              //               : "Can't",
+                              //       style: TextStyle(
+                              //           fontSize: 30,
+                              //           color: this.isTeacher["CanGo"] == null
+                              //               ? ""
+                              //               : this.isTeacher["CanGo"]
+                              //                   ? Colors.green
+                              //                   : Colors.red)),
+                              //
+                              //   /*
+                              //             ///
+                              //             /// problem with the Text up below!!!! |
+                              //             ///                                     \/
+                              //             ///                                     |
+                              //             ///                                    \/
+                              //             /// //
+                              //              */
+                              // ),
                             ),
                           ]),
                         ],

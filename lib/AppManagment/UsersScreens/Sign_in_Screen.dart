@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/UsersScreens/Account_Type_Screen.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.dart';
+import 'package:teach_me/AppManagment/UsersScreens/Account_Type_Screen.dart';
+import 'package:teach_me/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/UsersScreens/Sign_Up_User_Screen.dart';
+import 'package:teach_me/AppManagment/UsersScreens/Sign_Up_User_Screen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

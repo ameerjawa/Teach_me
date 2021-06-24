@@ -9,12 +9,12 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.dart';
+import 'package:teach_me/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 import 'Update_Lesson_information_Screen.dart';
-import 'file:///D:/ameer/teach_me/lib/DBManagment/FireBase_Service.dart';
+import 'package:teach_me/DBManagment/FireBase_Service.dart';
 
 
 
@@ -316,8 +316,19 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                                       Map<String,dynamic> data ={"FullName":fullname,"PhoneNumber":phonenumber,"Location":locations,"BirthDate":date};
                                       await updateTeacherDetails(data,userId);
 
+                                      /*
+                                      * get all the subjects down below
+                                      * */
+                                      CollectionReference Subjectscollection =
+                                      FirebaseFirestore.instance.collection("Subjects");
+                                      DocumentSnapshot<Object> subjects= await Subjectscollection.doc("rFoR8RQBWc49Rx159ljf").get();
+                                      List<dynamic> subjectsList=subjects.get("subjects");
+
+                                      /*/
+
+                                       */
                                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                                          page: EditLessonInformation(isTeacher: isTeacher,googleSignIn: this.googleSignIn,)
+                                          page: EditLessonInformation(isTeacher: isTeacher,googleSignIn: this.googleSignIn,subjects: subjectsList,)
                                       ));
 
                                     }

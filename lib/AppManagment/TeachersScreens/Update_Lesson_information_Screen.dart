@@ -8,6 +8,7 @@ import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
+import 'Subjects_Screen.dart';
 import 'Teacher_Home_Page_Screen.dart';
 
 // ignore: must_be_immutable
@@ -15,18 +16,19 @@ class EditLessonInformation extends StatefulWidget {
   DocumentSnapshot isTeacher;
   final auth;
   GoogleSignIn googleSignIn;
-  EditLessonInformation({Key key,this.isTeacher,this.auth,this.googleSignIn}) : super(key: key);
+  List<dynamic> subjects;
+  EditLessonInformation({Key key,this.isTeacher,this.auth,this.googleSignIn,this.subjects}) : super(key: key);
   @override
   EditLessonInformationState createState() => EditLessonInformationState(isTeacher,this.auth,this.googleSignIn);
 }
 
 class EditLessonInformationState extends State<EditLessonInformation> {
-  String subjects,titleSentence,moreDetails,price,selectedSubject;
-  List subjectsLists = ["English","Math","maba","biology","physic","hebrew","arabic"];
+  String subjects,titleSentence,moreDetails,price,selectedSubject,selectedSubjectsText;
   bool canGo=false;
   DocumentSnapshot isTeacher;
   GoogleSignIn googleSignIn;
   final auth;
+  List<dynamic> temp;
 
 
   EditLessonInformationState(this.isTeacher,this.auth,this.googleSignIn);
@@ -35,6 +37,7 @@ class EditLessonInformationState extends State<EditLessonInformation> {
 
   Widget build(BuildContext context) {
     CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
+
 
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -120,24 +123,29 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                       ),
                       SizedBox(height: 4,),
                       Container(
-                        child: Autocomplete(
-                          optionsBuilder: (TextEditingValue value) {
-                            // When the field is empty
-                            if (value.text.isEmpty) {
-                              return [];
-                            }
 
-                            // The logic to find out which ones should appear
-                            return subjectsLists.where((suggestion) => suggestion
-                                .toLowerCase()
-                                .startsWith(value.text.toLowerCase()));
-                          },
-                          onSelected: (value) {
-                            setState(() {
-                              selectedSubject = value;
-                            });
-                          },
+                        decoration: BoxDecoration(
+                            color: Colors.white60,
+                            borderRadius: BorderRadius.circular(15.0)
                         ),
+                        child: ListTile(
+                          onTap: () async{
+                            final List<Subject> _response = await Navigator.push(context, MaterialPageRoute(
+                                builder: (context)=>SubjectsScreen(this.widget.subjects)
+                            ));
+                            setState(() {
+                              temp=_response;
+                              selectedSubjectsText=temp.map((e) => e.name).join(", ");
+                            });
+
+                          },
+                          title:Text(
+                            selectedSubjectsText!=null && selectedSubjectsText!=""?"${selectedSubjectsText}":"subjects",
+                            overflow:TextOverflow.ellipsis,
+                          ) ,
+                          trailing: Icon(Icons.arrow_drop_down),
+                        ),
+
                       ),
 
                       SizedBox(height: 15,),
@@ -296,7 +304,13 @@ class EditLessonInformationState extends State<EditLessonInformation> {
 
                                       price=price != ""?price:isTeacher["Price"];
 
-                                      Map <String,dynamic> data = {"subjects":selectedSubject,"Title Sentence":titleSentence,"More":moreDetails,"Price":price,"CanGo":canGo} ;
+                                      List<String> finalsubjects=[];
+                                      for (int j=0;j<temp.length;j++){
+                                        finalsubjects.add(temp[j].name);
+                                      }
+
+
+                                      Map <String,dynamic> data = {"subjects":finalsubjects,"Title Sentence":titleSentence,"More":moreDetails,"Price":price,"CanGo":canGo} ;
 
 
 

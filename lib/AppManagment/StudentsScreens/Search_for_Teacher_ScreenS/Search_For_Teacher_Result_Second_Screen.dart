@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.dart';
+import 'package:teach_me/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
@@ -215,11 +215,21 @@ class _TeachersListState extends State<TeachersList> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return new StreamBuilder<QuerySnapshot>(
-      stream:this.widget.location=="all" && this.widget.subject=="all"? FirebaseFirestore.instance.collection('Teachers').snapshots():this.widget.showValue?FirebaseFirestore.instance.collection('Teachers').where("Location",isEqualTo: this.widget.location).where("subjects",isEqualTo: this.widget.subject).where("CanGo",isEqualTo: true).snapshots():FirebaseFirestore.instance.collection('Teachers').where("Location",isEqualTo: this.widget.location).where("subjects",isEqualTo: this.widget.subject).snapshots(),
+      stream:this.widget.location=="all" && this.widget.subject=="all"? FirebaseFirestore.instance.collection('Teachers').snapshots():this.widget.showValue?FirebaseFirestore.instance.collection('Teachers').where("Location",isEqualTo: this.widget.location).where("subjects",isEqualTo:this.widget.subject).where("CanGo",isEqualTo: true).snapshots():FirebaseFirestore.instance.collection('Teachers').where("Location",isEqualTo: this.widget.location).where("subjects",arrayContains: this.widget.subject).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return new Text('Loading...');
         return new ListView(
           children: snapshot.data.docs.map((DocumentSnapshot document) {
+            String subjectsintext='';
+
+            for (int i=0;i<document["subjects"].length;i++){
+
+              subjectsintext+="${document["subjects"][i].toString()} - ";
+            }
+
+
+
+
             print(this.widget.showValue);
 
             return new ListTile(  contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
@@ -252,6 +262,7 @@ class _TeachersListState extends State<TeachersList> {
                 // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
                 subtitle: Row(
+
                   children: <Widget>[
                     RatingBarIndicator(
                       rating: document["Rating"],
@@ -264,9 +275,11 @@ class _TeachersListState extends State<TeachersList> {
                       direction: Axis.horizontal,
                     ),
                     SizedBox(width: 5,),
-                    Text(document["subjects"]!=null?document["subjects"]:"subject", style: TextStyle(color: Colors.white))
+                    Expanded(child: Text(subjectsintext!=null?subjectsintext:"subject", style: TextStyle(color: Colors.white),maxLines: 1,))
+
                   ],
                 ),
+
                 trailing:
                 Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0)
             );

@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'file:///D:/ameer/teach_me/lib/AppManagment/UsersScreens/Sign_in_Screen.dart';
+import 'package:teach_me/AppManagment/UsersScreens/Sign_in_Screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 
-import 'file:///D:/ameer/teach_me/lib/AppManagment/UsersScreens/Virefy_Screen.dart';
+import 'package:teach_me/AppManagment/UsersScreens/Virefy_Screen.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
 // ignore: camel_case_types, must_be_immutable

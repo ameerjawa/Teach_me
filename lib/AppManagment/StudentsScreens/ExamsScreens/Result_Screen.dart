@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rainbow_color/rainbow_color.dart';
-import 'package:teach_me/AppManagment/StudentsScreens/ExamsScreens/Exams_Home_Screen.dart';
-import 'package:teach_me/AppManagment/routes/pageRouter.dart';
+
 
 class ResultScreen extends StatefulWidget {
   int mark;

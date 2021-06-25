@@ -72,6 +72,15 @@ class Student extends Userbg implements TeacherProfiles{
 
 
 
+  Future<List<dynamic>> getCategories() async{
+
+
+    return await getCategoriesFromFireBase();
+  }
+
+
+
+
 
 
 }

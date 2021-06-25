@@ -79,7 +79,7 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
                         ),
                         ));
 
-                    var resultcat=  await getcategoriesFromFireBase();
+                    var resultcat = await this.student.getCategories();
 
                     Navigator.of(context).pushReplacement(SlideRightRoute(
 

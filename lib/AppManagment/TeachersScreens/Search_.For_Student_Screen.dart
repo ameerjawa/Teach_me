@@ -154,14 +154,8 @@ class SearchForStudentState extends State<SearchForStudent> {
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.white54),
                         child: StreamBuilder<QuerySnapshot>(
-                          // stream: (selectedName != "" && selectedName != null)
-                          //     ? FirebaseFirestore.instance
-                          //         .collection('Students')
-                          //         .where("FullName",
-                          //             arrayContains: selectedName)
-                          //         .snapshots()
-                          //     : 
-                          stream:selectedName!=null || selectedName!=""?FirebaseFirestore.instance
+
+                          stream: selectedName!=""?FirebaseFirestore.instance
                                   .collection("Students").where("FullName",isEqualTo: selectedName)
                                   .snapshots():FirebaseFirestore.instance
                               .collection("Students").snapshots(),

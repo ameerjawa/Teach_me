@@ -77,17 +77,16 @@ flutter:
      - family: NothingYouCouldDo
        fonts:
           - asset: assets/fonts/NothingYouCouldDo-Regular.ttf
-          - weight: 700
+
      - family: EncodeSansExpanded-Medium
        fonts:
           - asset: assets/fonts/EncodeSansExpanded-Medium.ttf
-          - weight: 700
      - family: WendyOne-Regular
        fonts:
           - asset: assets/fonts/WendyOne-Regular.ttf
-          - weight: 700
   assets:
    - assets/images/
+   - assets/fonts/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

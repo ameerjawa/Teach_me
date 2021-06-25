@@ -21,6 +21,19 @@ class ExamsHomeScreen extends StatefulWidget {
 }
 
 class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
+
+
+
+  List<dynamic> filteredExams=[];
+
+  @override
+  void initState(){
+    setState(() {
+      filteredExams=this.widget.result[0];
+    });
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,17 +74,30 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
                 decoration: BoxDecoration(
                     color: Color(0xFFF5F5F7),
                     borderRadius: BorderRadius.circular(40)),
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.search),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Text(
-                      "Search for any Exam",
-                    )
-                  ],
-                ),
+                child: TextField(maxLines: 1,onChanged: (value){
+
+                  value=value.toLowerCase();
+
+                  setState(() {
+
+
+
+                    print(this.widget.result[0][0]["ExamName"]);
+                     filteredExams = this.widget.result[0].where((element) {
+                      String examname= element["ExamName"].toLowerCase();
+                      return examname.contains(value);
+                    }
+                    ).toList();
+
+                     print(filteredExams);
+                  });
+
+
+                },decoration: InputDecoration(
+                  icon: Icon(Icons.search),
+                  hintText: "Search for an Exam",
+
+                ),)
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -92,7 +118,7 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
               Expanded(
                   child: StaggeredGridView.countBuilder(
                       crossAxisCount: 2,
-                      itemCount: this.widget.result[0].length,
+                      itemCount: filteredExams.length,
                       crossAxisSpacing: 20,
                       mainAxisSpacing: 20,
                       itemBuilder: (context, index) {
@@ -101,7 +127,7 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
                             showDialog(
                               context: context,
                               builder: (context) => SureEnterExam(
-                                result: this.widget.result[0][index],
+                                result: filteredExams[index],
                               ),
                             );
 
@@ -122,7 +148,7 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
                                     colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
 
                                     image: AssetImage(
-                                        "assets/images/${this.widget.result[0][index]["image"]}"),
+                                        "assets/images/${filteredExams[index]["image"]}"),
                                     fit: BoxFit.fill)),
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),
@@ -131,7 +157,7 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
                                 children: <Widget>[
 //resultcat[index]["name"]
                                   Text(
-                                    this.widget.result[0][index]["ExamName"],
+                                    filteredExams[index]["ExamName"],
                                     style: TextStyle(
                                     color: Colors.black,
                                         fontFamily: 'Kaushan',

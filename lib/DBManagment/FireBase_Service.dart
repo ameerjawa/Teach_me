@@ -74,6 +74,33 @@ Future<String> getProfileImageFromFireBase()async{
 //
 // }
 
+/************
+ *
+ * get categories from firebase
+ *
+ * ******/
+
+Future<List<Map<String,dynamic>>> getCategoriesFromFireBase() async{
+
+
+  QuerySnapshot<dynamic> d= await FirebaseFirestore.instance.collection('CoursesData').get();
+  List<String> categories=[];
+  List<Map<String,dynamic>> categoriesList=[];
+
+  d.docs.forEach((element) {
+    categories.add(element.id);
+  });
+
+  for (int i=0;i<categories.length;i++) {
+    final int documents = await FirebaseFirestore.instance.collection(
+        'CoursesData').doc(categories[i]).collection("Courses").get()
+        .then((QuerySnapshot querySnapshot) {
+      return querySnapshot.docs.length;
+    });
+    categoriesList.add({"name":categories[i],"Courses":documents});
+  }
+  return categoriesList;
+}
 
 
 

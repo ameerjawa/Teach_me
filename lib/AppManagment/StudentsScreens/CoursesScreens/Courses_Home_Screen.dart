@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/StudentsScreens/CoursesScreens/Courses_in_Category_Screen.dart';
 import 'package:teach_me/AppManagment/StudentsScreens/Student_Activity_Home_Screen.dart';
@@ -23,57 +22,27 @@ class CoursesHomePage extends StatefulWidget {
 class _coursesHomePageState extends State<CoursesHomePage> {
   Student student;
   GoogleSignIn googleSignIn;
-  var  resultcat;
+  List<dynamic>  resultcat;
   String selectedCourse="";
-  final TextEditingController _searchQuery = TextEditingController();
+  List<dynamic> filteredCourses=[];
 
-  List<dynamic> _searchList=[] ;
-  bool _isSearching=false;
-  String _searchText = "";
 
-  searchListState() {
-    _searchQuery.addListener(() {
-      if (_searchQuery.text.isEmpty) {
-        setState(() {
-          _isSearching = false;
-          _searchText = "";
-          _buildSearchList();
-        });
-      } else {
-        setState(() {
-          _isSearching = true;
-          _searchText = _searchQuery.text;
-          _buildSearchList();
-        });
-      }
+  @override
+   void  initState(){
+
+    setState(() {
+      filteredCourses=this.resultcat;
+
+
     });
   }
 
 
-   @override
-  void initState(){
-    _searchList=this.resultcat;
-  }
 
-  List<dynamic> _buildSearchList() {
-    if (_searchText.isEmpty) {
-      return _searchList =
-          this.resultcat; //_list.map((contact) =>  Uiitem(contact)).toList();
-    } else {
-      /*for (int i = 0; i < _list.length; i++) {
-        String name = _list.elementAt(i);
-        if (name.toLowerCase().contains(_searchText.toLowerCase())) {
-          _searchList.add(name);
-        }
-      }*/
 
-      _searchList = this.resultcat
-          .where((element) =>
-      element["CourseName"].toLowerCase().contains(_searchText.toLowerCase()).toList());
-      print('${_searchList.length}');
-      return _searchList; //_searchList.map((contact) =>  Uiitem(contact)).toList();
-    }
-  }
+
+
+
 
 
 
@@ -132,25 +101,18 @@ class _coursesHomePageState extends State<CoursesHomePage> {
                   color: Color(0xFFF5F5F7),
                   borderRadius: BorderRadius.circular(40)
                 ),
-               child: TextField(maxLines: 1,controller: _searchQuery,onChanged: (value){
+               child: TextField(maxLines: 1,onChanged: (value){
 
-                      setState(() {
+                     value=value.toLowerCase();
 
-                        if(value.isNotEmpty){
-                          searchListState();
+                     setState(() {
+                       filteredCourses = this.resultcat.where((element) {
+                         String categoryname= element["name"].toLowerCase();
+                         return categoryname.contains(value);
+                       }
+                       ).toList();
+                     });
 
-                            _isSearching = true;
-
-                        }else{
-
-
-                            _isSearching = false;
-                           _searchQuery.clear();
-
-
-                        }
-
-                      });
 
                     },decoration: InputDecoration(
                       icon: Icon(Icons.search),
@@ -170,7 +132,7 @@ class _coursesHomePageState extends State<CoursesHomePage> {
                 ],
               )
               ,SizedBox(height: 50,),
-              Expanded(child: StaggeredGridView.countBuilder(crossAxisCount: 2,itemCount:_isSearching? this._searchList.length:this.resultcat.length,crossAxisSpacing: 20,mainAxisSpacing: 20, itemBuilder: (context,index){
+              Expanded(child: StaggeredGridView.countBuilder(crossAxisCount: 2,itemCount:filteredCourses.length,crossAxisSpacing: 20,mainAxisSpacing: 20, itemBuilder: (context,index){
 
 
 
@@ -184,7 +146,7 @@ class _coursesHomePageState extends State<CoursesHomePage> {
 
 
 
-                        page: CourseCategoryPage(student,googleSignIn,this.resultcat[index]["name"],this.resultcat[index]["Courses"],catcourses)
+                        page: CourseCategoryPage(student,googleSignIn,filteredCourses[index]["name"],this.resultcat[index]["Courses"],catcourses)
                     ));
                   },
                   child: Container(
@@ -207,13 +169,13 @@ class _coursesHomePageState extends State<CoursesHomePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
 
-                          Text(resultcat[index]["name"],style: TextStyle(
+                          Text(filteredCourses[index]["name"],style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20
 
                           ),),
 
-                          Text("${resultcat[index]["Courses"]} Courses",style: TextStyle(
+                          Text("${filteredCourses[index]["Courses"]} Courses",style: TextStyle(
                             fontWeight: FontWeight.w600,color: Colors.black87
                           ),)
 

@@ -269,7 +269,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                                 primary: Colors.blue,
                                 backgroundColor: Colors.white70,
                               ),
-                              onPressed: () {
+                              onPressed: () async{
                                 Navigator.of(context).pushReplacement(
                                     CupertinoPageRoute(
                                         builder: (context) => SearchForStudent(

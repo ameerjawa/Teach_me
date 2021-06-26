@@ -4,12 +4,12 @@
 
 
 
-class Category{
+class CourseCategory{
 
   final String name;
   final int numofCourses;
 
-  Category(this.name, this.numofCourses);
+  CourseCategory(this.name, this.numofCourses);
 
 }
 

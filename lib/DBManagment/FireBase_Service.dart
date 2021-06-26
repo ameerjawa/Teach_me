@@ -6,16 +6,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 
 
-
-Future<void> userSetup(Map <String,dynamic> data,CollectionReference collectionReference,String userId)async{
-
-
-
-   collectionReference.doc(userId).set(data);
-   return;
-
-}
-
 // ignore: non_constant_identifier_names
 
 
@@ -23,20 +13,7 @@ Future<void> userSetup(Map <String,dynamic> data,CollectionReference collectionR
 
 
 
-Future<String> uploadImagetofireStorage(File imageFile,String userFullName,String userId)async{
 
-
-   final _firebaseStorage = FirebaseStorage.instance;
-   var file = File(imageFile.path);
-
-   var snapshot = await _firebaseStorage.ref()
-       .child('ProfileImages/$userFullName${userId}ProImage')
-       .putFile(file).whenComplete(() => null);
-   String downloadUrl = await snapshot.ref.getDownloadURL();
-   return downloadUrl.toString();
-
-
-}
 
 Future<String> getProfileImageFromFireBase()async{
 
@@ -145,51 +122,11 @@ Future<List<dynamic>> getExamsFromFireBase()async{
 
 }
 
-Future<List<dynamic>> getMeetingsFromFireBase(String userID)async{
 
 
 
 
-  List<dynamic> resultMeetings =[];
-  QuerySnapshot meetings = await FirebaseFirestore.instance.collection(
-      "meetings").get();
-  meetings.docs.forEach((element) {
-    if (element.get(FieldPath(["StudentId"])) == userID || element.get(FieldPath(["TeacherId"]))==userID) {
-      resultMeetings.add(element.data());
-    }
-  });
-  return resultMeetings;
 
-}
-
-Future<void> addMeetingToFireStoreAsTeacher(Map <String,dynamic> data)async{
-  CollectionReference meetings =  FirebaseFirestore.instance.collection("Meetings");
-
- await meetings.add(data);
-
-}
-
-Future<void> editMeetingToFireStoreAsTeacher(Map <String,dynamic> data,String meetingId)async{
-  CollectionReference meetings = FirebaseFirestore.instance.collection("Meetings");
-
-  await meetings.doc(meetingId).update(data);
-
-}
-
-Future<List<dynamic>> getStudentFromFireBaseAsTeacher(String fullName)async{
-
-  List<dynamic> resultStudents =[];
-  QuerySnapshot students = await FirebaseFirestore.instance.collection(
-      "Students").get();
-  students.docs.forEach((element) {
-
-    if (element.get(FieldPath(["FullName"]))==fullName) {
-      resultStudents.add(element.data());
-    }
-  });
-  return resultStudents;
-
-}
 Future<DocumentReference<Map<String, dynamic>>> getStudentFromFireBaseAsStudent(String userid)async{
 
   DocumentReference<Map<String, dynamic>> student =  FirebaseFirestore.instance.collection(
@@ -200,27 +137,6 @@ Future<DocumentReference<Map<String, dynamic>>> getStudentFromFireBaseAsStudent(
 
 }
 
-Future<void> addCourseToFireBase(Map<String,dynamic> data)async{
-
-  CollectionReference courses = FirebaseFirestore.instance.collection("CoursesData");
-
-  await courses.add(data);
-
-}
-
-Future<void> addExamToFireBase(Map<String,dynamic> data )async{
-
-  CollectionReference exams = FirebaseFirestore.instance.collection("Exams");
-
-  await exams.add(data);
-
-}
-
-Future<void>  updateTeacherDetails(Map<String,dynamic> data, String userId)async{
-
-  CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
-
-  await teachers.doc(userId).update(data);
 
 
-}
+

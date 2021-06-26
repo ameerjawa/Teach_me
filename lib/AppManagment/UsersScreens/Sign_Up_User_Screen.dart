@@ -4,7 +4,6 @@ import 'package:teach_me/AppManagment/UsersScreens/Sign_in_Screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
-
 import 'package:teach_me/AppManagment/UsersScreens/Virefy_Screen.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
@@ -16,12 +15,6 @@ class Sign_Up_User extends StatelessWidget {
 
   Widget build(BuildContext context) {
 
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
 
     return Scaffold(
       body: Container(
@@ -31,20 +24,7 @@ class Sign_Up_User extends StatelessWidget {
         decoration: MainBoxDecorationStyle,
         child: SingleChildScrollView(
           child: Column(
-            // Column is also a layout widget. It takes a list of children and
-            // arranges them vertically. By default, it sizes itself to fit its
-            // children horizontally, and tries to be as tall as its parent.
-            //
-            // Invoke "debug painting" (press "p" in the console, choose the
-            // "Toggle Debug Paint" action from the Flutter Inspector in Android
-            // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-            // to see the wireframe for each widget.
-            //
-            // Column has various properties to control how it sizes itself and
-            // how it positions its children. Here we use mainAxisAlignment to
-            // center the children vertically; the main axis here is the vertical
-            // axis because Columns are vertical (the cross axis would be
-            // horizontal).
+
 
             children: <Widget>[
               SizedBox(height: 30,),
@@ -157,12 +137,7 @@ class Sign_Up_User extends StatelessWidget {
               ),
               SizedBox(height: 2),
               ElevatedButton(
-                // color: Colors.white60,
-                // textColor: Colors.black,
-                // shape: RoundedRectangleBorder(
-                //   side: BorderSide(color: Colors.black,width: 1.8),
-                //   borderRadius: BorderRadius.circular(10),
-                // ),
+
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Colors.white60),
@@ -176,10 +151,6 @@ class Sign_Up_User extends StatelessWidget {
                           builder: (context) => VerifyEmail(this.auth)
                       ));
                     });
-
-                      // Userbg user = Userbg(
-                      //     email, password, verifypassword, "", "", "", "");
-                      // user.signUp(context,_auth);
 
 
                   }

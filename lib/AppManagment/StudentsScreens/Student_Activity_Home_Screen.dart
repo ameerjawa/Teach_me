@@ -8,7 +8,6 @@ import 'ExamsScreens/Exams_Home_Screen.dart';
 import 'Search_for_Teacher_ScreenS/Search_For_Teacher_First_Screen.dart';
 import 'CoursesScreens/Courses_Home_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
-import 'package:teach_me/DBManagment/Category.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 

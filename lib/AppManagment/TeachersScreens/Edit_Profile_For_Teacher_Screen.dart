@@ -13,6 +13,8 @@ import 'package:teach_me/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.d
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
+import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
+import 'package:teach_me/UserManagment/Userbg.dart';
 import 'Update_Lesson_information_Screen.dart';
 import 'package:teach_me/DBManagment/FireBase_Service.dart';
 
@@ -21,22 +23,20 @@ import 'package:teach_me/DBManagment/FireBase_Service.dart';
 
 // ignore: must_be_immutable
 class EditProfileForTeacher extends StatefulWidget {
-  DocumentSnapshot isTeacher;
+  Teacher teacher;
   final auth;
   GoogleSignIn googleSignIn;
 
-  EditProfileForTeacher({Key key,this.isTeacher,this.auth,this.googleSignIn}) : super(key: key);
+  EditProfileForTeacher({Key key,this.teacher,this.auth,this.googleSignIn}) : super(key: key);
 
   @override
-  EditProfileForTeacherState createState() => EditProfileForTeacherState(isTeacher,this.auth,this.googleSignIn);
+  EditProfileForTeacherState createState() => EditProfileForTeacherState(this.auth,this.googleSignIn);
 }
 
 class EditProfileForTeacherState extends State<EditProfileForTeacher> {
   File imageFile;
-  DocumentSnapshot isTeacher;
-
   final _dateController = TextEditingController();
-  String fullName,phoneNumber,location;
+  String fullName,phoneNumber,location,date;
   bool _validate=false;
   GoogleSignIn googleSignIn;
 
@@ -48,17 +48,12 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
   final auth;
 
 
-  EditProfileForTeacherState(this.isTeacher,this.auth,this.googleSignIn);
+  EditProfileForTeacherState(this.auth,this.googleSignIn);
 
 
 
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -68,25 +63,10 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
         child: Padding(
           padding: const EdgeInsets.all(15.0),
 
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
+
           child: SingleChildScrollView(
             child: Column(
-              // Column is also a layout widget. It takes a list of children and
-              // arranges them vertically. By default, it sizes itself to fit its
-              // children horizontally, and tries to be as tall as its parent.
-              //
-              // Invoke "debug painting" (press "p" in the console, choose the
-              // "Toggle Debug Paint" action from the Flutter Inspector in Android
-              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-              // to see the wireframe for each widget.
-              //
-              // Column has various properties to control how it sizes itself and
-              // how it positions its children. Here we use mainAxisAlignment to
-              // center the children vertically; the main axis here is the vertical
-              // axis because Columns are vertical (the cross axis would be
-              // horizontal).
-              //mainAxisAlignment: MainAxisAlignment.center,
+
                 children: <Widget>[
                   SizedBox(height: 10,),
                   Row(
@@ -98,8 +78,9 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                             alignment: Alignment.topLeft,
                             onPressed: () {
                               Student s;
+
                               Navigator.of(context).pushReplacement(SlideRightRoute(
-                                  page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn,false)
+                                  page: TeacherHomepage(this.widget.teacher,s,"","",this.auth,this.googleSignIn,false)
                               ));
                             }
                         ),
@@ -163,7 +144,7 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                         ),
                       ),
                       SizedBox(height: 25,),
-                      Text("${isTeacher["email"]}"),
+                      Text("${this.widget.teacher.email}"),
                       SizedBox(height: 10,),
                       TextFormField(
                         keyboardType: TextInputType.emailAddress,
@@ -218,22 +199,6 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                         title: Text("No Country",overflow: TextOverflow.ellipsis,),
 
                       )
-                      // TextFormField(
-                      //   textAlign: TextAlign.center,
-                      //   onChanged: (value) {
-                      //     location = value;
-                      //   },
-                      //   decoration: InputDecoration(
-                      //     fillColor: Colors.white60,
-                      //     errorText: _validate ? 'Value Can\'t Be Empty' : null,
-                      //     filled: true,
-                      //     border: OutlineInputBorder(
-                      //         borderRadius: new BorderRadius.circular(15.0)
-                      //     ),
-                      //     hintText: 'Location',
-                      //     hintStyle: InputTextStyle,
-                      //   ),
-                      // )
                       ,
                       SizedBox(height: 10,),
 
@@ -284,51 +249,37 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                                     alignment: Alignment.topLeft,
                                     onPressed: () async {
 
-                                      //String imageUrl;
-                                      String userId = isTeacher.id ;
 
-                                      //String  email = isTeacher["email"];
-                                      // setState(() {
-                                      //   _fullname.text.isEmpty ? _validate = true : _validate = false;
-                                      //   _dateController.text.isEmpty ? _validate = true : _validate = false;
-                                      //   _Location.text.isEmpty ? _validate = true : _validate = false;
-                                      //   _phoneNumber.text.isEmpty ? _validate = true : _validate = false;
-                                      //
-                                      // });
+                                      String userId = this.widget.teacher.id;
+
                                       if (imageFile != null ){
-
-
-
-                                         await uploadImagetofireStorage(imageFile,fullName,userId);
+                                    await Teacher.uploadImage(imageFile,fullName,userId);
 
                                       }
-                                      print("   here ----------------->>>>>>>>>>>>>>>> ${fullName == ""}");
-                                      String fullname=fullName!=null?fullName:isTeacher["FullName"];
-                                      print("fullName ::::::::::::$fullname ${fullname!=""}");
-                                      String phonenumber=phoneNumber!=null?phoneNumber:isTeacher["PhoneNumber"];
 
-                                      String locations=location!=null?location:isTeacher["Location"];
+                                       fullName=fullName!=null?fullName:this.widget.teacher.fullName;
+                                       phoneNumber=phoneNumber!=null?phoneNumber:this.widget.teacher.phoneNumber;
 
-                                      String date=_dateController.text!= null?_dateController.text:isTeacher["BirthDate"];
+                                       location=location!=null?location:this.widget.teacher.location;
+
+                                       date=_dateController.text!= null?_dateController.text:this.widget.teacher.birthDate;
 
 
-                                      // Teacher newTeacher = Teacher(email, "", "", _fullname.text, _dateController.text, _phoneNumber.text, _Location.text, [], "",imageUrl);
-                                      Map<String,dynamic> data ={"FullName":fullname,"PhoneNumber":phonenumber,"Location":locations,"BirthDate":date};
-                                      await updateTeacherDetails(data,userId);
+                                      Map<String,dynamic> data ={"FullName":fullName,"PhoneNumber":phoneNumber,"Location":location,"BirthDate":date};
+                                      await this.widget.teacher.updateTeacherDetails(data,userId);
 
                                       /*
                                       * get all the subjects down below
                                       * */
-                                      CollectionReference Subjectscollection =
-                                      FirebaseFirestore.instance.collection("Subjects");
-                                      DocumentSnapshot<Object> subjects= await Subjectscollection.doc("rFoR8RQBWc49Rx159ljf").get();
-                                      List<dynamic> subjectsList=subjects.get("subjects");
+
+
+                                      List<dynamic> subjectsList=await Userbg.getSubjects();
 
                                       /*/
 
                                        */
                                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                                          page: EditLessonInformation(isTeacher: isTeacher,googleSignIn: this.googleSignIn,subjects: subjectsList,)
+                                          page: EditLessonInformation(teacher: this.widget.teacher,googleSignIn: this.googleSignIn,subjects: subjectsList,)
                                       ));
 
                                     }
@@ -367,18 +318,6 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
       });
     }
   }
-  //
-  // Future<void> _getFromCamera() async {
-  //   PickedFile pickedFile = await ImagePicker().getImage(
-  //     source: ImageSource.camera,
-  //     maxWidth: 1800,
-  //     maxHeight: 1800,
-  //   );
-  //   if (pickedFile != null) {
-  //     setState(() {
-  //       imageFile = File(pickedFile.path);
-  //     });
-  //   }
-  // }
+
 
 }

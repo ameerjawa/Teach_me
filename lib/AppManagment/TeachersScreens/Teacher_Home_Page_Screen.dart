@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -12,27 +11,28 @@ import 'package:teach_me/AppManagment/StudentsScreens/Student_Activity_Home_Scre
 import 'package:teach_me/AppManagment/StudentsScreens/Search_for_Teacher_Screens/Search_For_Teacher_Result_Second_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
+import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
 // ignore: must_be_immutable
 class TeacherHomepage extends StatefulWidget {
-  DocumentSnapshot isTeacher;
+  Teacher teacher;
   String subject, location;
   Student student;
   final auth;
   bool showvalue;
   GoogleSignIn googleSignIn;
 
-  TeacherHomepage(this.isTeacher, this.student, this.subject, this.location,
+  TeacherHomepage(this.teacher, this.student, this.subject, this.location,
       this.auth, this.googleSignIn,this.showvalue);
 
   @override
   HomepageteacherState createState() => HomepageteacherState(
-      isTeacher, student, subject, location, this.auth, this.googleSignIn);
+      teacher, student, subject, location, this.auth, this.googleSignIn);
 }
 
 class HomepageteacherState extends State<TeacherHomepage> {
   bool showvalue = false;
-  DocumentSnapshot isTeacher;
+  Teacher teacher;
   String subject, location;
   Student student;
   final _auth;
@@ -40,29 +40,17 @@ class HomepageteacherState extends State<TeacherHomepage> {
 
   GoogleSignIn googleSignIn;
 
-  HomepageteacherState(this.isTeacher, this.student, this.subject,
+  HomepageteacherState(this.teacher, this.student, this.subject,
       this.location, this._auth, this.googleSignIn);
 
   Widget build(BuildContext context) {
 
-    print(this.isTeacher["FullName"]);
-    for (int i=0;i<this.isTeacher["subjects"].length;i++){
+    for (int i=0;i<this.teacher.subjects.length;i++){
 
-      subjectsintext+="${this.isTeacher["subjects"][i].toString()} - ";
+      subjectsintext+="${this.teacher.subjects[i].toString()} - ";
     }
 
-    // print(this.isTeacher["Location"]);
-    // print(this.isTeacher["subjects"]);
-    // print(this.isTeacher["CanGo"]);
-    // print(this.isTeacher["PhoneNumber"]);
 
-    // Teacher t = new Teacher("email", "password", "verifyPassword", FullName, "birthDate", PhoneNumber, Location, [], "detailsOnExperience","");
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -71,25 +59,10 @@ class HomepageteacherState extends State<TeacherHomepage> {
         child: Padding(
           padding: const EdgeInsets.all(5.0),
 
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
+
           child: SingleChildScrollView(
             child: Column(
-                // Column is also a layout widget. It takes a list of children and
-                // arranges them vertically. By default, it sizes itself to fit its
-                // children horizontally, and tries to be as tall as its parent.
-                //
-                // Invoke "debug painting" (press "p" in the console, choose the
-                // "Toggle Debug Paint" action from the Flutter Inspector in Android
-                // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-                // to see the wireframe for each widget.
-                //
-                // Column has various properties to control how it sizes itself and
-                // how it positions its children. Here we use mainAxisAlignment to
-                // center the children vertically; the main axis here is the vertical
-                // axis because Columns are vertical (the cross axis would be
-                // horizontal).
-                //mainAxisAlignment: MainAxisAlignment.center,
+
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(15.0),
@@ -98,8 +71,8 @@ class HomepageteacherState extends State<TeacherHomepage> {
                       children: <Widget>[
                         Row(children: [
                           student != null
-                              ? showButton(context)
-                              : showLogoutButton(context),
+                              ? _showButton(context)
+                              : _showLogoutButton(context),
                           Text(
                             student != null ? "Back To Results" : "",
                             style: TextStyle(fontSize: 12),
@@ -128,8 +101,8 @@ class HomepageteacherState extends State<TeacherHomepage> {
                     height: 30,
                   ),
                   Text(
-                    this.isTeacher["FullName"] != null
-                        ? this.isTeacher["FullName"]
+                    this.teacher.fullName != null
+                        ? this.teacher.fullName
                         : "name",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -140,13 +113,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                     height: 10,
                   ),
 
-                  /////////
-                  ///
-                  /// problem with the Text down below!!!! |
-                  ///                                     \/
-                  ///                                     |
-                  ///                                    \/
-                  /// //
+
 
                   Text("${subjectsintext!=null?subjectsintext:""} Teacher ",
                     style: TextStyle(
@@ -162,14 +129,13 @@ class HomepageteacherState extends State<TeacherHomepage> {
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white54),
 
-                      // color: Colors.grey,
 
                       child: Column(
                         children: [
                           RatingBarIndicator(
 
-                            rating: this.isTeacher["Rating"] != null
-                                ? this.isTeacher["Rating"]
+                            rating: this.teacher.rating != null
+                                ? this.teacher.rating
                                 :
                                0.0,
                             itemBuilder: (context, index) => Icon(
@@ -192,30 +158,30 @@ class HomepageteacherState extends State<TeacherHomepage> {
                                 color: Colors.black),
                           ),
 
-                          // Text(
-                          //   "City : ${this.isTeacher["Location"] != null ? this.isTeacher["Location"] : ""}",
-                          //   style: TextStyle(
-                          //       fontWeight: FontWeight.bold, fontSize: 20),
-                          // ),
+                          Text(
+                            "City : ${this.teacher.location != null ? this.teacher.location : ""}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
                           SizedBox(
                             height: 7,
                           ),
 
-                          // Text(
-                          //   "PhoneNumber :  ${this.isTeacher["PhoneNumber"] != null ? this.isTeacher["PhoneNumber"] : ""}",
-                          //   style: TextStyle(
-                          //       fontWeight: FontWeight.bold, fontSize: 20),
-                          // ),
+                          Text(
+                            "PhoneNumber :  ${this.teacher.phoneNumber != null ? this.teacher.phoneNumber: ""}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                          ),
                           SizedBox(
                             height: 7,
                           ),
-                          // Text(
-                          //     "More About Me : ${this.isTeacher["More"]!=null?this.isTeacher["More"]:""}",
-                          //   style: TextStyle(
-                          //       fontWeight: FontWeight.bold,
-                          //       fontSize: 20
-                          //   ),
-                          // ),
+                          Text(
+                              "More About Me : ${this.teacher.detailsOnExperience!=null?this.teacher.detailsOnExperience:""}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20
+                            ),
+                          ),
                           SizedBox(
                             height: 100,
                           ),
@@ -226,30 +192,23 @@ class HomepageteacherState extends State<TeacherHomepage> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(15.0),
-                              // child: Container(
-                              //   child: Text(
-                              //       this.isTeacher["CanGo"] == null
-                              //           ? ""
-                              //           : this.isTeacher["CanGo"]
-                              //               ? "Can"
-                              //               : "Can't",
-                              //       style: TextStyle(
-                              //           fontSize: 30,
-                              //           color: this.isTeacher["CanGo"] == null
-                              //               ? ""
-                              //               : this.isTeacher["CanGo"]
-                              //                   ? Colors.green
-                              //                   : Colors.red)),
-                              //
-                              //   /*
-                              //             ///
-                              //             /// problem with the Text up below!!!! |
-                              //             ///                                     \/
-                              //             ///                                     |
-                              //             ///                                    \/
-                              //             /// //
-                              //              */
-                              // ),
+                              child: Container(
+                                child: Text(
+                                    this.teacher.canGo == null
+                                        ? ""
+                                        : this.teacher.canGo
+                                            ? "Can"
+                                            : "Can't",
+                                    style: TextStyle(
+                                        fontSize: 30,
+                                        color: this.teacher.canGo == null
+                                            ? ""
+                                            : this.teacher.canGo
+                                                ? Colors.green
+                                                : Colors.red)),
+
+
+                              ),
                             ),
                           ]),
                         ],
@@ -273,7 +232,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                                 Navigator.of(context).pushReplacement(
                                     CupertinoPageRoute(
                                         builder: (context) => SearchForStudent(
-                                            isTeacher,
+                                            teacher,
                                             this._auth,
                                             this.googleSignIn)));
                               },
@@ -293,7 +252,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                               onPressed: () {
                                 Navigator.of(context).pushReplacement(
                                     CupertinoPageRoute(
-                                        builder: (context) => Lessons(isTeacher,
+                                        builder: (context) => Lessons(teacher,
                                             this._auth, this.googleSignIn)));
                               },
                               child: Text(
@@ -314,7 +273,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                                     CupertinoPageRoute(
                                         builder: (context) =>
                                             EditProfileForTeacher(
-                                              isTeacher: isTeacher,
+                                              teacher: teacher,
                                               googleSignIn: this.googleSignIn,
                                             )));
                               },
@@ -336,7 +295,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
     );
   }
 
-  showLogoutButton(BuildContext context) {
+  Widget _showLogoutButton(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.logout),
       iconSize: 50,
@@ -350,7 +309,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
     );
   }
 
-  Widget showButton(BuildContext context) {
+  Widget _showButton(BuildContext context) {
     return IconButton(
         icon: const Icon(Icons.arrow_back),
         iconSize: 50,

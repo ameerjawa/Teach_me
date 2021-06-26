@@ -7,20 +7,22 @@ import 'package:teach_me/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.d
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
+import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
 // ignore: must_be_immutable
 class SearchForStudent extends StatefulWidget {
   DocumentSnapshot isTeacher;
+  Teacher teacher;
   String subject, location;
   Student student;
   final auth;
   GoogleSignIn googleSignin;
 
-  SearchForStudent(this.isTeacher, this.auth, this.googleSignin);
+  SearchForStudent(this.teacher, this.auth, this.googleSignin);
 
   @override
   SearchForStudentState createState() =>
-      SearchForStudentState(isTeacher, this.auth, this.googleSignin);
+      SearchForStudentState(teacher, this.auth, this.googleSignin);
 }
 
 class SearchForStudentState extends State<SearchForStudent> {
@@ -28,19 +30,15 @@ class SearchForStudentState extends State<SearchForStudent> {
   DocumentSnapshot isTeacher;
   String subject, location;
   Student student;
+  Teacher teacher;
   final auth;
   String selectedName = "";
   GoogleSignIn googleSignin;
 
-  SearchForStudentState(this.isTeacher, this.auth, this.googleSignin);
+  SearchForStudentState(this.teacher, this.auth, this.googleSignin);
 
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -49,25 +47,10 @@ class SearchForStudentState extends State<SearchForStudent> {
         child: Padding(
           padding: const EdgeInsets.all(5.0),
 
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
+
           child: SingleChildScrollView(
             child: Column(
-                // Column is also a layout widget. It takes a list of children and
-                // arranges them vertically. By default, it sizes itself to fit its
-                // children horizontally, and tries to be as tall as its parent.
-                //
-                // Invoke "debug painting" (press "p" in the console, choose the
-                // "Toggle Debug Paint" action from the Flutter Inspector in Android
-                // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-                // to see the wireframe for each widget.
-                //
-                // Column has various properties to control how it sizes itself and
-                // how it positions its children. Here we use mainAxisAlignment to
-                // center the children vertically; the main axis here is the vertical
-                // axis because Columns are vertical (the cross axis would be
-                // horizontal).
-                //mainAxisAlignment: MainAxisAlignment.center,
+
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(15.0),
@@ -82,7 +65,7 @@ class SearchForStudentState extends State<SearchForStudent> {
                                 Navigator.of(context).pushReplacement(
                                     CupertinoPageRoute(
                                         builder: (context) => TeacherHomepage(
-                                            isTeacher,
+                                            teacher,
                                             student,
                                             subject,
                                             location,
@@ -155,10 +138,7 @@ class SearchForStudentState extends State<SearchForStudent> {
                             color: Colors.white54),
                         child: StreamBuilder<QuerySnapshot>(
 
-                          stream: selectedName!=""?FirebaseFirestore.instance
-                                  .collection("Students").where("FullName",isEqualTo: selectedName)
-                                  .snapshots():FirebaseFirestore.instance
-                              .collection("Students").snapshots(),
+                          stream: selectedName!=""?this.widget.teacher.showStudentByName(selectedName):this.widget.teacher.showAllStudents(),
                           builder: (BuildContext context,
                               AsyncSnapshot<QuerySnapshot> snapshot) {
                             if (!snapshot.hasData)
@@ -181,7 +161,7 @@ class SearchForStudentState extends State<SearchForStudent> {
                                     )),
                                   ),
                                   title: Text(
-                                    "${document["FullName"]} --- ${document["PhoneNumber"]} --- ${document["grade"]}",
+                                    "${document["FullName"]} - ${document["PhoneNumber"]} - ${document["grade"]}",
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold),

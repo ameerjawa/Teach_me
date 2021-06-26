@@ -1,7 +1,9 @@
 
 
-import 'package:teach_me/DBManagment/Course.dart';
-import 'package:teach_me/DBManagment/Exam.dart';
+import 'package:teach_me/DBManagment/CoursesManagment/Course.dart';
+import 'package:teach_me/DBManagment/CoursesManagment/Course_FireBase_Service.dart';
+import 'package:teach_me/DBManagment/ExamsManagment/Exam.dart';
+import 'package:teach_me/DBManagment/ExamsManagment/Exam_FireBase_Service.dart';
 
 import '../../DBManagment/FireBase_Service.dart';
 import '../Userbg.dart';

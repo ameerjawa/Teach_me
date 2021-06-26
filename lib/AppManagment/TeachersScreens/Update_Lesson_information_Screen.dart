@@ -7,31 +7,31 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
+import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
 import 'Subjects_Screen.dart';
 import 'Teacher_Home_Page_Screen.dart';
 
 // ignore: must_be_immutable
 class EditLessonInformation extends StatefulWidget {
-  DocumentSnapshot isTeacher;
+Teacher teacher;
   final auth;
   GoogleSignIn googleSignIn;
   List<dynamic> subjects;
-  EditLessonInformation({Key key,this.isTeacher,this.auth,this.googleSignIn,this.subjects}) : super(key: key);
+  EditLessonInformation({Key key,this.teacher,this.auth,this.googleSignIn,this.subjects}) : super(key: key);
   @override
-  EditLessonInformationState createState() => EditLessonInformationState(isTeacher,this.auth,this.googleSignIn);
+  EditLessonInformationState createState() => EditLessonInformationState(this.auth,this.googleSignIn);
 }
 
 class EditLessonInformationState extends State<EditLessonInformation> {
   String subjects,titleSentence,moreDetails,price,selectedSubject,selectedSubjectsText;
   bool canGo=false;
-  DocumentSnapshot isTeacher;
   GoogleSignIn googleSignIn;
   final auth;
   List<dynamic> temp;
 
 
-  EditLessonInformationState(this.isTeacher,this.auth,this.googleSignIn);
+  EditLessonInformationState(this.auth,this.googleSignIn);
 
 
 
@@ -39,12 +39,6 @@ class EditLessonInformationState extends State<EditLessonInformation> {
     CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
 
 
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
 
 
     return Scaffold(
@@ -57,24 +51,9 @@ class EditLessonInformationState extends State<EditLessonInformation> {
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
 
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
           child: SingleChildScrollView(
             child: Column(
-              // Column is also a layout widget. It takes a list of children and
-              // arranges them vertically. By default, it sizes itself to fit its
-              // children horizontally, and tries to be as tall as its parent.
-              //
-              // Invoke "debug painting" (press "p" in the console, choose the
-              // "Toggle Debug Paint" action from the Flutter Inspector in Android
-              // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-              // to see the wireframe for each widget.
-              //
-              // Column has various properties to control how it sizes itself and
-              // how it positions its children. Here we use mainAxisAlignment to
-              // center the children vertically; the main axis here is the vertical
-              // axis because Columns are vertical (the cross axis would be
-              // horizontal).
+
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Row(
@@ -271,8 +250,9 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                                 TextButton(onPressed: ()async{
 
                                   Student s;
+
                                   Navigator.of(context).pushReplacement(SlideRightRoute(
-                                      page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn,false)
+                                      page: TeacherHomepage(this.widget.teacher,s,"","",this.auth,this.googleSignIn,false)
                                   ));
                                 }, child:Text(
                                   'skip',
@@ -292,17 +272,16 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                                     alignment: Alignment.topLeft,
                                     onPressed: () async {
 
-                                      String userId =this.isTeacher.id;
-                                      DocumentSnapshot isTeacher = await teachers.doc("$userId").get();
+                                      String userId =this.widget.teacher.id;
 
-                                     selectedSubject=selectedSubject!=""?selectedSubject:isTeacher["subjects"];
-                                      titleSentence=titleSentence != ""?titleSentence:isTeacher["Title Sentence"];
 
-                                       moreDetails=moreDetails != null?moreDetails:isTeacher["More"];
-                                      print("ameer can go :::::$canGo");
-                                      canGo = canGo!=null?canGo:isTeacher["CanGo"];
+                                     selectedSubject=selectedSubject!=""?selectedSubject:this.widget.teacher.subjects;
+                                      titleSentence=titleSentence != ""?titleSentence:this.widget.teacher.TitleSentence;
 
-                                      price=price != ""?price:isTeacher["Price"];
+                                       moreDetails=moreDetails != null?moreDetails:this.widget.teacher.detailsOnExperience;
+                                      canGo = canGo!=null?canGo:this.widget.teacher.canGo;
+
+                                      price=price != ""?price:this.widget.teacher.price;
 
                                       List<String> finalsubjects=[];
                                       for (int j=0;j<temp.length;j++){
@@ -314,12 +293,12 @@ class EditLessonInformationState extends State<EditLessonInformation> {
 
 
 
-                                      await moreTeacherDet(data,teachers,userId);
+                                      await this.widget.teacher.moreTeacherDet(data,teachers,userId);
 
-                                      isTeacher = await   teachers.doc(this.isTeacher.id).get();
+
                                       Student s;
                                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                                          page: TeacherHomepage(isTeacher,s,"","",this.auth,this.googleSignIn,false)
+                                          page: TeacherHomepage(this.widget.teacher,s,"","",this.auth,this.googleSignIn,false)
                                       ));
 
 
@@ -357,8 +336,3 @@ class EditLessonInformationState extends State<EditLessonInformation> {
 }
 
 
-Future<void> moreTeacherDet(Map <String,dynamic> data,CollectionReference collectionReference,String userId)async{
-  collectionReference.doc(userId).update(data);
-  return;
-
-}

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/StudentsScreens/CoursesScreens/Courses_in_Category_Screen.dart';
 import 'package:teach_me/AppManagment/StudentsScreens/CoursesScreens/Show_Video_From_Course_Screen.dart';
-
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -30,7 +29,6 @@ class CourseDetailsScreen extends StatefulWidget {
 }
 
 class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
-  bool _ispressed=false;
   YoutubePlayerController _controller;
 
 

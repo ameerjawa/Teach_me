@@ -12,6 +12,7 @@ import 'package:teach_me/AppManagment/StudentsScreens/Student_Activity_Home_Scre
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
+import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
 import '../../DBManagment/FireBase_Service.dart';
 
@@ -359,7 +360,7 @@ class SignUpStudentState extends State<SignUpStudent> {
                                   newStudent, students, userId);
 
                               if (image != null) {
-                                uploadImagetofireStorage(
+                                Teacher.uploadImage(
                                     image, studentfullname, userId);
                               }
                               Navigator.of(context).pushReplacement(

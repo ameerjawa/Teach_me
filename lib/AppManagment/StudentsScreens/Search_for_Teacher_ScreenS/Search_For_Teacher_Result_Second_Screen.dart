@@ -234,8 +234,9 @@ class _TeachersListState extends State<TeachersList> {
 
             return new ListTile(  contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                 onTap: (){
+                  Teacher teacher=  new Teacher(document["email"], "", "", document["FullName"], document["BirthDate"], document["PhoneNumber"], document["Location"], document["subjects"], document["More"], document["ProfileImg"], document["Rating"],document["CanGo"],document.id,document["Title Sentence"],document["Price"]);
                   Navigator.of(context).pushReplacement(SlideRightRoute(
-                      page: TeacherHomepage(document,this.student,this.subject,this.location,this.auth,this.googleSignIn,this.widget.showValue)
+                      page: TeacherHomepage(teacher,this.student,this.subject,this.location,this.auth,this.googleSignIn,this.widget.showValue)
                   ));
                 },
                 leading: Container(

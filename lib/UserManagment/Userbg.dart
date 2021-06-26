@@ -5,6 +5,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:teach_me/DBManagment/UserAccountManagment/User_FireBase_Service.dart';
 
 
 
@@ -22,26 +23,22 @@ class Userbg{
   Userbg(this.email, this.password, this.verifyPassword, this.fullName, this.birthDate, this.phoneNumber, this.location);
 
 
-  void signUp(BuildContext context,final auth)async {
-    try{
-
-        // final newUser = await
-        //
-        // if(newUser != null){
-        //
-        //   Navigator.of(context).pushReplacement(CupertinoPageRoute(
-        //       builder: (context) => AccountType(auth: auth,)
-        //   ));
-        // }
+  // static function that get all the suvbjects from firebase
 
 
-    }
-    catch(e){
-      print(e);
-
-    }
+  static Future<List<dynamic>> getSubjects()async{
+    return await getSubjectsFromFireBase();
   }
 
+
+  // static function that get all the cities from firebase
+
+  static Future<List<dynamic>>  getCities()async{
+
+  return getCitiesFromFireBase();
+
+
+  }
 
   void login(BuildContext context,CollectionReference teachers)async{
     try {

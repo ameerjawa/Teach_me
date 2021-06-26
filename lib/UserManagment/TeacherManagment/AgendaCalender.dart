@@ -1,6 +1,6 @@
 
 
-import 'package:teach_me/DBManagment/Lession.dart';
+import 'package:teach_me/DBManagment/MeetingsManagment/Lession.dart';
 
 class AgendaCalender{
 

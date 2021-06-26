@@ -20,33 +20,23 @@ class SearchForTeacherStudentActivity extends StatefulWidget {
 
   @override
   SearchForTeacherState createState() => SearchForTeacherState(
-      student, this.googleSignIn, this.auth, this.subjects,this.cities);
+  );
 }
 
 class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
   bool showvalue = false;
   var controler = new TextEditingController();
   var controlersecond = new TextEditingController();
-  List<dynamic> subjects;
-  List<dynamic> cities;
 
   static String selectedSubject;
   String _selectedLocation;
-  final auth;
 
-  Student student;
-  GoogleSignIn googleSignIn;
 
   SearchForTeacherState(
-      this.student, this.googleSignIn, this.auth, this.subjects,this.cities);
+      );
 
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -55,26 +45,10 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
         child: Padding(
           padding: const EdgeInsets.all(5.0),
 
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
+
           child: SingleChildScrollView(
             child: Column(
 
-                // Column is also a layout widget. It takes a list of children and
-                // arranges them vertically. By default, it sizes itself to fit its
-                // children horizontally, and tries to be as tall as its parent.
-                //
-                // Invoke "debug painting" (press "p" in the console, choose the
-                // "Toggle Debug Paint" action from the Flutter Inspector in Android
-                // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-                // to see the wireframe for each widget.
-                //
-                // Column has various properties to control how it sizes itself and
-                // how it positions its children. Here we use mainAxisAlignment to
-                // center the children vertically; the main axis here is the vertical
-                // axis because Columns are vertical (the cross axis would be
-                // horizontal).
-                //mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(
                     height: 25,
@@ -89,7 +63,7 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
                             Navigator.of(context).pushReplacement(
                                 SlideRightRoute(
                                     page: StudentActivity(
-                                        this.student, this.googleSignIn)));
+                                        this.widget.student, this.widget.googleSignIn)));
                           }),
                     ],
                   ),
@@ -131,9 +105,8 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
                           if (value.text.isEmpty) {
                             return [];
                           }
-
                           // The logic to find out which ones should appear
-                          return this.subjects.where((suggestion) => suggestion
+                          return this.widget.subjects.where((suggestion) => suggestion
                               .toLowerCase()
                               .startsWith(value.text.toLowerCase()));
                         },
@@ -164,7 +137,7 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
                             }
 
                             // The logic to find out which ones should appear
-                            return this.cities.where((suggestion) => suggestion
+                            return this.widget.cities.where((suggestion) => suggestion
                                 .toLowerCase()
                                 .startsWith(value.text.toLowerCase()));
                           },
@@ -178,9 +151,6 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
                       SizedBox(
                         height: 20,
                       ),
-                      //  Text(_selectedAnimal != null
-                      //    ? _selectedAnimal
-                      //  : 'Type something (a, b, c, etc)'),
                     ]),
                   ),
                   Padding(
@@ -213,34 +183,18 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
                       iconSize: 50,
                       alignment: Alignment.bottomCenter,
                       onPressed: () async {
-                        //  //List<Teacher> TeachersList= await student.getTeacherDetails(selectedSubject, _selectedLocation);
-                        //
-                        //  print(TeachersList.first.fullName);
-                        //
-                        // if(TeachersList==null){
-                        //   print("here ------------> Nulll");
-                        // }
-                        // else{
-                        //   print("here -----------> NOT NULL");
-                        // }
+
+
 
                         Navigator.of(context).pushReplacement(ScaleRoute(
                             page: SearchForTeacherViewTeachers(
-
-                          auth: this.auth,
+                          auth: this.widget.auth,
                           selectedSubject: selectedSubject,
                           selectedLocation: _selectedLocation,
-                          s: student,
-                          googleSignIn: this.googleSignIn,
+                          s: this.widget.student,
+                          googleSignIn: this.widget.googleSignIn,
                               teacherCan: this.showvalue,
-
-
-
                         )));
-                        // CollectionReference  cities=FirebaseFirestore.instance.collection("Cities");
-                        //
-                        // Map<String, dynamic> data = {"cities": locations};
-                        // cities.add(data);
                       }),
                 ]),
           ),

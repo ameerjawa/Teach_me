@@ -8,62 +8,43 @@ import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
+// ignore: must_be_immutable
 class CoursesHomePage extends StatefulWidget {
   Student student;
   GoogleSignIn googleSignIn;
-  var resultcat;
+  var resultCat;
 
+  CoursesHomePage(this.student, this.googleSignIn, this.resultCat);
 
-  CoursesHomePage(this.student,this.googleSignIn,this.resultcat);
   @override
-  _coursesHomePageState createState() => _coursesHomePageState(student,googleSignIn,this.resultcat);
+  _CoursesHomePageState createState() =>
+      _CoursesHomePageState();
 }
 
-class _coursesHomePageState extends State<CoursesHomePage> {
-  Student student;
-  GoogleSignIn googleSignIn;
-  List<dynamic>  resultcat;
-  String selectedCourse="";
-  List<dynamic> filteredCourses=[];
+class _CoursesHomePageState extends State<CoursesHomePage> {
 
+  String selectedCourse = "";
+  List<dynamic> filteredCourses = [];
 
   @override
-   void  initState(){
-
+  void initState() {
     setState(() {
-      filteredCourses=this.resultcat;
-
-
+      filteredCourses = this.widget.resultCat;
     });
+    super.initState();
   }
 
+  _CoursesHomePageState();
 
-
-
-
-
-
-
-
-
-
-  _coursesHomePageState(this.student,this.googleSignIn,this.resultcat);
   @override
   Widget build(BuildContext context) {
-
-
-
-
-
-
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
-        width:  MediaQuery.of(context).size.width,
-
+        width: MediaQuery.of(context).size.width,
         decoration: MainBoxDecorationStyle,
         child: Padding(
-          padding: EdgeInsets.only(left: 20,top: 30,right: 20),
+          padding: EdgeInsets.only(left: 20, top: 30, right: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisAlignment: MainAxisAlignment.center,
@@ -73,121 +54,117 @@ class _coursesHomePageState extends State<CoursesHomePage> {
                   iconSize: 30,
                   onPressed: () {
                     Navigator.of(context).pushReplacement(SlideRightRoute(
-
-                      page: StudentActivity(student,this.googleSignIn)
-                    ));
-
-
-
-
-                  }
-
+                        page: StudentActivity(this.widget.student, this.widget.googleSignIn)));
+                  }),
+              SizedBox(
+                height: 20,
               ),
-              SizedBox(height: 20,),
               Text(
-                'Hey ${student.fullName}',
+                'Hey ${this.widget.student.fullName}',
                 style: InputTextStyle,
               ),
               Text(
-                'Find a Course You want to Learn'
-                ,style: InputTextStyle,
+                'Find a Course You want to Learn',
+                style: InputTextStyle,
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                height: 60,
-                padding: EdgeInsets.symmetric(horizontal: 20,vertical: 16),
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Color(0xFFF5F5F7),
-                  borderRadius: BorderRadius.circular(40)
-                ),
-               child: TextField(maxLines: 1,onChanged: (value){
+                  margin: EdgeInsets.symmetric(vertical: 20),
+                  height: 60,
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      color: Color(0xFFF5F5F7),
+                      borderRadius: BorderRadius.circular(40)),
+                  child: TextField(
+                    maxLines: 1,
+                    onChanged: (value) {
+                      value = value.toLowerCase();
 
-                     value=value.toLowerCase();
-
-                     setState(() {
-                       filteredCourses = this.resultcat.where((element) {
-                         String categoryname= element["name"].toLowerCase();
-                         return categoryname.contains(value);
-                       }
-                       ).toList();
-                     });
-
-
-                    },decoration: InputDecoration(
+                      setState(() {
+                        filteredCourses = this.widget.resultCat.where((element) {
+                          String categoryName = element["name"].toLowerCase();
+                          return categoryName.contains(value);
+                        }).toList();
+                      });
+                    },
+                    decoration: InputDecoration(
                       icon: Icon(Icons.search),
                       hintText: "Search for any Course",
-
-                    ),)
-
-              ),
+                    ),
+                  )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('Category',style: TextStyle( fontWeight: FontWeight.bold,fontSize: 20
-                  ),),
-                  Text('See All',style: TextStyle(
-                  fontSize:15
-                  ),)
-                ],
-              )
-              ,SizedBox(height: 50,),
-              Expanded(child: StaggeredGridView.countBuilder(crossAxisCount: 2,itemCount:filteredCourses.length,crossAxisSpacing: 20,mainAxisSpacing: 20, itemBuilder: (context,index){
-
-
-
-                return GestureDetector(
-                  onTap: ()async{
-
-                    QuerySnapshot<Map<String, dynamic>> catcourses= await FirebaseFirestore.instance.collection("CoursesData").doc(this.resultcat[index]["name"]).collection("Courses").get();
-
-
-                    Navigator.of(context).pushReplacement(SlideRightRoute(
-
-
-
-                        page: CourseCategoryPage(student,googleSignIn,filteredCourses[index]["name"],this.resultcat[index]["Courses"],catcourses)
-                    ));
-                  },
-                  child: Container(
-
-                    height: index.isEven?200:240,
-
-
-                    decoration: BoxDecoration(
-
-
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                        image: AssetImage('assets/images/download.jpg'),
-                        fit: BoxFit.fill
-                      )
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-
-                          Text(filteredCourses[index]["name"],style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20
-
-                          ),),
-
-                          Text("${filteredCourses[index]["Courses"]} Courses",style: TextStyle(
-                            fontWeight: FontWeight.w600,color: Colors.black87
-                          ),)
-
-
-                        ],
-                      ),
-                    ),
+                  Text(
+                    'Category',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
-                );
-              }, staggeredTileBuilder: (index)=>StaggeredTile.fit(1)))
-            ],
+                  Text(
+                    'See All',
+                    style: TextStyle(fontSize: 15),
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              Expanded(
+                  child: StaggeredGridView.countBuilder(
+                      crossAxisCount: 2,
+                      itemCount: filteredCourses.length,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 20,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () async {
+                            String categoryName = this.widget.resultCat[index]["name"];
 
+                            // function that get name of categories and return all the Courses There
+                            QuerySnapshot<Map<String, dynamic>> catCourses =
+                                await this.widget.student.getCategoryCourses(categoryName);
+
+                            Navigator.of(context).pushReplacement(
+                                SlideRightRoute(
+                                    page: CourseCategoryPage(
+                                        this.widget.student,
+                                        this.widget.googleSignIn,
+                                        filteredCourses[index]["name"],
+                                        this.widget.resultCat[index]["Courses"],
+                                        catCourses)));
+                          },
+                          child: Container(
+                            height: index.isEven ? 200 : 240,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/download.jpg'),
+                                    fit: BoxFit.fill)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    filteredCourses[index]["name"],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20),
+                                  ),
+                                  Text(
+                                    "${filteredCourses[index]["Courses"]} Courses",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black87),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      staggeredTileBuilder: (index) => StaggeredTile.fit(1)))
+            ],
           ),
         ),
       ),

@@ -22,7 +22,7 @@ class SearchForStudent extends StatefulWidget {
 
   @override
   SearchForStudentState createState() =>
-      SearchForStudentState(teacher, this.auth, this.googleSignin);
+      SearchForStudentState();
 }
 
 class SearchForStudentState extends State<SearchForStudent> {
@@ -30,12 +30,10 @@ class SearchForStudentState extends State<SearchForStudent> {
   DocumentSnapshot isTeacher;
   String subject, location;
   Student student;
-  Teacher teacher;
-  final auth;
-  String selectedName = "";
-  GoogleSignIn googleSignin;
 
-  SearchForStudentState(this.teacher, this.auth, this.googleSignin);
+  String selectedName = "";
+
+  SearchForStudentState();
 
   Widget build(BuildContext context) {
 
@@ -65,12 +63,12 @@ class SearchForStudentState extends State<SearchForStudent> {
                                 Navigator.of(context).pushReplacement(
                                     CupertinoPageRoute(
                                         builder: (context) => TeacherHomepage(
-                                            teacher,
+                                            this.widget.teacher,
                                             student,
                                             subject,
                                             location,
-                                            this.auth,
-                                            this.googleSignin,false)));
+                                            this.widget.auth,
+                                            this.widget.googleSignin,false)));
                               }),
                           Text(
                             "Back To Home page",

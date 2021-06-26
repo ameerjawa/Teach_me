@@ -13,3 +13,19 @@ Future<void> addExamToFireBase(Map<String,dynamic> data )async{
   await exams.add(data);
 
 }
+
+
+// function that get all the exams from the firebase
+Future<List<dynamic>> getExamsFromFireBase()async{
+
+  List<dynamic> resultExams =[];
+  QuerySnapshot exams = await FirebaseFirestore.instance.collection(
+      "Exams").get();
+  exams.docs.forEach((element) {
+
+    resultExams.add(element.data());
+
+  });
+  return resultExams;
+
+}

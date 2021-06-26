@@ -4,11 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
+// ignore: must_be_immutable
 class ShowVideoFromCourse extends StatefulWidget {
-  String videoid;
+  String videoId;
   Map<String, dynamic> course;
 
-  ShowVideoFromCourse(this.videoid,this.course);
+  ShowVideoFromCourse(this.videoId,this.course);
   @override
   _ShowVideoFromCourseState createState() => _ShowVideoFromCourseState();
 }
@@ -16,15 +17,12 @@ class ShowVideoFromCourse extends StatefulWidget {
 class _ShowVideoFromCourseState extends State<ShowVideoFromCourse> {
 
 
-
-
-
   @override
   Widget build(BuildContext context) {
 
 
    YoutubePlayerController _controller = YoutubePlayerController(
-      initialVideoId: this.widget.videoid,
+      initialVideoId: this.widget.videoId,
       flags: YoutubePlayerFlags(
           autoPlay :false
       ),
@@ -48,15 +46,6 @@ return YoutubePlayerBuilder(player: YoutubePlayer(controller: _controller,), bui
                SizedBox(height: 20,),
                player
              ],
-
-
-
-
-
-
-
-
-
 
            ))
 

@@ -1,10 +1,8 @@
 
 
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
-// static function that we use in signin page to get the teacher when succesful signin
+// function that we use in signin page to get the teacher when succesful signin
 Future<DocumentSnapshot> getTeacherByIdFromFireBase(String id)async{
   CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
   return await teachers.doc(id).get();
@@ -28,21 +26,7 @@ Stream<QuerySnapshot<Map<String, dynamic>>> showStudentByNameFromFireBase(String
 
 
 
-// function that get a image file and store it in FireBaseFireStore
-Future<String> uploadImageToFireStorage(File imageFile,String userFullName,String userId)async{
 
-
-  final _firebaseStorage = FirebaseStorage.instance;
-  var file = File(imageFile.path);
-
-  var snapshot = await _firebaseStorage.ref()
-      .child('ProfileImages/$userFullName${userId}ProImage')
-      .putFile(file).whenComplete(() => null);
-  String downloadUrl = await snapshot.ref.getDownloadURL();
-  return downloadUrl.toString();
-
-
-}
 
 
 // function that update the teacher details in firebase
@@ -78,20 +62,17 @@ Future<List<dynamic>> getMeetingsFromFireBase(String userID)async{
 
 }
 
+// function that get the teachers by subject and location
 
-// function that get student from firebase by name
 
-Future<List<dynamic>> getStudentFromFireBaseAsTeacher(String fullName)async{
-
-  List<dynamic> resultStudents =[];
-  QuerySnapshot students = await FirebaseFirestore.instance.collection(
-      "Students").get();
-  students.docs.forEach((element) {
-
-    if (element.get(FieldPath(["FullName"]))==fullName) {
-      resultStudents.add(element.data());
-    }
-  });
-  return resultStudents;
+Stream<QuerySnapshot<Map<String, dynamic>>> getTeachersFromFireBaseBySubjectAndLocation(String subject,String location,bool showValue){
+  return location=="all" && subject=="all"?
+  FirebaseFirestore.instance.collection('Teachers').snapshots():
+  showValue?
+  FirebaseFirestore.instance.collection('Teachers').where("Location",isEqualTo: location)
+      .where("subjects",isEqualTo:subject).where("CanGo",isEqualTo: true).snapshots():
+  FirebaseFirestore.instance.collection('Teachers').where("Location",isEqualTo: location)
+      .where("subjects",arrayContains: subject).snapshots();
 
 }
+

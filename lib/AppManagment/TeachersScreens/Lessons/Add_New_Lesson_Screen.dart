@@ -15,25 +15,22 @@ class AddNewLesson extends StatefulWidget {
   Teacher teacher;
   final auth;
   GoogleSignIn googleSignIn;
-
   AddNewLesson(
       {Key key, this.teacher, this.document, this.auth, this.googleSignIn})
       : super(key: key);
 
   @override
   AddNewLessonState createState() =>
-      AddNewLessonState(document, this.auth, this.googleSignIn);
+      AddNewLessonState();
 }
 
 class AddNewLessonState extends State<AddNewLesson> {
   String lessonSubject, stuPhoneNumber, stuName, time;
   bool canGo = false;
-  final DocumentSnapshot lessonDocument;
   final dateController = TextEditingController();
-  final auth;
-  GoogleSignIn googleSignIn;
 
-  AddNewLessonState(this.lessonDocument, this.auth, this.googleSignIn);
+
+  AddNewLessonState();
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +54,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                             Navigator.of(context).pushReplacement(
                                 SlideRightRoute(
                                     page: Lessons(this.widget.teacher,
-                                        this.auth, this.googleSignIn)));
+                                        this.widget.auth, this.widget.googleSignIn)));
                           }),
                       Column(
                         children: [
@@ -82,7 +79,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                 ),
                 Center(
                     child: Text(
-                  this.lessonDocument != null
+                  this.widget.document != null
                       ? 'Edit Lesson'
                       : 'Add New Lesson',
                   style: TextStyle(
@@ -119,8 +116,8 @@ class AddNewLessonState extends State<AddNewLesson> {
                           filled: true,
                           border: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(15.0)),
-                          hintText: this.lessonDocument != null
-                              ? this.lessonDocument["LessonSubject"]
+                          hintText: this.widget.document != null
+                              ? this.widget.document["LessonSubject"]
                               : 'Lesson subject',
                           hintStyle: InputTextStyle,
                         ),
@@ -135,15 +132,15 @@ class AddNewLessonState extends State<AddNewLesson> {
                           value != null
                               ? stuPhoneNumber = value
                               : stuPhoneNumber =
-                                  this.lessonDocument["StuPhoneNumber"];
+                          this.widget.document["StuPhoneNumber"];
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.white60,
                           filled: true,
                           border: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(15.0)),
-                          hintText: this.lessonDocument != null
-                              ? this.lessonDocument["StuPhoneNumber"]
+                          hintText: this.widget.document!= null
+                              ? this.widget.document["StuPhoneNumber"]
                               : 'Student Phone Number',
                           hintStyle: InputTextStyle,
                         ),
@@ -157,15 +154,15 @@ class AddNewLessonState extends State<AddNewLesson> {
                         onChanged: (value) {
                           value != null
                               ? stuName = value
-                              : stuName = this.lessonDocument["StudentName"];
+                              : stuName = this.widget.document["StudentName"];
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.white60,
                           filled: true,
                           border: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(15.0)),
-                          hintText: this.lessonDocument != null
-                              ? this.lessonDocument["StudentName"]
+                          hintText: this.widget.document != null
+                              ? this.widget.document["StudentName"]
                               : 'Student Name',
                           hintStyle: InputTextStyle,
                         ),
@@ -195,7 +192,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                                   value != null
                                       ? dateController.text = value
                                       : dateController.text =
-                                          this.lessonDocument["Date"];
+                                  this.widget.document["Date"];
 
                                   dateController.text = value;
                                 },
@@ -205,8 +202,8 @@ class AddNewLessonState extends State<AddNewLesson> {
                                   border: OutlineInputBorder(
                                       borderRadius:
                                           new BorderRadius.circular(15.0)),
-                                  hintText: this.lessonDocument != null
-                                      ? this.lessonDocument["Date"]
+                                  hintText: this.widget.document != null
+                                      ? this.widget.document["Date"]
                                       : 'Date',
                                   hintStyle: InputTextStyle,
                                 ),
@@ -219,7 +216,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                                   textAlign: TextAlign.center,
                                   onChanged: (value) {
                                     value.isEmpty
-                                        ? time = this.lessonDocument["Time"]
+                                        ? time = this.widget.document["Time"]
                                         : time = value.toString();
                                   },
                                   decoration: InputDecoration(
@@ -230,8 +227,8 @@ class AddNewLessonState extends State<AddNewLesson> {
                                     border: OutlineInputBorder(
                                         borderRadius:
                                             new BorderRadius.circular(15.0)),
-                                    hintText: this.lessonDocument != null
-                                        ? this.lessonDocument["Time"]
+                                    hintText: this.widget.document != null
+                                        ?this.widget.document["Time"]
                                         : 'Time',
                                     hintStyle: InputTextStyle,
                                   ),
@@ -248,33 +245,33 @@ class AddNewLessonState extends State<AddNewLesson> {
                               ),
                               onPressed: () {
                                 Map<String, dynamic> newLessonData;
-                                if (this.lessonDocument != null) {
+                                if (this.widget.document != null) {
                                   newLessonData = {
                                     "Date": dateController.text.isEmpty
-                                        ? this.lessonDocument["Date"]
+                                        ? this.widget.document["Date"]
                                         : dateController.text,
                                     "LessonSubject": lessonSubject == null
-                                        ? this.lessonDocument["LessonSubject"]
+                                        ? this.widget.document["LessonSubject"]
                                         : lessonSubject,
                                     "StuPhoneNumber": stuPhoneNumber == null
-                                        ? this.lessonDocument["StuPhoneNumber"]
+                                        ? this.widget.document["StuPhoneNumber"]
                                         : stuPhoneNumber,
                                     "StudentName": stuName == null
-                                        ? this.lessonDocument["StudentName"]
+                                        ? this.widget.document["StudentName"]
                                         : stuName,
                                     "TeacherId": this.widget.teacher.id,
                                     "TeacherName": this.widget.teacher.fullName,
                                     "Time": time == null
-                                        ? this.lessonDocument["Time"]
+                                        ? this.widget.document["Time"]
                                         : time
                                   };
 
                                   this.widget.teacher.editMeeting(
-                                      newLessonData, this.lessonDocument.id);
+                                      newLessonData, this.widget.document.id);
                                   Navigator.of(context).pushReplacement(
                                       SlideRightRoute(
                                           page: Lessons(this.widget.teacher,
-                                              this.auth, this.googleSignIn)));
+                                              this.widget.auth, this.widget.googleSignIn)));
                                 } else if (dateController.text.isEmpty ||
                                     lessonSubject.isEmpty ||
                                     stuPhoneNumber.isEmpty ||
@@ -297,7 +294,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                                   Navigator.of(context).pushReplacement(
                                       SlideRightRoute(
                                           page: Lessons(this.widget.teacher,
-                                              this.auth, this.googleSignIn)));
+                                              this.widget.auth, this.widget.googleSignIn)));
                                 }
                               })),
                     ],

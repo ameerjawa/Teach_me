@@ -24,20 +24,17 @@ class Lessons extends StatefulWidget {
   Lessons(this.teacher, this.auth, this.googleSignIn);
 
   @override
-  LessonsDetails createState() => LessonsDetails(this.auth, this.googleSignIn);
+  LessonsDetails createState() => LessonsDetails();
 }
 
 class LessonsDetails extends State<Lessons> {
   Student student;
   String location;
   String subject;
-
   bool showValue = false;
-  GoogleSignIn googleSignIn;
 
-  final auth;
 
-  LessonsDetails(this.auth, this.googleSignIn);
+  LessonsDetails();
 
   Widget build(BuildContext context) {
     print(this.widget.teacher.id);
@@ -65,8 +62,8 @@ class LessonsDetails extends State<Lessons> {
                                 student,
                                 subject,
                                 location,
-                                this.auth,
-                                this.googleSignIn,
+                                this.widget.auth,
+                                this.widget.googleSignIn,
                                 false)));
                       }),
                   Column(children: [
@@ -109,7 +106,7 @@ class LessonsDetails extends State<Lessons> {
                     Navigator.of(context).pushReplacement(SlideRightRoute(
                         page: AddNewLesson(
                       teacher: this.widget.teacher,
-                      googleSignIn: this.googleSignIn,
+                      googleSignIn: this.widget.googleSignIn,
                     )));
                   },
                   child: Text("+ Add New Lesson "))
@@ -151,7 +148,7 @@ class LessonsDetails extends State<Lessons> {
                                           page: AddNewLesson(
                                     teacher: this.widget.teacher,
                                     document: document,
-                                    googleSignIn: this.googleSignIn,
+                                    googleSignIn: this.widget.googleSignIn,
                                   )));
                                 },
                                 leading: Container(

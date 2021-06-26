@@ -20,18 +20,16 @@ Teacher teacher;
   List<dynamic> subjects;
   EditLessonInformation({Key key,this.teacher,this.auth,this.googleSignIn,this.subjects}) : super(key: key);
   @override
-  EditLessonInformationState createState() => EditLessonInformationState(this.auth,this.googleSignIn);
+  EditLessonInformationState createState() => EditLessonInformationState();
 }
 
 class EditLessonInformationState extends State<EditLessonInformation> {
   String subjects,titleSentence,moreDetails,price,selectedSubject,selectedSubjectsText;
   bool canGo=false;
-  GoogleSignIn googleSignIn;
-  final auth;
   List<dynamic> temp;
 
 
-  EditLessonInformationState(this.auth,this.googleSignIn);
+  EditLessonInformationState();
 
 
 
@@ -119,7 +117,7 @@ class EditLessonInformationState extends State<EditLessonInformation> {
 
                           },
                           title:Text(
-                            selectedSubjectsText!=null && selectedSubjectsText!=""?"${selectedSubjectsText}":"subjects",
+                            selectedSubjectsText!=null && selectedSubjectsText!=""?"$selectedSubjectsText":"subjects",
                             overflow:TextOverflow.ellipsis,
                           ) ,
                           trailing: Icon(Icons.arrow_drop_down),
@@ -250,9 +248,11 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                                 TextButton(onPressed: ()async{
 
                                   Student s;
+                                  DocumentSnapshot isTeacher=await Teacher.getTeacherById(this.widget.teacher.id);
+                                  Teacher newTeacher=new Teacher(isTeacher["email"], "", "", isTeacher["FullName"], isTeacher["BirthDate"], isTeacher["PhoneNumber"], isTeacher["Location"], isTeacher["subjects"], isTeacher["More"], isTeacher["ProfileImg"], isTeacher["Rating"], isTeacher["CanGo"], isTeacher.id, isTeacher["Title Sentence"], isTeacher["Price"]);
 
                                   Navigator.of(context).pushReplacement(SlideRightRoute(
-                                      page: TeacherHomepage(this.widget.teacher,s,"","",this.auth,this.googleSignIn,false)
+                                      page: TeacherHomepage(newTeacher,s,"","",this.widget.auth,this.widget.googleSignIn,false)
                                   ));
                                 }, child:Text(
                                   'skip',
@@ -276,7 +276,7 @@ class EditLessonInformationState extends State<EditLessonInformation> {
 
 
                                      selectedSubject=selectedSubject!=""?selectedSubject:this.widget.teacher.subjects;
-                                      titleSentence=titleSentence != ""?titleSentence:this.widget.teacher.TitleSentence;
+                                      titleSentence=titleSentence != ""?titleSentence:this.widget.teacher.titleSentence;
 
                                        moreDetails=moreDetails != null?moreDetails:this.widget.teacher.detailsOnExperience;
                                       canGo = canGo!=null?canGo:this.widget.teacher.canGo;
@@ -295,10 +295,12 @@ class EditLessonInformationState extends State<EditLessonInformation> {
 
                                       await this.widget.teacher.moreTeacherDet(data,teachers,userId);
 
+                                      DocumentSnapshot isTeacher=await Teacher.getTeacherById(this.widget.teacher.id);
+                                      Teacher newTeacher=new Teacher(isTeacher["email"], "", "", isTeacher["FullName"], isTeacher["BirthDate"], isTeacher["PhoneNumber"], isTeacher["Location"], isTeacher["subjects"], isTeacher["More"], isTeacher["ProfileImg"], isTeacher["Rating"], isTeacher["CanGo"], isTeacher.id, isTeacher["Title Sentence"], isTeacher["Price"]);
 
                                       Student s;
                                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                                          page: TeacherHomepage(this.widget.teacher,s,"","",this.auth,this.googleSignIn,false)
+                                          page: TeacherHomepage(newTeacher,s,"","",this.widget.auth,this.widget.googleSignIn,false)
                                       ));
 
 

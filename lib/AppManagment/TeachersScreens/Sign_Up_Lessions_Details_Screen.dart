@@ -31,7 +31,7 @@ class TeacherLessonDetail extends StatefulWidget {
 
   @override
   TeacherlessionsDetails createState() => TeacherlessionsDetails(
-      this.userObj, this.auth, this.googleSignin, this.subjects);
+     );
 }
 
 class TeacherlessionsDetails extends State<TeacherLessonDetail> {
@@ -40,16 +40,12 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
       price,
       selectedSubject,
       selectedsubjectstext;
-  final auth;
-  GoogleSignIn googleSignin;
-  List<dynamic> subjects;
   bool canGo = false;
-  GoogleSignInAccount userObj;
   final _formKey = GlobalKey<FormState>();
   List<Subject> temp = [];
 
   TeacherlessionsDetails(
-      this.userObj, this.auth, this.googleSignin, this.subjects);
+    );
 
   Widget build(BuildContext context) {
     CollectionReference teachers =
@@ -124,7 +120,7 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            SubjectsScreen(this.subjects)));
+                                            SubjectsScreen(this.widget.subjects)));
                             setState(() {
                               temp = _response;
                               selectedsubjectstext =
@@ -134,7 +130,7 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                           title: Text(
                             selectedsubjectstext != null &&
                                     selectedsubjectstext != ""
-                                ? "${selectedsubjectstext}"
+                                ? "$selectedsubjectstext"
                                 : "subjects",
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -256,11 +252,10 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                         if (_formKey.currentState.validate()) {
                                           // TODO submit
 
-                                          String userId = userObj != null
-                                              ? userObj.id
-                                              : this.auth != null
-                                                  ? this
-                                                      .auth
+                                          String userId = widget.userObj != null
+                                              ? widget.userObj.id
+                                              : this.widget.auth != null
+                                                  ? this.widget.auth
                                                       .currentUser
                                                       .uid
                                                       .toString()
@@ -294,8 +289,8 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                                       s,
                                                       "",
                                                       "",
-                                                      this.auth,
-                                                      this.googleSignin,
+                                                      this.widget.auth,
+                                                      this.widget.googleSignin,
                                                       false)));
                                         }
                                       }),

@@ -9,7 +9,7 @@ import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
-import 'package:teach_me/UserManagment/Userbg.dart';
+import 'package:teach_me/UserManagment/User/Userbg.dart';
 
 
 import '../TeachersScreens/Sign_Up_As_Teacher_Screen.dart';
@@ -59,6 +59,8 @@ class AccountType extends StatelessWidget {
                             iconSize: 50,
                             alignment: Alignment.topLeft,
                             onPressed: () async {
+
+                              // **sign out**
                               if (this.googleSignIn != null) {
                                 await this.googleSignIn.signOut();
                               } else if (this.auth != null) {

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:teach_me/AppManagment/StudentsScreens/ExamsScreens/Result_Screen.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
+// ignore: must_be_immutable
 class GetJson extends StatelessWidget {
   Map<String, dynamic> result;
-
   GetJson(this.result);
 
   @override
@@ -17,20 +17,21 @@ class GetJson extends StatelessWidget {
               child: Text("Loading..."),
             ),
           )
-        : quizpage(result);
+        : QuizPage(result);
   }
 }
 
-class quizpage extends StatefulWidget {
+// ignore: must_be_immutable
+class QuizPage extends StatefulWidget {
   Map<String, dynamic> result;
 
-  quizpage(this.result);
+  QuizPage(this.result);
 
   @override
-  _quizpageState createState() => _quizpageState();
+  _QuizPageState createState() => _QuizPageState();
 }
 
-class _quizpageState extends State<quizpage> {
+class _QuizPageState extends State<QuizPage> {
 
   Color colortoshow=Colors.indigoAccent;
   Color right=Colors.green;
@@ -40,65 +41,30 @@ class _quizpageState extends State<quizpage> {
   int timer=30;
   String showTimer="30";
   bool canceltimer=false;
+  Map<int,Color> btncolor={
+    0:Colors.indigoAccent,
+    1:Colors.indigoAccent,
+    2:Colors.indigoAccent,
+    3:Colors.indigoAccent,
+  };
 
 
   @override
   void initState(){
-    starttimer();
+    _starttimer();
     super.initState();
   }
 
 
 
-  void starttimer()async{
-    const onesecond=Duration(seconds: 1);
-    Timer.periodic(onesecond, (Timer t) {
-      if(mounted) {
-        setState(() {
-          if (timer < 1) {
-            t.cancel();
-            nextQuestion();
-          } else if (canceltimer) {
-            t.cancel();
-          } else {
-            timer -= 1;
-          }
-          showTimer = timer.toString();
-        });
-      }
-    });
-  }
+
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
   }
 
-  void nextQuestion(){
-    canceltimer=false;
-    timer=30;
 
-    print(i);
-
-    setState(() {
-      if(i<4){
-        i++;
-      }else{
-        Navigator.of(context).pushReplacement(ScaleRoute(page: ResultScreen(marks)));
-
-      }
-
-      print(i);
-      for(int j=0;j<btncolor.length;j++){
-        btncolor[j]=Colors.indigoAccent;
-      }
-
-      starttimer();
-
-    });
-
-
-  }
 
 
   Widget choiseButton(int k) {
@@ -107,7 +73,7 @@ class _quizpageState extends State<quizpage> {
       child: MaterialButton(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-        onPressed: () =>checkresult(k,i),
+        onPressed: () =>_checkresult(k,i),
         child: Text(
           this.widget.result["answers"][i.toString()][k],
           style: TextStyle(color: Colors.white, fontSize: 16.0),
@@ -195,7 +161,17 @@ class _quizpageState extends State<quizpage> {
     );
   }
 
- void checkresult(int k,int i) {
+
+
+ /*
+  *
+  * ---> all the logic in the Exam System down below
+  *
+  */
+
+
+  // function that check result and update values in the variables
+ void _checkresult(int k,int i) {
 
     if (this.widget.result["answers"][i.toString()][k]==this.widget.result["correctAnswers"][i]){
 
@@ -211,18 +187,57 @@ class _quizpageState extends State<quizpage> {
       btncolor[k]=colortoshow;
     });
     
-    Timer(Duration(seconds: 2), nextQuestion);
+    Timer(Duration(seconds: 2), _nextQuestion);
 
   }
-  Map<int,Color> btncolor={
-    0:Colors.indigoAccent,
-    1:Colors.indigoAccent,
-    2:Colors.indigoAccent,
-    3:Colors.indigoAccent,
-  };
+
+// function that manage the timer in bottom of the Screen of questionpage
+  void _starttimer()async{
+    const onesecond=Duration(seconds: 1);
+    Timer.periodic(onesecond, (Timer t) {
+      if(mounted) {
+        setState(() {
+          if (timer < 1) {
+            t.cancel();
+            _nextQuestion();
+          } else if (canceltimer) {
+            t.cancel();
+          } else {
+            timer -= 1;
+          }
+          showTimer = timer.toString();
+        });
+      }
+    });
+  }
 
 
+  // function that take us to the nextQuestion
 
+  void _nextQuestion(){
+    canceltimer=false;
+    timer=30;
+
+    print(i);
+
+    setState(() {
+      if(i<4){
+        i++;
+      }else{
+        Navigator.of(context).pushReplacement(ScaleRoute(page: ResultScreen(marks)));
+
+      }
+
+      for(int j=0;j<btncolor.length;j++){
+        btncolor[j]=Colors.indigoAccent;
+      }
+
+      _starttimer();
+
+    });
+
+
+  }
 
 
 }

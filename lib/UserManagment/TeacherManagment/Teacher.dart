@@ -1,15 +1,15 @@
 
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:teach_me/DBManagment/CoursesManagment/Course_FireBase_Service.dart';
 import 'package:teach_me/DBManagment/ExamsManagment/Exam_FireBase_Service.dart';
 import 'package:teach_me/DBManagment/MeetingsManagment/Lession.dart';
 import 'package:teach_me/DBManagment/MeetingsManagment/Meetings_FireBase_Service.dart';
+import 'package:teach_me/DBManagment/StudentsAccountManagment/Student_FireBase_Service.dart';
 import 'package:teach_me/DBManagment/TeacherAccountManagment/Teacher_FireBase_Service.dart';
 import 'package:teach_me/DBManagment/UserAccountManagment/User_FireBase_Service.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/TeacherProfiles.dart';
 
-import '../Userbg.dart';
+import '../User/Userbg.dart';
 
 class Teacher extends Userbg with TeacherProfiles{
 
@@ -19,13 +19,13 @@ class Teacher extends Userbg with TeacherProfiles{
  final int rater=0;
  final bool  canGo;
  final int allrateCount=0;
- final String TitleSentence;
+ final String titleSentence;
  final String proImg;
  final String id;
  final int price;
 
 
-  Teacher(String email, String password, String verifyPassword, String fullName, String birthDate, String phoneNumber, String location, this.subjects, this.detailsOnExperience, this.proImg, this.rating, this.canGo, this.id, this.TitleSentence, this.price) : super(email, password, verifyPassword, fullName, birthDate, phoneNumber, location);
+  Teacher(String email, String password, String verifyPassword, String fullName, String birthDate, String phoneNumber, String location, this.subjects, this.detailsOnExperience, this.proImg, this.rating, this.canGo, this.id, this.titleSentence, this.price) : super(email, password, verifyPassword, fullName, birthDate, phoneNumber, location);
 
 
 
@@ -87,10 +87,7 @@ class Teacher extends Userbg with TeacherProfiles{
   }
 
 
-  // function that get an image file and upload it on firestore {from Teachers_FireBase_Service}
-  static Future<String> uploadImage(File imageFile,String userFullName,String userId)async{
-    return await uploadImageToFireStorage(imageFile,userFullName,userId);
-  }
+
 
   // function that update the teacher details {from Teachers_FireBase_Service}
   Future<void> updateTeacherDetails(Map<String,dynamic> data, String userId)async{
@@ -127,7 +124,7 @@ class Teacher extends Userbg with TeacherProfiles{
 
 
 
-  // function that get student from firebase by name {from Teacher_FireBase_Service}
+  // function that get student from firebase by name {from Student_FireBase_Service}
   Future<List<dynamic>> searchForStudent(String email)async{
     return await getStudentFromFireBaseAsTeacher(email);
   }
@@ -139,6 +136,8 @@ class Teacher extends Userbg with TeacherProfiles{
     return await addCourseToFireBase(data);
   }
 
+
+  // function that add Exam to the firebase {from Exam_FireBase_Service}
   Future<void> addExam(Map<String,dynamic> data){
 
     return  addExamToFireBase(data);

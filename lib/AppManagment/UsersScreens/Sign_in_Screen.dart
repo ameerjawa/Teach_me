@@ -69,7 +69,6 @@ class _MyHomePageState extends State<SignInUser> {
                 Container(
                     child: Image.asset("assets/images/newlogologo.jpeg",
                         matchTextDirection: true, height: 200, width: 250)),
-
                 Text(
                   'TeachMe',
                   style: TextStyle(
@@ -151,11 +150,25 @@ class _MyHomePageState extends State<SignInUser> {
                         );
 
                         if (userCredential != null) {
-                           isTeacher =
-                              await Teacher.getTeacherById(
-                                  userCredential.user.uid);
+                          isTeacher = await Teacher.getTeacherById(
+                              userCredential.user.uid);
                           if (isTeacher.exists) {
-                            teacher=new Teacher(isTeacher["email"], "", "", isTeacher["FullName"], isTeacher["BirthDate"], isTeacher["PhoneNumber"], isTeacher["Location"], isTeacher["subjects"], isTeacher["More"], isTeacher["ProfileImg"], isTeacher["Rating"],isTeacher["CanGo"],isTeacher.id,isTeacher["Title Sentence"],isTeacher["Price"]);
+                            teacher = new Teacher(
+                                isTeacher["email"],
+                                "",
+                                "",
+                                isTeacher["FullName"],
+                                isTeacher["BirthDate"],
+                                isTeacher["PhoneNumber"],
+                                isTeacher["Location"],
+                                isTeacher["subjects"],
+                                isTeacher["More"],
+                                isTeacher["ProfileImg"],
+                                isTeacher["Rating"],
+                                isTeacher["CanGo"],
+                                isTeacher.id,
+                                isTeacher["Title Sentence"],
+                                isTeacher["Price"]);
                             Navigator.of(context).pushReplacement(
                                 CupertinoPageRoute(
                                     builder: (context) => TeacherHomepage(
@@ -190,9 +203,7 @@ class _MyHomePageState extends State<SignInUser> {
                         TextStyle(fontSize: BtnFontSize, fontFamily: BtnFont),
                   ),
                 ),
-
                 SizedBox(height: 16),
-
                 Text(
                   "OR",
                   style: TextStyle(
@@ -202,7 +213,6 @@ class _MyHomePageState extends State<SignInUser> {
                       fontFamily: BtnFont),
                 ),
                 SizedBox(height: 16),
-
                 Container(
                   decoration: BoxDecoration(
                       border: Border.all(
@@ -228,7 +238,6 @@ class _MyHomePageState extends State<SignInUser> {
                 SizedBox(
                   height: 30,
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -258,5 +267,3 @@ class _MyHomePageState extends State<SignInUser> {
     );
   }
 }
-
-

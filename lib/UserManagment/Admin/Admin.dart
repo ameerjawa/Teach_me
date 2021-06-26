@@ -5,8 +5,7 @@ import 'package:teach_me/DBManagment/CoursesManagment/Course_FireBase_Service.da
 import 'package:teach_me/DBManagment/ExamsManagment/Exam.dart';
 import 'package:teach_me/DBManagment/ExamsManagment/Exam_FireBase_Service.dart';
 
-import '../../DBManagment/FireBase_Service.dart';
-import '../Userbg.dart';
+import '../User/Userbg.dart';
 
 class Admin extends Userbg{
   Admin(String email, String password, String verifyPassword, String fullName, String birthDate, String phoneNumber, String location) : super(email, password, verifyPassword, fullName, birthDate, phoneNumber, location);

@@ -13,21 +13,20 @@ class VerifyEmail extends StatefulWidget {
 
   VerifyEmail(this.auth);
   @override
-  _VerifyState createState() => _VerifyState(this.auth);
+  _VerifyState createState() => _VerifyState();
 }
 
 class _VerifyState extends State<VerifyEmail> {
 
-  final auth;
   User user;
   Timer timer;
 
-  _VerifyState(this.auth);
+  _VerifyState();
 
   @override
   void initState() {
     // TODO: implement initState
-    user=auth.currentUser;
+    user=widget.auth.currentUser;
     user.sendEmailVerification();
    timer= Timer.periodic(Duration(seconds: 3), (timer) {
 checkEmailVerified();
@@ -91,12 +90,12 @@ checkEmailVerified();
     );
   }
   Future<void> checkEmailVerified()async{
-    user=auth.currentUser;
+    user=widget.auth.currentUser;
     await user.reload();
     if(user.emailVerified){
       timer.cancel();
       Navigator.of(context).pushReplacement(CupertinoPageRoute(
-          builder: (context) => AccountType(auth: this.auth,)
+          builder: (context) => AccountType(auth: this.widget.auth,)
       ));
     }
 

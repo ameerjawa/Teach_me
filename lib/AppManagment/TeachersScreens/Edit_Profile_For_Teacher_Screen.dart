@@ -14,9 +14,9 @@ import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
-import 'package:teach_me/UserManagment/Userbg.dart';
+import 'package:teach_me/UserManagment/User/Userbg.dart';
 import 'Update_Lesson_information_Screen.dart';
-import 'package:teach_me/DBManagment/FireBase_Service.dart';
+
 
 
 
@@ -26,11 +26,12 @@ class EditProfileForTeacher extends StatefulWidget {
   Teacher teacher;
   final auth;
   GoogleSignIn googleSignIn;
+  List<dynamic> cities;
 
-  EditProfileForTeacher({Key key,this.teacher,this.auth,this.googleSignIn}) : super(key: key);
+  EditProfileForTeacher({Key key,this.teacher,this.auth,this.googleSignIn,this.cities}) : super(key: key);
 
   @override
-  EditProfileForTeacherState createState() => EditProfileForTeacherState(this.auth,this.googleSignIn);
+  EditProfileForTeacherState createState() => EditProfileForTeacherState();
 }
 
 class EditProfileForTeacherState extends State<EditProfileForTeacher> {
@@ -38,17 +39,11 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
   final _dateController = TextEditingController();
   String fullName,phoneNumber,location,date;
   bool _validate=false;
-  GoogleSignIn googleSignIn;
-
-
-
-
   final databaseReference = FirebaseDatabase.instance.reference();
   CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
-  final auth;
 
 
-  EditProfileForTeacherState(this.auth,this.googleSignIn);
+  EditProfileForTeacherState();
 
 
 
@@ -80,7 +75,7 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                               Student s;
 
                               Navigator.of(context).pushReplacement(SlideRightRoute(
-                                  page: TeacherHomepage(this.widget.teacher,s,"","",this.auth,this.googleSignIn,false)
+                                  page: TeacherHomepage(this.widget.teacher,s,"","",this.widget.auth,this.widget.googleSignIn,false)
                               ));
                             }
                         ),
@@ -147,7 +142,6 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                       Text("${this.widget.teacher.email}"),
                       SizedBox(height: 10,),
                       TextFormField(
-                        keyboardType: TextInputType.emailAddress,
 
                         textAlign: TextAlign.center,
                         onChanged: (value) {
@@ -190,16 +184,37 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                         ),
                       ),
                       SizedBox(height: 10),
+            Center(child: Text("City",style: InputTextStyle,),),
 
-                      ListTile(
-                        hoverColor: Colors.white70,
-                        onTap: (){
+            Container(
+              decoration: BoxDecoration(
+                  borderRadius: new BorderRadius.circular(15.0),
+                  color: Colors.white60),
+              child: Autocomplete(
+                optionsBuilder: (TextEditingValue value) {
 
-                        },
-                        title: Text("No Country",overflow: TextOverflow.ellipsis,),
 
-                      )
-                      ,
+                  // When the field is empty
+                  if (value.text.isEmpty) {
+                    return [];
+                  }
+
+
+
+                  // The logic to find out which ones should appear
+                  return this.widget.cities.where((suggestion) =>
+                      suggestion
+                          .toLowerCase()
+                          .startsWith(value.text.toLowerCase()));
+                },
+                onSelected: (value) {
+                  setState(() {
+                    location = value;
+                  });
+                },
+              ),
+            ),
+
                       SizedBox(height: 10,),
 
 
@@ -251,9 +266,10 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
 
 
                                       String userId = this.widget.teacher.id;
+                                      String url="";
 
                                       if (imageFile != null ){
-                                    await Teacher.uploadImage(imageFile,fullName,userId);
+                                     url=  await Userbg.uploadImage(imageFile,fullName,userId);
 
                                       }
 
@@ -265,8 +281,9 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                                        date=_dateController.text!= null?_dateController.text:this.widget.teacher.birthDate;
 
 
-                                      Map<String,dynamic> data ={"FullName":fullName,"PhoneNumber":phoneNumber,"Location":location,"BirthDate":date};
+                                      Map<String,dynamic> data ={"FullName":fullName,"PhoneNumber":phoneNumber,"Location":location,"BirthDate":date,"ProfileImg":url};
                                       await this.widget.teacher.updateTeacherDetails(data,userId);
+
 
                                       /*
                                       * get all the subjects down below
@@ -279,7 +296,7 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
 
                                        */
                                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                                          page: EditLessonInformation(teacher: this.widget.teacher,googleSignIn: this.googleSignIn,subjects: subjectsList,)
+                                          page: EditLessonInformation(teacher: this.widget.teacher,googleSignIn: this.widget.googleSignIn,subjects: subjectsList,)
                                       ));
 
                                     }

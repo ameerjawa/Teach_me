@@ -1,14 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
-import 'package:teach_me/AppManagment/StudentsScreens/ExamsScreens/Quiz_page.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 
 import '../Student_Activity_Home_Screen.dart';
+import 'Sure_Enter_Exam_Widget.dart';
 
+// ignore: must_be_immutable
 class ExamsHomeScreen extends StatefulWidget {
   Student student;
   GoogleSignIn googleSignIn;
@@ -27,11 +27,13 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
   List<dynamic> filteredExams=[];
 
   @override
+
   void initState(){
     setState(() {
       filteredExams=this.widget.result[0];
     });
-  }
+   super.initState();
+   }
 
 
   @override
@@ -75,21 +77,14 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
                     color: Color(0xFFF5F5F7),
                     borderRadius: BorderRadius.circular(40)),
                 child: TextField(maxLines: 1,onChanged: (value){
-
                   value=value.toLowerCase();
-
                   setState(() {
-
-
-
-                    print(this.widget.result[0][0]["ExamName"]);
-                     filteredExams = this.widget.result[0].where((element) {
+                    filteredExams = this.widget.result[0].where((element) {
                       String examname= element["ExamName"].toLowerCase();
                       return examname.contains(value);
                     }
                     ).toList();
 
-                     print(filteredExams);
                   });
 
 
@@ -130,13 +125,6 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
                                 result: filteredExams[index],
                               ),
                             );
-
-                            // Navigator.of(context).pushReplacement(SlideRightRoute(
-                            //
-                            //
-                            //
-                            // page: CourseCategoryPage(student,googleSignIn,this.resultcat[index]["name"],this.resultcat[index]["Courses"],catcourses)
-                            // ));
                           },
                           child: Container(
                             
@@ -155,7 +143,6 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-//resultcat[index]["name"]
                                   Text(
                                     filteredExams[index]["ExamName"],
                                     style: TextStyle(
@@ -164,13 +151,6 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
                                         fontWeight: FontWeight.bold,
                                         fontSize: 30),
                                   ),
-//${resultcat[index]["Courses"]}
-//                                   Text(
-//                                     this.widget.result[0][index]["ExamSubject"],
-//                                     style: TextStyle(
-//                                         fontWeight: FontWeight.w600,
-//                                         color: Colors.black87),
-//                                   )
                                 ],
                               ),
                             ),
@@ -182,69 +162,6 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class SureEnterExam extends StatelessWidget {
-  Map<String, dynamic> result;
-
-  SureEnterExam({Key key, this.result}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      content: Container(
-          height: 100,
-          child: Column(
-            children: <Widget>[
-              new Text(" are U sure ?"),
-              SizedBox(
-                height: 20,
-              ),
-              Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        primary: Colors.blue,
-                        backgroundColor: Colors.grey,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: Text(
-                        'Cancel',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                    TextButton(
-                      style: TextButton.styleFrom(
-                        primary: Colors.blue,
-                        backgroundColor: Colors.grey,
-                      ),
-                      onPressed: () async {
-                        Navigator.of(context).pushReplacement(
-                            SlideRightRoute(page: GetJson(result)));
-                      },
-                      child: Text(
-                        'Enter Exam',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )),
-      title: Text(''),
     );
   }
 }

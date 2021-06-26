@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rainbow_color/rainbow_color.dart';
 
 
+// ignore: must_be_immutable
 class ResultScreen extends StatefulWidget {
   int mark;
 
@@ -22,15 +23,13 @@ class _ResultScreenState extends State<ResultScreen> with  SingleTickerProviderS
     Colors.blue,
     Colors.white,
     Colors.purple,
-
-
-
     Colors.orange,
     Colors.yellow,
 
     Colors.indigo,
     Colors.purple,
   ], rangeStart: 0.0, rangeEnd: 200.0);
+  Animatable<double> bgValue = Tween<double>(begin: 0.0, end: 30.0);
 
 
 
@@ -56,7 +55,7 @@ class _ResultScreenState extends State<ResultScreen> with  SingleTickerProviderS
     }
 
   }
-  Animatable<double> bgValue = Tween<double>(begin: 0.0, end: 30.0);
+
 
 
 
@@ -119,26 +118,12 @@ class _ResultScreenState extends State<ResultScreen> with  SingleTickerProviderS
 
                         ),
                         padding: EdgeInsets.all(24.0),
-                        child: Text('${message} \n You  Scored ${this.widget.mark*4>100?100:this.widget.mark*4}/100 marks',
+                        child: Text('$message \n You  Scored ${this.widget.mark*4>100?100:this.widget.mark*4}/100 marks',
                         textAlign: TextAlign.center,
                         style: TextStyle( fontWeight: FontWeight.w600,fontSize: 30.0, fontFamily: 'Times New Roman',color: _rb[(_anim.value - 2) % 10]),), //shift one color backward
                       );
                     }
                 )
-
-
-
-                  // child: Text(
-                  //   "congratulations You  Scored ${this.widget.mark*4}/100 marks",
-                  //     textScaleFactor:1.1,
-                  //   style: TextStyle(
-                  //     fontFamily: 'Times New Roman',
-                  //     fontSize: 30.0,
-                  //     color: color,
-                  //     fontWeight: FontWeight.w600
-                  //   ),
-                  //   textAlign: TextAlign.center,
-                  // ),
 
                 ),
               ),

@@ -4,14 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:teach_me/AppManagment/StudentsScreens/Sure_Log_Out_Widget.dart';
 import 'package:teach_me/AppManagment/TeachersScreens/Edit_Profile_For_Teacher_Screen.dart';
 import 'package:teach_me/AppManagment/TeachersScreens/Lessons/Lessons_Screen.dart';
 import 'package:teach_me/AppManagment/TeachersScreens/Search_.For_Student_Screen.dart';
-import 'package:teach_me/AppManagment/StudentsScreens/Student_Activity_Home_Screen.dart';
 import 'package:teach_me/AppManagment/StudentsScreens/Search_for_Teacher_Screens/Search_For_Teacher_Result_Second_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
+import 'package:teach_me/UserManagment/User/Userbg.dart';
 
 // ignore: must_be_immutable
 class TeacherHomepage extends StatefulWidget {
@@ -27,27 +28,22 @@ class TeacherHomepage extends StatefulWidget {
 
   @override
   HomepageteacherState createState() => HomepageteacherState(
-      teacher, student, subject, location, this.auth, this.googleSignIn);
+     );
 }
 
 class HomepageteacherState extends State<TeacherHomepage> {
   bool showvalue = false;
-  Teacher teacher;
-  String subject, location;
-  Student student;
-  final _auth;
   String subjectsintext="";
 
-  GoogleSignIn googleSignIn;
 
-  HomepageteacherState(this.teacher, this.student, this.subject,
-      this.location, this._auth, this.googleSignIn);
+  HomepageteacherState();
 
   Widget build(BuildContext context) {
 
-    for (int i=0;i<this.teacher.subjects.length;i++){
+    subjectsintext="";
+    for (int i=0;i<this.widget.teacher.subjects.length;i++){
 
-      subjectsintext+="${this.teacher.subjects[i].toString()} - ";
+      subjectsintext+="${this.widget.teacher.subjects[i].toString()} - ";
     }
 
 
@@ -70,11 +66,11 @@ class HomepageteacherState extends State<TeacherHomepage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Row(children: [
-                          student != null
+                          widget.student != null
                               ? _showButton(context)
                               : _showLogoutButton(context),
                           Text(
-                            student != null ? "Back To Results" : "",
+                            widget.student != null ? "Back To Results" : "",
                             style: TextStyle(fontSize: 12),
                           ),
                         ]),
@@ -97,17 +93,36 @@ class HomepageteacherState extends State<TeacherHomepage> {
                     ),
                   ),
 
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    this.teacher.fullName != null
-                        ? this.teacher.fullName
-                        : "name",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 35,
-                        color: Colors.white),
+
+                  Padding(
+                    padding: EdgeInsets.only(left: 40.0,right:40.0),
+                    child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          width: 100,
+                          height: 100,
+
+                          child: GestureDetector(
+
+                            child: CircleAvatar(
+                              radius: 70,
+                              backgroundImage:NetworkImage(this.widget.teacher.proImg) ,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 40,),
+                        Text(
+                          this.widget.teacher.fullName != null
+                              ? this.widget.teacher.fullName
+                              : "name",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 35,
+                              color: Colors.white,fontFamily: BtnFont),
+                        ),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 10,
@@ -115,11 +130,26 @@ class HomepageteacherState extends State<TeacherHomepage> {
 
 
 
-                  Text("${subjectsintext!=null?subjectsintext:""} Teacher ",
-                    style: TextStyle(
-                        fontWeight: FontWeight.normal,
-                        fontSize: 15,
-                        color: Colors.white),
+                  Padding(
+
+                    padding: const EdgeInsets.only(left:20.0,right:20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("${subjectsintext!=null?subjectsintext:""} ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.normal,
+                              fontSize: 15,
+                              color: Colors.white),
+                        ),
+                        Text("Teacher ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                              color: Colors.white),
+                        ),
+                      ],
+                    ),
                   ),
                   SingleChildScrollView(
                     child: Container(
@@ -132,59 +162,121 @@ class HomepageteacherState extends State<TeacherHomepage> {
 
                       child: Column(
                         children: [
-                          RatingBarIndicator(
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(child: Text("Rating",style: TextStyle(
+                              fontFamily: 'Times New Roman',fontSize: InputFontSize
+                            ),),),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left:8.0,right:8.0,top: 8.0),
+                            child: RatingBarIndicator(
 
-                            rating: this.teacher.rating != null
-                                ? this.teacher.rating
-                                :
-                               0.0,
-                            itemBuilder: (context, index) => Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                            ),
-                            itemCount: 5,
-                            itemSize: 50.0,
-                            direction: Axis.horizontal,
-                          ),
-                          SizedBox(
-                            height: 30,
-                          ),
-
-                          Text(
-                            'Still have no lessons',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                                color: Colors.black),
-                          ),
-
-                          Text(
-                            "City : ${this.teacher.location != null ? this.teacher.location : ""}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          ),
-                          SizedBox(
-                            height: 7,
-                          ),
-
-                          Text(
-                            "PhoneNumber :  ${this.teacher.phoneNumber != null ? this.teacher.phoneNumber: ""}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          ),
-                          SizedBox(
-                            height: 7,
-                          ),
-                          Text(
-                              "More About Me : ${this.teacher.detailsOnExperience!=null?this.teacher.detailsOnExperience:""}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20
+                              rating: this.widget.teacher.rating != null
+                                  ? this.widget.teacher.rating
+                                  :
+                                 0.0,
+                              itemBuilder: (context, index) => Icon(
+                                Icons.star,
+                                color: Colors.amber,
+                              ),
+                              itemCount: 5,
+                              itemSize: 50.0,
+                              direction: Axis.horizontal,
                             ),
                           ),
+                          Center(child: Text(
+                            this.widget.teacher.titleSentence
+                          ),),
                           SizedBox(
-                            height: 100,
+                            height: 20,
                           ),
+
+
+
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text(
+                                      "City : ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 20,fontFamily: 'Times New Roman'),
+                                    ),
+                                    Text(
+                                      " ${this.widget.teacher.location != null ? this.widget.teacher.location : ""}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 20,fontFamily: 'Times New Roman'),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 7,
+                                ),
+
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      "Phone :  ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 20,fontFamily: 'Times New Roman'),
+                                    ),
+                                    Text(
+                                      "${this.widget.teacher.phoneNumber != null ? this.widget.teacher.phoneNumber: ""}",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold, fontSize: 20,fontFamily: 'Times New Roman'),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 7,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 32),
+                                  child: Text(
+                                    "More :",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,fontFamily: 'Times New Roman'
+                                    ),
+
+                                  ),
+                                ),
+                                SizedBox(height: 10,),
+                                Center(
+                                  child: Container(
+                                    height: 140,
+                                    width: 250,
+                                    decoration:BoxDecoration(
+                                        color: Colors.white60.withOpacity(0.4),
+                                        borderRadius: BorderRadius.circular(20.0),
+                                      border: Border.all(color: Colors.white,width: 1.0)
+                                    ) ,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "${this.widget.teacher.detailsOnExperience!=null?this.widget.teacher.detailsOnExperience:""}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 16,
+                                            color: Colors.blueGrey
+                                        ),
+
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                          ),
+
+
                           Row(children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -194,16 +286,16 @@ class HomepageteacherState extends State<TeacherHomepage> {
                               padding: const EdgeInsets.all(15.0),
                               child: Container(
                                 child: Text(
-                                    this.teacher.canGo == null
+                                    this.widget.teacher.canGo == null
                                         ? ""
-                                        : this.teacher.canGo
+                                        : this.widget.teacher.canGo
                                             ? "Can"
                                             : "Can't",
                                     style: TextStyle(
                                         fontSize: 30,
-                                        color: this.teacher.canGo == null
+                                        color: this.widget.teacher.canGo == null
                                             ? ""
-                                            : this.teacher.canGo
+                                            : this.widget.teacher.canGo
                                                 ? Colors.green
                                                 : Colors.red)),
 
@@ -218,7 +310,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                   SizedBox(
                     height: 50,
                   ),
-                  student != null
+                  widget.student != null
                       ? Container()
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -232,9 +324,9 @@ class HomepageteacherState extends State<TeacherHomepage> {
                                 Navigator.of(context).pushReplacement(
                                     CupertinoPageRoute(
                                         builder: (context) => SearchForStudent(
-                                            teacher,
-                                            this._auth,
-                                            this.googleSignIn)));
+                                            widget.teacher,
+                                            this.widget.auth,
+                                            this.widget.googleSignIn)));
                               },
                               child: Text(
                                 'Search',
@@ -252,8 +344,8 @@ class HomepageteacherState extends State<TeacherHomepage> {
                               onPressed: () {
                                 Navigator.of(context).pushReplacement(
                                     CupertinoPageRoute(
-                                        builder: (context) => Lessons(teacher,
-                                            this._auth, this.googleSignIn)));
+                                        builder: (context) => Lessons(widget.teacher,
+                                            this.widget.auth, this.widget.googleSignIn)));
                               },
                               child: Text(
                                 'Lessons',
@@ -268,13 +360,14 @@ class HomepageteacherState extends State<TeacherHomepage> {
                                 primary: Colors.blue,
                                 backgroundColor: Colors.white70,
                               ),
-                              onPressed: () {
+                              onPressed: ()async {
+                                List<dynamic> cities=  await Userbg.getCities();
                                 Navigator.of(context).pushReplacement(
                                     CupertinoPageRoute(
                                         builder: (context) =>
-                                            EditProfileForTeacher(
-                                              teacher: teacher,
-                                              googleSignIn: this.googleSignIn,
+                                            EditProfileForTeacher(cities:cities,
+                                              teacher: widget.teacher,
+                                              googleSignIn: this.widget.googleSignIn,
                                             )));
                               },
                               child: Text(
@@ -302,8 +395,8 @@ class HomepageteacherState extends State<TeacherHomepage> {
       onPressed: () => showDialog(
         context: context,
         builder: (context) => SureLogout(
-          auth: this._auth,
-          googleSignin: this.googleSignIn,
+          auth: this.widget.auth,
+          googleSignin: this.widget.googleSignIn,
         ),
       ),
     );
@@ -316,9 +409,9 @@ class HomepageteacherState extends State<TeacherHomepage> {
         onPressed: () {
           Navigator.of(context).pushReplacement(CupertinoPageRoute(
               builder: (context) => SearchForTeacherViewTeachers(
-                  s: student,
-                  selectedSubject: subject,
-                  selectedLocation: location
+                  s: widget.student,
+                  selectedSubject: widget.subject,
+                  selectedLocation: widget.location
              , teacherCan: this.showvalue,)));
         });
   }

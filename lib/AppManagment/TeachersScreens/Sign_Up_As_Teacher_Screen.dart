@@ -11,10 +11,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
-import 'package:teach_me/UserManagment/Userbg.dart';
+import 'package:teach_me/UserManagment/User/Userbg.dart';
 
 import 'Sign_Up_Lessions_Details_Screen.dart';
 
+// ignore: must_be_immutable
 class SignUpTeacher extends StatefulWidget {
   final GoogleSignInAccount userObj;
   final auth;
@@ -25,7 +26,7 @@ class SignUpTeacher extends StatefulWidget {
 
   @override
   SignUpTeacherState createState() =>
-      SignUpTeacherState(this.userObj, this.auth, this.cities);
+      SignUpTeacherState();
 }
 
 class SignUpTeacherState extends State<SignUpTeacher> {
@@ -35,13 +36,10 @@ class SignUpTeacherState extends State<SignUpTeacher> {
   final databaseReference = FirebaseDatabase.instance.reference();
   CollectionReference teachers =
       FirebaseFirestore.instance.collection("Teachers");
-  final auth;
   bool isTeacher = true;
-  List<dynamic> cities;
-  final GoogleSignInAccount userObj;
   final _formKey = GlobalKey<FormState>();
 
-  SignUpTeacherState(this.userObj, this.auth, this.cities);
+  SignUpTeacherState();
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,7 +117,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                   SizedBox(
                     height: 25,
                   ),
-                  Text(userObj != null ? userObj.email : ""),
+                  Text(widget.userObj != null ? widget.userObj.email : ""),
                   SizedBox(
                     height: 10,
                   ),
@@ -182,7 +180,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                               }
 
                               // The logic to find out which ones should appear
-                              return this.cities.where((suggestion) =>
+                              return this.widget.cities.where((suggestion) =>
                                   suggestion
                                       .toLowerCase()
                                       .startsWith(value.text.toLowerCase()));
@@ -249,12 +247,12 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                 alignment: Alignment.topLeft,
                                 onPressed: () async {
                                   if (_formKey.currentState.validate()) {
-                                    String userId = this.userObj == null
-                                        ? this.auth.currentUser.uid.toString()
-                                        : this.userObj.id;
-                                    String email = this.userObj == null
-                                        ? this.auth.currentUser.email.toString()
-                                        : this.userObj.email;
+                                    String userId = this.widget.userObj == null
+                                        ? this.widget.auth.currentUser.uid.toString()
+                                        : this.widget.userObj.id;
+                                    String email = this.widget.userObj == null
+                                        ? this.widget.auth.currentUser.email.toString()
+                                        : this.widget.userObj.email;
 
 
                                     List<dynamic> subjectsList = await Userbg.getSubjects();
@@ -262,7 +260,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                     if (imageFile != null) {
                                       Teacher newTeacher;
                                       String imageUrl =
-                                          await Teacher.uploadImage(
+                                          await Userbg.uploadImage(
                                               imageFile,
                                               teacherFullName,
                                               userId);
@@ -285,8 +283,8 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                       Navigator.of(context)
                                           .pushReplacement(SlideRightRoute(
                                               page: TeacherLessonDetail(
-                                        userObj: this.userObj,
-                                        auth: this.auth,
+                                        userObj: this.widget.userObj,
+                                        auth: this.widget.auth,
                                         subjects: subjectsList,
                                       )));
                                     } else {
@@ -309,8 +307,8 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                       Navigator.of(context)
                                           .pushReplacement(SlideRightRoute(
                                               page: TeacherLessonDetail(
-                                        userObj: userObj,
-                                        auth: this.auth,
+                                        userObj: this.widget.userObj,
+                                        auth: this.widget.auth,
                                         subjects: subjectsList,
                                       )));
                                     }

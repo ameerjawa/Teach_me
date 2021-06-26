@@ -12,10 +12,10 @@ import 'package:teach_me/AppManagment/StudentsScreens/Student_Activity_Home_Scre
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
-import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
+import 'package:teach_me/UserManagment/User/Userbg.dart';
 
-import '../../DBManagment/FireBase_Service.dart';
 
+// ignore: must_be_immutable
 class SignUpStudent extends StatefulWidget {
   final Student student;
   List<dynamic> citiesList;
@@ -27,11 +27,11 @@ class SignUpStudent extends StatefulWidget {
 }
 
 class SignUpStudentState extends State<SignUpStudent> {
+
   bool isMale = true;
   final dateController = TextEditingController();
   String studentfullname, phonenumber, location, grade;
-  CollectionReference students =
-      FirebaseFirestore.instance.collection("Students");
+  CollectionReference students=FirebaseFirestore.instance.collection("Students");
   final _auth = FirebaseAuth.instance;
   File image;
   bool isTeacher = false;
@@ -39,23 +39,12 @@ class SignUpStudentState extends State<SignUpStudent> {
   GoogleSignIn googleSignIn;
   Student student;
   List<dynamic> citiesList;
-  List locations = ["all", "Haifa", "TelAviv", "faradis", "BatYam"];
   final _formKey = GlobalKey<FormState>();
 
   SignUpStudentState(this.student,this.citiesList);
 
   Widget build(BuildContext context) {
-    // if (this._userObj!=null){
-    //   setState(() {
-    //    googlePhotoUrl=_userObj.photoUrl;
-    //   });
-    // }
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -65,26 +54,10 @@ class SignUpStudentState extends State<SignUpStudent> {
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
 
-          // Center is a layout widget. It takes a single child and positions it
-          // in the middle of the parent.
+
           child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
-                  // Column is also a layout widget. It takes a list of children and
-                  // arranges them vertically. By default, it sizes itself to fit its
-                  // children horizontally, and tries to be as tall as its parent.
-                  //
-                  // Invoke "debug painting" (press "p" in the console, choose the
-                  // "Toggle Debug Paint" action from the Flutter Inspector in Android
-                  // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-                  // to see the wireframe for each widget.
-                  //
-                  // Column has various properties to control how it sizes itself and
-                  // how it positions its children. Here we use mainAxisAlignment to
-                  // center the children vertically; the main axis here is the vertical
-                  // axis because Columns are vertical (the cross axis would be
-                  // horizontal).
-                  //mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(
                       height: 20,
@@ -138,7 +111,7 @@ class SignUpStudentState extends State<SignUpStudent> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        getFromGallery();
+                        _getFromGallery();
                       },
                       child: CircleAvatar(
                         radius: 70,
@@ -174,8 +147,6 @@ class SignUpStudentState extends State<SignUpStudent> {
                               border: OutlineInputBorder(
                                   borderRadius:
                                       new BorderRadius.circular(15.0)),
-
-                              //_userObj != null?_userObj.displayName:
                               hintText: "FullName",
                               hintStyle: InputTextStyle,
                             ),
@@ -342,11 +313,9 @@ class SignUpStudentState extends State<SignUpStudent> {
                           onPressed: () async {
                             if (_formKey.currentState.validate()) {
                               isTeacher = false;
-                              //_userObj.displayName
-                              // studentfullname==null?studentfullname=studentfullname:studentfullname;
+
                               String userEmail = _auth.currentUser.email;
                               String userId = _auth.currentUser.uid.toString();
-                              // userEmail ==null? userEmail:userEmail;
                               Student newStudent = Student(
                                   userEmail,
                                   "",
@@ -360,7 +329,7 @@ class SignUpStudentState extends State<SignUpStudent> {
                                   newStudent, students, userId);
 
                               if (image != null) {
-                                Teacher.uploadImage(
+                                Userbg.uploadImage(
                                     image, studentfullname, userId);
                               }
                               Navigator.of(context).pushReplacement(
@@ -375,7 +344,9 @@ class SignUpStudentState extends State<SignUpStudent> {
     );
   }
 
-  Future<void> getFromGallery() async {
+
+  // private function thet get image from user gallery in his device
+  Future<void> _getFromGallery() async {
     PickedFile pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
       maxWidth: 1800,

@@ -2,6 +2,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 // ignore: must_be_immutable
@@ -38,7 +39,8 @@ return YoutubePlayerBuilder(player: YoutubePlayer(controller: _controller,), bui
              children: <Widget>[
                TextButton(onPressed: (){
                  Navigator.pop(context);
-               }, child: Text("Back",style: TextStyle(
+               }, child: Text("BACK",style: TextStyle(
+                 fontFamily: BtnFont,
                  fontSize: 30,
                  color: Colors.black,
                  fontWeight: FontWeight.bold

@@ -44,7 +44,7 @@ class Student extends Userbg implements TeacherProfiles{
   // function that do sign up as Student {from User_FireBase_Service}
   void signUpASStudent(Student student,CollectionReference collectionReference,String userId)async{
      var isTeacher=false;
-    Map <String,dynamic> data = {"Email":student.email,"FullName":student.fullName,"PhoneNumber":student.phoneNumber,"UserType":isTeacher,"Location":student.location,"BirthDate":student.birthDate,"grade":student.grade,"ismale":student.isMale.toString()} ;
+    Map <String,dynamic> data = {"Email":student.email,"FullName":student.fullName,"PhoneNumber":student.phoneNumber,"UserType":isTeacher,"Location":student.location,"BirthDate":student.birthDate,"ismale":student.isMale.toString()} ;
     // from { User_FireBase_Service}
     await userSetup(data,collectionReference,userId);
   }

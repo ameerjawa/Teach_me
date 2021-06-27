@@ -50,7 +50,6 @@ class _TeachersListState extends State<TeachersList> {
 
 
 
-            print(this.widget.showValue);
 
             return new ListTile(  contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                 onTap: (){

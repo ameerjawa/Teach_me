@@ -37,9 +37,10 @@ class TeacherLessonDetail extends StatefulWidget {
 class TeacherlessionsDetails extends State<TeacherLessonDetail> {
   String titleSentence,
       moreDetails,
-      price,
+
       selectedSubject,
       selectedsubjectstext;
+  int price;
   bool canGo = false;
   final _formKey = GlobalKey<FormState>();
   List<Subject> temp = [];
@@ -225,7 +226,7 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                     },
                                     textAlign: TextAlign.center,
                                     onChanged: (value) {
-                                      price = value;
+                                      price = value as int;
                                     },
                                     decoration: InputDecoration(
                                       contentPadding: new EdgeInsets.symmetric(

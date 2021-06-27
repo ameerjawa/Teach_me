@@ -283,6 +283,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                       Navigator.of(context)
                                           .pushReplacement(SlideRightRoute(
                                               page: TeacherLessonDetail(
+                                                teacher: newTeacher,
                                         userObj: this.widget.userObj,
                                         auth: this.widget.auth,
                                         subjects: subjectsList,
@@ -307,6 +308,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                       Navigator.of(context)
                                           .pushReplacement(SlideRightRoute(
                                               page: TeacherLessonDetail(
+                                                teacher: newTeacher,
                                         userObj: this.widget.userObj,
                                         auth: this.widget.auth,
                                         subjects: subjectsList,

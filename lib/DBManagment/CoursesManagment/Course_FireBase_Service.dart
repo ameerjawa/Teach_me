@@ -26,9 +26,14 @@ Future<List<Map<String,dynamic>>> getCategoriesFromFireBase() async{
   QuerySnapshot<dynamic> d= await FirebaseFirestore.instance.collection('CoursesData').get();
   List<String> categories=[];
   List<Map<String,dynamic>> categoriesList=[];
+  List<String> categoriesimages=[];
+
 
   d.docs.forEach((element) {
     categories.add(element.id);
+  });
+  d.docs.forEach((element) {
+    categoriesimages.add(element["categoryImage"]);
   });
 
   for (int i=0;i<categories.length;i++) {
@@ -37,7 +42,7 @@ Future<List<Map<String,dynamic>>> getCategoriesFromFireBase() async{
         .then((QuerySnapshot querySnapshot) {
       return querySnapshot.docs.length;
     });
-    categoriesList.add({"name":categories[i],"Courses":documents});
+    categoriesList.add({"name":categories[i],"Courses":documents,"categoryImage":categoriesimages[i]});
   }
   return categoriesList;
 }

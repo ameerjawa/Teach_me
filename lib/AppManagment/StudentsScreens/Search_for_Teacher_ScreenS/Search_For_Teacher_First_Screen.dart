@@ -186,7 +186,7 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
 
 
 
-                        Navigator.of(context).pushReplacement(ScaleRoute(
+                        Navigator.of(context).pushReplacement(SlideRightRoute(
                             page: SearchForTeacherViewTeachers(
                           auth: this.widget.auth,
                           selectedSubject: selectedSubject,

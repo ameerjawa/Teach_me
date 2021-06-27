@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teach_me/AppManagment/UsersScreens/Account_Type_Screen.dart';
 import 'package:teach_me/AppManagment/UsersScreens/Sign_in_Screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
@@ -148,7 +149,8 @@ class Sign_Up_User extends StatelessWidget {
 
                     auth.createUserWithEmailAndPassword(email: this.email, password: this.password).then((value)  {
                       Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                          builder: (context) => VerifyEmail(this.auth)
+                          // builder: (context) => VerifyEmail
+                          builder: (context) => AccountType(auth: this.auth,)
                       ));
                     });
 

@@ -30,7 +30,7 @@ class SignUpStudentState extends State<SignUpStudent> {
 
   bool isMale = true;
   final dateController = TextEditingController();
-  String studentfullname, phonenumber, location, grade;
+  String studentfullname, phonenumber, location;
   CollectionReference students=FirebaseFirestore.instance.collection("Students");
   final _auth = FirebaseAuth.instance;
   File image;
@@ -191,27 +191,7 @@ class SignUpStudentState extends State<SignUpStudent> {
                           SizedBox(
                             height: 10,
                           ),
-                          TextFormField(
-                            validator: (value) {
-                              if (value.isEmpty || value == null) {
-                                return "Must Type grade";
-                              }
-                              return null;
-                            },
-                            textAlign: TextAlign.center,
-                            onChanged: (value) {
-                              grade = value;
-                            },
-                            decoration: InputDecoration(
-                              fillColor: Colors.white60,
-                              filled: true,
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      new BorderRadius.circular(15.0)),
-                              hintText: 'enter your grade',
-                              hintStyle: InputTextStyle,
-                            ),
-                          ),
+
                           SizedBox(
                             height: 10,
                           ),

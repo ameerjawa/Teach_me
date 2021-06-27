@@ -130,15 +130,19 @@ class _CoursesHomePageState extends State<CoursesHomePage> {
                                         this.widget.googleSignIn,
                                         filteredCourses[index]["name"],
                                         this.widget.resultCat[index]["Courses"],
+                                        this.widget.resultCat[index]["categoryImage"],
                                         catCourses)));
                           },
                           child: Container(
                             height: index.isEven ? 200 : 240,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
+
                                 image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/download.jpg'),
+                                    colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.dstATop),
+
+                                    image: NetworkImage(
+                                        this.widget.resultCat[index]["categoryImage"] ),
                                     fit: BoxFit.fill)),
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),

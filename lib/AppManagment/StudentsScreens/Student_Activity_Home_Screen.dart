@@ -149,6 +149,7 @@ class StudentActivity extends StatelessWidget {
                     // here we store all the CoursesCategories from the firebase in resultcat variable
                     var resultCat = await this.student.getCategories();
 
+
                     Navigator.of(context).pushReplacement(SlideRightRoute(
                         page:
                             CoursesHomePage(student, googleSignIn, resultCat)));

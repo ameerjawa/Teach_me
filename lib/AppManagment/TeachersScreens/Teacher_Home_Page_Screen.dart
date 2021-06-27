@@ -43,7 +43,14 @@ class HomepageteacherState extends State<TeacherHomepage> {
     subjectsintext="";
     for (int i=0;i<this.widget.teacher.subjects.length;i++){
 
-      subjectsintext+="${this.widget.teacher.subjects[i].toString()} - ";
+      if(this.widget.teacher.subjects.length>=4 && i%3==0){
+        subjectsintext+="\n";
+
+    }
+      subjectsintext+="${this.widget.teacher.subjects[i].toString()} ";
+      if(i!= this.widget.teacher.subjects.length-1){
+        subjectsintext+=",";
+      }
     }
 
 
@@ -102,6 +109,10 @@ class HomepageteacherState extends State<TeacherHomepage> {
                         Container(
                           width: 100,
                           height: 100,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 2.0,color: Colors.black),
+                            borderRadius: BorderRadius.circular(50)
+                          ),
 
                           child: GestureDetector(
 
@@ -112,15 +123,19 @@ class HomepageteacherState extends State<TeacherHomepage> {
                           ),
                         ),
                         SizedBox(width: 40,),
-                        Text(
-                          this.widget.teacher.fullName != null
-                              ? this.widget.teacher.fullName
-                              : "name",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 35,
-                              color: Colors.white,fontFamily: BtnFont),
-                        ),
+
+                           Expanded(
+                            child: Text(
+                              this.widget.teacher.fullName != null
+                                  ? this.widget.teacher.fullName
+                                  : "name",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 35,
+                                  color: Colors.white,fontFamily: BtnFont),
+                            ),
+                          ),
+
                       ],
                     ),
                   ),
@@ -142,12 +157,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                               fontSize: 15,
                               color: Colors.white),
                         ),
-                        Text("Teacher ",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: Colors.white),
-                        ),
+
                       ],
                     ),
                   ),
@@ -160,150 +170,152 @@ class HomepageteacherState extends State<TeacherHomepage> {
                           color: Colors.white54),
 
 
-                      child: Column(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(child: Text("Rating",style: TextStyle(
-                              fontFamily: 'Times New Roman',fontSize: InputFontSize
-                            ),),),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left:8.0,right:8.0,top: 8.0),
-                            child: RatingBarIndicator(
-
-                              rating: this.widget.teacher.rating != null
-                                  ? this.widget.teacher.rating
-                                  :
-                                 0.0,
-                              itemBuilder: (context, index) => Icon(
-                                Icons.star,
-                                color: Colors.amber,
-                              ),
-                              itemCount: 5,
-                              itemSize: 50.0,
-                              direction: Axis.horizontal,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(child: Text("Rating",style: TextStyle(
+                                fontFamily: 'Times New Roman',fontSize: InputFontSize
+                              ),),),
                             ),
-                          ),
-                          Center(child: Text(
-                            this.widget.teacher.titleSentence
-                          ),),
-                          SizedBox(
-                            height: 20,
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.only(left:8.0,right:8.0,top: 8.0),
+                              child: RatingBarIndicator(
+
+                                rating: this.widget.teacher.rating != null
+                                    ? this.widget.teacher.rating
+                                    :
+                                   0.0,
+                                itemBuilder: (context, index) => Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                itemCount: 5,
+                                itemSize: 50.0,
+                                direction: Axis.horizontal,
+                              ),
+                            ),
+                            Center(child: Text(
+                              this.widget.teacher.titleSentence !=null?  this.widget.teacher.titleSentence:"",
+                            ),),
+                            SizedBox(
+                              height: 20,
+                            ),
 
 
 
-                          Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Text(
-                                      "City : ",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 20,fontFamily: 'Times New Roman'),
-                                    ),
-                                    Text(
-                                      " ${this.widget.teacher.location != null ? this.widget.teacher.location : ""}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 20,fontFamily: 'Times New Roman'),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 7,
-                                ),
-
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      "Phone :  ",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 20,fontFamily: 'Times New Roman'),
-                                    ),
-                                    Text(
-                                      "${this.widget.teacher.phoneNumber != null ? this.widget.teacher.phoneNumber: ""}",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold, fontSize: 20,fontFamily: 'Times New Roman'),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 7,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 32),
-                                  child: Text(
-                                    "More :",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,fontFamily: 'Times New Roman'
-                                    ),
-
-                                  ),
-                                ),
-                                SizedBox(height: 10,),
-                                Center(
-                                  child: Container(
-                                    height: 140,
-                                    width: 250,
-                                    decoration:BoxDecoration(
-                                        color: Colors.white60.withOpacity(0.4),
-                                        borderRadius: BorderRadius.circular(20.0),
-                                      border: Border.all(color: Colors.white,width: 1.0)
-                                    ) ,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        "${this.widget.teacher.detailsOnExperience!=null?this.widget.teacher.detailsOnExperience:""}",
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Text(
+                                        "City : ",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.normal,
-                                            fontSize: 16,
-                                            color: Colors.blueGrey
-                                        ),
+                                            fontWeight: FontWeight.bold, fontSize: 20,fontFamily: 'Times New Roman'),
+                                      ),
+                                      Text(
+                                        " ${this.widget.teacher.location != null ? this.widget.teacher.location : ""}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold, fontSize: 20,fontFamily: 'Times New Roman'),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 7,
+                                  ),
 
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        "Phone :  ",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold, fontSize: 20,fontFamily: 'Times New Roman'),
+                                      ),
+                                      Text(
+                                        "${this.widget.teacher.phoneNumber != null ? this.widget.teacher.phoneNumber: ""}",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold, fontSize: 20,fontFamily: 'Times New Roman'),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 7,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 32),
+                                    child: Text(
+                                      "More :",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,fontFamily: 'Times New Roman'
+                                      ),
+
+                                    ),
+                                  ),
+                                  SizedBox(height: 10,),
+                                  Center(
+                                    child: Container(
+                                      height: 140,
+                                      width: 250,
+                                      decoration:BoxDecoration(
+                                          color: Colors.white60.withOpacity(0.4),
+                                          borderRadius: BorderRadius.circular(20.0),
+                                        border: Border.all(color: Colors.white,width: 1.0)
+                                      ) ,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          "${this.widget.teacher.detailsOnExperience!=null?this.widget.teacher.detailsOnExperience:""}",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 16,
+                                              color: Colors.blueGrey
+                                          ),
+
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
 
-                              ],
-                            ),
-                          ),
-
-
-                          Row(children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Can Go To Student ?'),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Container(
-                                child: Text(
-                                    this.widget.teacher.canGo == null
-                                        ? ""
-                                        : this.widget.teacher.canGo
-                                            ? "Can"
-                                            : "Can't",
-                                    style: TextStyle(
-                                        fontSize: 30,
-                                        color: this.widget.teacher.canGo == null
-                                            ? ""
-                                            : this.widget.teacher.canGo
-                                                ? Colors.green
-                                                : Colors.red)),
-
-
+                                ],
                               ),
                             ),
-                          ]),
-                        ],
+
+
+                            Row(children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text('Can Go To Student ?'),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  child: Text(
+                                      this.widget.teacher.canGo == null
+                                          ? ""
+                                          : this.widget.teacher.canGo
+                                              ? "Can"
+                                              : "Can't",
+                                      style: TextStyle(
+                                          fontSize: 30,
+                                          color: this.widget.teacher.canGo == null
+                                              ? ""
+                                              : this.widget.teacher.canGo
+                                                  ? Colors.green
+                                                  : Colors.red)),
+
+
+                                ),
+                              ),
+                            ]),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -362,6 +374,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                               ),
                               onPressed: ()async {
                                 List<dynamic> cities=  await Userbg.getCities();
+                                print(widget.teacher.id);
                                 Navigator.of(context).pushReplacement(
                                     CupertinoPageRoute(
                                         builder: (context) =>

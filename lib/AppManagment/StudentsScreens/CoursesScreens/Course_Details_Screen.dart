@@ -17,10 +17,11 @@ class CourseDetailsScreen extends StatefulWidget {
   GoogleSignIn googleSignIn;
   QuerySnapshot<Map<String, dynamic>> resultCat;
   Map<String, dynamic> course;
+  String categoryImage;
 
 
 
-  CourseDetailsScreen(this.student,this.googleSignIn,this.name,this.coursesCount,this.resultCat,this.course);
+  CourseDetailsScreen(this.student,this.googleSignIn,this.name,this.coursesCount,this.resultCat,this.categoryImage,this.course);
 
 
   @override
@@ -44,14 +45,7 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
 
       decoration: BoxDecoration(
         color: Color(0xFF90CAF9),
-        image: DecorationImage(
 
-
-          image: AssetImage('assets/images/download.jpg'),
-          alignment: Alignment.topRight
-
-
-        )
       ),
       child:   YoutubePlayerBuilder(onEnterFullScreen: (){},player: YoutubePlayer(controller: _controller,), builder:(context,player){ return Column(
         children: [
@@ -60,18 +54,30 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
             child: Column(
               children: <Widget>[
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     IconButton(
                         icon: const Icon(Icons.arrow_back),
                         iconSize: 50,
                         onPressed: () {
                           Navigator.of(context).pushReplacement(SlideRightRoute(
-                              page:CourseCategoryPage(widget.student,widget.googleSignIn,this.widget.name,this.widget.coursesCount, widget.resultCat)
+                              page:CourseCategoryPage(widget.student,widget.googleSignIn,this.widget.name,this.widget.coursesCount,this.widget.categoryImage, widget.resultCat)
                           ));
 
                         }
 
                     ),
+                    Container(
+                      width: 80,
+                      height: 80,
+                      decoration:   BoxDecoration(
+      borderRadius: BorderRadius.circular(20.0),
+      border: Border.all(width: 2.0,color: Colors.white60),
+      image: DecorationImage(
+      image: NetworkImage(
+      this.widget.categoryImage),
+      fit: BoxFit.fill)),
+                    )
 
                   ],
                 ),
@@ -81,41 +87,52 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                     color: Colors.white,
                     fontWeight: FontWeight.bold,fontSize: 30
                   ),),
+                SizedBox(height: 16,),
 
-                Row(
-                  children: <Widget>[
-                    Icon(
-                        Icons.person
-                    ),
-                    SizedBox(width: 2,),
-                    Text('10K'),
-                    SizedBox(width: 15,),
-                    Icon(Icons.star_border),
-                    Text("4.5")
-                  ],
+                Padding(
+                  padding: const EdgeInsets.only(left: 20.0,right: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
+                    children: [
+                      Row(
+                        children: [
+                          RichText(text: TextSpan(
+
+                            children:[
+                              TextSpan(
+                                  text: "\$${this.widget.course["LowPrice"]} ",
+                                  style: TextStyle(fontSize: 32)
+                              ),
+                              TextSpan(
+                                  text: "\$${this.widget.course["HighPrice"]}",style: TextStyle(
+                                  color: Colors.black87.withOpacity(0.5),
+                                  decoration: TextDecoration.lineThrough
+                              )
+                              )
+                            ] ,
+
+                          )),
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Icon(
+                              Icons.person
+                          ),
+                          SizedBox(width: 2,),
+                          Text('${this.widget.course["Subscribes"]}K'),
+                          SizedBox(width: 15,),
+                          Icon(Icons.star_border),
+                          Text("${this.widget.course["Rating"]}")
+                        ],
+
+                      ),
+
+                    ],
+                  ),
                 ),
-                SizedBox(height: 20,),
-                Row(
-                  children: [
-                    RichText(text: TextSpan(
 
-                      children:[
-                        TextSpan(
-                            text: "\$50",
-                            style: TextStyle(fontSize: 32)
-                        ),
-                        TextSpan(
-                            text: "\$70",style: TextStyle(
-                            color: Colors.black87.withOpacity(0.5),
-                            decoration: TextDecoration.lineThrough
-                        )
-                        )
-                      ] ,
-
-                    )),
-                  ],
-                )
               ],
             ),
           ),

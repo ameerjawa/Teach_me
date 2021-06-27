@@ -16,9 +16,10 @@ class CourseCategoryPage extends StatefulWidget {
   QuerySnapshot<Map<String, dynamic>> catcourses;
   GoogleSignIn googleSignIn;
   Student student;
+  String categoryImage="";
 
   CourseCategoryPage(this.student, this.googleSignIn, this.name,
-      this.coursescount, this.catcourses);
+      this.coursescount,this.categoryImage, this.catcourses);
 
   @override
   _CourseCategoryPageState createState() => _CourseCategoryPageState(
@@ -116,6 +117,7 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
                                         this.widget.name,
                                         this.widget.coursescount,
                                         this.widget.catcourses,
+                                        this.widget.categoryImage,
                                         this
                                             .widget.catcourses
                                             .docs
@@ -127,8 +129,8 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 image: DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/download.jpg'),
+                                    image: NetworkImage(
+                                        this.widget.categoryImage),
                                     fit: BoxFit.fill)),
                             child: Padding(
                               padding: const EdgeInsets.all(20.0),

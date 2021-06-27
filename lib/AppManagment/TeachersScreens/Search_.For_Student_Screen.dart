@@ -159,7 +159,7 @@ class SearchForStudentState extends State<SearchForStudent> {
                                     )),
                                   ),
                                   title: Text(
-                                    "${document["FullName"]} - ${document["PhoneNumber"]} - ${document["grade"]}",
+                                    "${document["FullName"]} - ${document["PhoneNumber"]} ",
                                     style: TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold),

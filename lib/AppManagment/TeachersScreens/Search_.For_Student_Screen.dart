@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:teach_me/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
+import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
@@ -61,8 +62,8 @@ class SearchForStudentState extends State<SearchForStudent> {
                               iconSize: 50,
                               onPressed: () {
                                 Navigator.of(context).pushReplacement(
-                                    CupertinoPageRoute(
-                                        builder: (context) => TeacherHomepage(
+                                    SlideRightRoute(
+                                        page:  TeacherHomepage(
                                             this.widget.teacher,
                                             student,
                                             subject,
@@ -118,7 +119,7 @@ class SearchForStudentState extends State<SearchForStudent> {
                           filled: true,
                           border: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(15.0)),
-                          hintText: "Type The Student Name",
+                          hintText: "type Student Name",
                           hintStyle: TextStyle(
                               color: const Color(0xCB101010),
                               fontSize: 16,

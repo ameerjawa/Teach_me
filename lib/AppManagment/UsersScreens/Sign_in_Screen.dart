@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teach_me/AppManagment/TeachersScreens/Lessons/Sure_Details_alert_add_new_Lesson.dart';
 import 'package:teach_me/AppManagment/UsersScreens/Account_Type_Screen.dart';
 import 'package:teach_me/AppManagment/TeachersScreens/Teacher_Home_Page_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
@@ -28,7 +29,8 @@ class _MyHomePageState extends State<SignInUser> {
   Teacher teacher;
   final auth = FirebaseAuth.instance;
   DocumentSnapshot isTeacher;
-
+  bool successFullyLogin=false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GoogleSignIn _googleSignIn = new GoogleSignIn(
     scopes: [
       'email',
@@ -55,6 +57,7 @@ class _MyHomePageState extends State<SignInUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -140,9 +143,23 @@ class _MyHomePageState extends State<SignInUser> {
                           TextStyle(color: Colors.blue))),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
+
                       // TODO submit
 
                       try {
+                        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                          duration: new Duration(seconds: 5),
+                          content: new Row(
+                            children: <Widget>[
+                              new CircularProgressIndicator(),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              new Text(" signing in ")
+                            ],
+                          ),
+                        ));
+
                         final userCredential =
                             await auth.signInWithEmailAndPassword(
                           email: email,
@@ -152,6 +169,7 @@ class _MyHomePageState extends State<SignInUser> {
                         if (userCredential != null) {
                           isTeacher = await Teacher.getTeacherById(
                               userCredential.user.uid);
+
                           if (isTeacher.exists) {
                             teacher = new Teacher(
                                 isTeacher["email"],
@@ -180,7 +198,8 @@ class _MyHomePageState extends State<SignInUser> {
                                         this._googleSignIn,
                                         false)));
                           } else {
-                            student = await Student.getStudentByIdFromFireBase(
+
+                            student = await Student.getStudentById(
                                 userCredential.user.uid);
                             Navigator.of(context).pushReplacement(
                                 CupertinoPageRoute(
@@ -189,10 +208,19 @@ class _MyHomePageState extends State<SignInUser> {
                           }
                         }
                       } on FirebaseAuthException catch (e) {
+
                         if (e.code == 'user-not-found') {
                           print('No user found for that email.');
+                          return showDialog(
+                              context: context,
+                              builder: (context) => SureDetails("No user found for that email !"));
                         } else if (e.code == 'wrong-password') {
                           print('Wrong password provided for that user.');
+                          return showDialog(
+                              context: context,
+                              builder: (context) => SureDetails("wrong Email or Password !"));
+
+
                         }
                       }
                     }
@@ -223,15 +251,32 @@ class _MyHomePageState extends State<SignInUser> {
                     color: Colors.black,
                     icon: Icon(FontAwesomeIcons.google),
                     onPressed: () async {
-                      bool isLogedin = await _login();
+                      try{
+                        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                          duration: new Duration(seconds: 3),
+                          content: new Row(
+                            children: <Widget>[
+                              new CircularProgressIndicator(),
+                              SizedBox(
+                                width: 30,
+                              ),
+                              new Text(" signing in with Google")
+                            ],
+                          ),
+                        ));
+                        bool isLogedin = await _login();
 
-                      if (isLogedin == true) {
-                        Navigator.of(context).pushReplacement(SlideRightRoute(
-                            page: AccountType(
-                          googleSignIn: _googleSignIn,
-                          userObj: _userObj,
-                        )));
+                        if (isLogedin == true) {
+                          Navigator.of(context).pushReplacement(SlideRightRoute(
+                              page: AccountType(
+                                googleSignIn: _googleSignIn,
+                                userObj: _userObj,
+                              )));
+                        }
+                      }catch(e){
+                        print("something went wrong with googl sign in line 277 Sign_in_Screen");
                       }
+
                     },
                   ),
                 ),

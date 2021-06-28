@@ -44,21 +44,21 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
         width: MediaQuery.of(context).size.width,
         decoration: MainBoxDecorationStyle,
         child: Padding(
-          padding: EdgeInsets.only(left: 20, top: 30, right: 20),
+          padding: EdgeInsets.only(left: lRPadding, top: lRPadding+10, right: lRPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               IconButton(
                   icon: const Icon(Icons.arrow_back),
-                  iconSize: 30,
+                  iconSize: lRPadding+10,
                   onPressed: () {
                     Navigator.of(context).pushReplacement(SlideRightRoute(
                         page: StudentActivity(
                             this.widget.student, this.widget.googleSignIn)));
                   }),
               SizedBox(
-                height: 20,
+                height: lRPadding,
               ),
               Text(
                 'Hey ${this.widget.student.fullName}',
@@ -69,13 +69,13 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
                 style: InputTextStyle,
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                height: 60,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                margin: EdgeInsets.symmetric(vertical: lRPadding),
+                height: lRPadding*3,
+                padding: EdgeInsets.symmetric(horizontal: lRPadding, vertical: lRPadding-8),
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: Color(0xFFF5F5F7),
-                    borderRadius: BorderRadius.circular(40)),
+                    borderRadius: BorderRadius.circular(lRPadding*2)),
                 child: TextField(maxLines: 1,onChanged: (value){
                   value=value.toLowerCase();
                   setState(() {
@@ -89,8 +89,12 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
 
 
                 },decoration: InputDecoration(
+                  border: InputBorder.none,
                   icon: Icon(Icons.search),
                   hintText: "Search for an Exam",
+                    hintStyle:TextStyle(
+                        fontWeight: FontWeight.w700
+                    )
 
                 ),)
               ),
@@ -99,65 +103,76 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
                 children: <Widget>[
                   Text(
                     'Category',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: lRPadding),
                   ),
                   Text(
                     'See All',
-                    style: TextStyle(fontSize: 15),
+                    style: TextStyle(fontSize: lRPadding-5),
                   )
                 ],
               ),
               SizedBox(
-                height: 50,
+                height: lRPadding*2.5,
               ),
               Expanded(
-                  child: StaggeredGridView.countBuilder(
-                      crossAxisCount: 2,
-                      itemCount: filteredExams.length,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () async {
-                            showDialog(
-                              context: context,
-                              builder: (context) => SureEnterExam(
-                                result: filteredExams[index],
-                              ),
-                            );
-                          },
-                          child: Container(
-                            
-                            height: index.isEven ? 200 : 240,
-                            decoration: BoxDecoration(
-
-                                borderRadius: BorderRadius.circular(10),
-                                image: DecorationImage(
-                                    colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
-
-                                    image: AssetImage(
-                                        "assets/images/${filteredExams[index]["image"]}"),
-                                    fit: BoxFit.fill)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    filteredExams[index]["ExamName"],
-                                    style: TextStyle(
-                                    color: Colors.black,
-                                        fontFamily: 'Kaushan',
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 30),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border:Border.all(color: Colors.white,width: 2.0),
+                      color: Colors.white60,
+                        borderRadius: BorderRadius.only( topLeft: Radius.circular(lRPadding*0.5),topRight: Radius.circular(lRPadding*0.5))
+                    ),
+                    child: StaggeredGridView.countBuilder(
+                        crossAxisCount: 2,
+                        itemCount: filteredExams.length,
+                        crossAxisSpacing: lRPadding,
+                        mainAxisSpacing: lRPadding,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () async {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => SureEnterExam(
+                                    result: filteredExams[index],
                                   ),
-                                ],
+                                );
+                              },
+                              child: Container(
+
+                                height: index.isEven ? 190 : 230,
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 1.4,color:Colors.black),
+
+                                    borderRadius: BorderRadius.circular(lRPadding*0.5),
+                                    image: DecorationImage(
+                                        colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
+
+                                        image: AssetImage(
+                                            "assets/images/${filteredExams[index]["image"]}"),
+                                        fit: BoxFit.fill)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(lRPadding),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        filteredExams[index]["ExamName"],
+                                        style: TextStyle(
+                                        color: Colors.black,
+                                            fontFamily: 'Kaushan',
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: lRPadding*1.5),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                      staggeredTileBuilder: (index) => StaggeredTile.fit(1)))
+                          );
+                        },
+                        staggeredTileBuilder: (index) => StaggeredTile.fit(1)),
+                  ))
             ],
           ),
         ),

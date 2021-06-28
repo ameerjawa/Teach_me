@@ -34,6 +34,8 @@ class TeacherHomepage extends StatefulWidget {
 class HomepageteacherState extends State<TeacherHomepage> {
   bool showvalue = false;
   String subjectsintext="";
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
 
 
   HomepageteacherState();
@@ -55,6 +57,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
 
 
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
@@ -333,6 +336,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                                 backgroundColor: Colors.white70,
                               ),
                               onPressed: () async{
+
                                 Navigator.of(context).pushReplacement(
                                     CupertinoPageRoute(
                                         builder: (context) => SearchForStudent(
@@ -354,6 +358,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                                 backgroundColor: Colors.white70,
                               ),
                               onPressed: () {
+
                                 Navigator.of(context).pushReplacement(
                                     CupertinoPageRoute(
                                         builder: (context) => Lessons(widget.teacher,
@@ -373,15 +378,32 @@ class HomepageteacherState extends State<TeacherHomepage> {
                                 backgroundColor: Colors.white70,
                               ),
                               onPressed: ()async {
-                                List<dynamic> cities=  await Userbg.getCities();
-                                print(widget.teacher.id);
-                                Navigator.of(context).pushReplacement(
-                                    CupertinoPageRoute(
-                                        builder: (context) =>
-                                            EditProfileForTeacher(cities:cities,
-                                              teacher: widget.teacher,
-                                              googleSignIn: this.widget.googleSignIn,
-                                            )));
+                                try{
+                                  ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                                    duration: new Duration(seconds: 2),
+                                    content: new Row(
+                                      children: <Widget>[
+                                        new CircularProgressIndicator(),
+                                        SizedBox(
+                                          width: 30,
+                                        ),
+                                        new Text(" Moving ")
+                                      ],
+                                    ),
+                                  ));
+                                  List<dynamic> cities=  await Userbg.getCities();
+                                  print(widget.teacher.id);
+                                  Navigator.of(context).pushReplacement(
+                                      CupertinoPageRoute(
+                                          builder: (context) =>
+                                              EditProfileForTeacher(cities:cities,
+                                                teacher: widget.teacher,
+                                                googleSignIn: this.widget.googleSignIn,
+                                              )));
+                                }catch(e){
+                                  print("something went wrong in Edit Profile Button TeacherHomePage line 404");
+                                }
+
                               },
                               child: Text(
                                 'Edit Profile',

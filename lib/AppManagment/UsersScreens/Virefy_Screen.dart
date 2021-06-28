@@ -10,8 +10,9 @@ import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
 class VerifyEmail extends StatefulWidget {
   final auth;
+  final dynamic value;
 
-  VerifyEmail(this.auth);
+  VerifyEmail(this.auth,this.value);
   @override
   _VerifyState createState() => _VerifyState();
 }
@@ -91,11 +92,14 @@ checkEmailVerified();
   }
   Future<void> checkEmailVerified()async{
     user=widget.auth.currentUser;
+
     await user.reload();
     if(user.emailVerified){
       timer.cancel();
+      widget.auth.signInWithCredential(widget.value.credential);
+
       Navigator.of(context).pushReplacement(CupertinoPageRoute(
-          builder: (context) => AccountType(auth: this.widget.auth,)
+          builder: (context) => AccountType(auth: widget.auth,)
       ));
     }
 

@@ -27,6 +27,8 @@ class EditLessonInformationState extends State<EditLessonInformation> {
   String subjects,titleSentence,moreDetails,price,selectedSubject,selectedSubjectsText;
   bool canGo=false;
   List<dynamic> temp;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
 
 
   EditLessonInformationState();
@@ -40,6 +42,7 @@ class EditLessonInformationState extends State<EditLessonInformation> {
 
 
     return Scaffold(
+      key: _scaffoldKey,
 
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -271,37 +274,54 @@ class EditLessonInformationState extends State<EditLessonInformation> {
 
                                     alignment: Alignment.topLeft,
                                     onPressed: () async {
+                                      try{
+                                        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                                          duration: new Duration(seconds: 3),
+                                          content: new Row(
+                                            children: <Widget>[
+                                              new CircularProgressIndicator(),
+                                              SizedBox(
+                                                width: 30,
+                                              ),
+                                              new Text(" Moving ")
+                                            ],
+                                          ),
+                                        ));
 
-                                      String userId =this.widget.teacher.id;
+                                        String userId =this.widget.teacher.id;
 
 
-                                     selectedSubject=selectedSubject!=""?selectedSubject:this.widget.teacher.subjects;
-                                      titleSentence=titleSentence != ""?titleSentence:this.widget.teacher.titleSentence;
+                                        selectedSubject=selectedSubject!=""?selectedSubject:this.widget.teacher.subjects;
+                                        titleSentence=titleSentence != ""?titleSentence:this.widget.teacher.titleSentence;
 
-                                       moreDetails=moreDetails != null?moreDetails:this.widget.teacher.detailsOnExperience;
-                                      canGo = canGo!=null?canGo:this.widget.teacher.canGo;
+                                        moreDetails=moreDetails != null?moreDetails:this.widget.teacher.detailsOnExperience;
+                                        canGo = canGo!=null?canGo:this.widget.teacher.canGo;
 
-                                      price=price != ""?price:this.widget.teacher.price;
+                                        price=price != ""?price:this.widget.teacher.price;
 
-                                      List<String> finalsubjects=[];
-                                      for (int j=0;j<temp.length;j++){
-                                        finalsubjects.add(temp[j].name);
+                                        List<String> finalsubjects=[];
+                                        for (int j=0;j<temp.length;j++){
+                                          finalsubjects.add(temp[j].name);
+                                        }
+
+
+                                        Map <String,dynamic> data = {"subjects":finalsubjects,"Title Sentence":titleSentence,"More":moreDetails,"Price":price,"CanGo":canGo} ;
+
+
+
+                                        await this.widget.teacher.moreTeacherDet(data,teachers,userId);
+
+                                        DocumentSnapshot isTeacher=await Teacher.getTeacherById(this.widget.teacher.id);
+                                        Teacher newTeacher=new Teacher(isTeacher["email"], "", "", isTeacher["FullName"], isTeacher["BirthDate"], isTeacher["PhoneNumber"], isTeacher["Location"], isTeacher["subjects"], isTeacher["More"], isTeacher["ProfileImg"], isTeacher["Rating"], isTeacher["CanGo"], isTeacher.id, isTeacher["Title Sentence"], isTeacher["Price"]);
+
+                                        Student s;
+                                        Navigator.of(context).pushReplacement(SlideRightRoute(
+                                            page: TeacherHomepage(newTeacher,s,"","",this.widget.auth,this.widget.googleSignIn,false)
+                                        ));
+                                      }catch(e){
+                                        print("something went wrong with Next Button in line 322 Update Lesson Details Screen");
                                       }
 
-
-                                      Map <String,dynamic> data = {"subjects":finalsubjects,"Title Sentence":titleSentence,"More":moreDetails,"Price":price,"CanGo":canGo} ;
-
-
-
-                                      await this.widget.teacher.moreTeacherDet(data,teachers,userId);
-
-                                      DocumentSnapshot isTeacher=await Teacher.getTeacherById(this.widget.teacher.id);
-                                      Teacher newTeacher=new Teacher(isTeacher["email"], "", "", isTeacher["FullName"], isTeacher["BirthDate"], isTeacher["PhoneNumber"], isTeacher["Location"], isTeacher["subjects"], isTeacher["More"], isTeacher["ProfileImg"], isTeacher["Rating"], isTeacher["CanGo"], isTeacher.id, isTeacher["Title Sentence"], isTeacher["Price"]);
-
-                                      Student s;
-                                      Navigator.of(context).pushReplacement(SlideRightRoute(
-                                          page: TeacherHomepage(newTeacher,s,"","",this.widget.auth,this.widget.googleSignIn,false)
-                                      ));
 
 
 

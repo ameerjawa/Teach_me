@@ -41,6 +41,8 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
   bool _validate=false;
   final databaseReference = FirebaseDatabase.instance.reference();
   CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
 
 
   EditProfileForTeacherState();
@@ -50,6 +52,7 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width:  MediaQuery.of(context).size.width,
@@ -126,16 +129,22 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                       SizedBox(
                         height: 10,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          _getFromGallery();
-                        },
-                        child: CircleAvatar(
-                          radius: 70,
-                          backgroundImage: imageFile != null
-                              ? FileImage(imageFile)
-                              : NetworkImage(
-                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU"),
+                      Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(width: 2.0,color: Colors.black),
+                            borderRadius: BorderRadius.circular(100)
+                        ),
+                        child: GestureDetector(
+                          onTap: () {
+                            _getFromGallery();
+                          },
+                          child: CircleAvatar(
+                            radius: 70,
+                            backgroundImage: imageFile != null
+                                ? FileImage(imageFile)
+                                : NetworkImage(
+                                this.widget.teacher.proImg),
+                          ),
                         ),
                       ),
                       SizedBox(height: 25,),
@@ -188,6 +197,7 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
 
             Container(
               decoration: BoxDecoration(
+                border: Border.all(width: 1.0,color: Colors.black54),
                   borderRadius: new BorderRadius.circular(15.0),
                   color: Colors.white60),
               child: Autocomplete(
@@ -263,41 +273,58 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
 
                                     alignment: Alignment.topLeft,
                                     onPressed: () async {
+                                      try{
+                                        String userId = this.widget.teacher.id;
+                                        String url="";
+                                        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                                          duration: new Duration(seconds: 5),
+                                          content: new Row(
+                                            children: <Widget>[
+                                              new CircularProgressIndicator(),
+                                              SizedBox(
+                                                width: 30,
+                                              ),
+                                              new Text(" Moving ")
+                                            ],
+                                          ),
+                                        ));
 
 
-                                      String userId = this.widget.teacher.id;
-                                      String url="";
+                                        if (imageFile != null ){
 
-                                      if (imageFile != null ){
-                                     url=  await Userbg.uploadImage(imageFile,fullName,userId);
+                                          url=  await Userbg.uploadImage(imageFile,fullName,userId);
 
+                                        }
+
+                                        fullName=fullName!=null?fullName:this.widget.teacher.fullName;
+                                        phoneNumber=phoneNumber!=null?phoneNumber:this.widget.teacher.phoneNumber;
+
+                                        location=location!=null?location:this.widget.teacher.location;
+
+                                        date=_dateController.text!= null?_dateController.text:this.widget.teacher.birthDate;
+                                        url=url==""?this.widget.teacher.proImg:url;
+
+
+
+                                        Map<String,dynamic> data ={"FullName":fullName,"PhoneNumber":phoneNumber,"Location":location,"BirthDate":date,"ProfileImg":url};
+                                        await this.widget.teacher.updateTeacherDetails(data,userId);
+
+
+
+
+
+                                        List<dynamic> subjectsList=await Userbg.getSubjects();
+
+
+                                        Navigator.of(context).pushReplacement(SlideRightRoute(
+                                            page: EditLessonInformation(teacher: this.widget.teacher,googleSignIn: this.widget.googleSignIn,subjects: subjectsList,)
+                                        ));
+                                      }catch(e){
+                                        print("something went wrong in next Button line 323 Edit Profile AS Teacher Screen");
                                       }
 
-                                       fullName=fullName!=null?fullName:this.widget.teacher.fullName;
-                                       phoneNumber=phoneNumber!=null?phoneNumber:this.widget.teacher.phoneNumber;
-
-                                       location=location!=null?location:this.widget.teacher.location;
-
-                                       date=_dateController.text!= null?_dateController.text:this.widget.teacher.birthDate;
 
 
-                                      Map<String,dynamic> data ={"FullName":fullName,"PhoneNumber":phoneNumber,"Location":location,"BirthDate":date,"ProfileImg":url};
-                                      await this.widget.teacher.updateTeacherDetails(data,userId);
-
-
-                                      /*
-                                      * get all the subjects down below
-                                      * */
-
-
-                                      List<dynamic> subjectsList=await Userbg.getSubjects();
-
-                                      /*/
-
-                                       */
-                                      Navigator.of(context).pushReplacement(SlideRightRoute(
-                                          page: EditLessonInformation(teacher: this.widget.teacher,googleSignIn: this.widget.googleSignIn,subjects: subjectsList,)
-                                      ));
 
                                     }
                                 ),

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 
 
+// ignore: must_be_immutable
 class SureDetails extends StatelessWidget {
-  const SureDetails({Key key}) : super(key: key);
+  String text;
+   SureDetails(this.text,{Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class SureDetails extends StatelessWidget {
           height: 100,
           child: Column(
             children: <Widget>[
-              new Text(" Must Enter All The Details !!"),
+              new Text(this.text),
             ],
           )),
       title: Text(''),

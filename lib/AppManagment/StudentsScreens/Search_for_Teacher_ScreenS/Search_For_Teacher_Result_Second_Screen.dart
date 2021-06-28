@@ -30,6 +30,8 @@ class SearchForTeacherViewTeachers extends StatefulWidget {
 class SearchForTeacherState extends State<SearchForTeacherViewTeachers> {
 
   List<Teacher> teachersResult;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
 
   SearchForTeacherState() : super();
 
@@ -37,6 +39,8 @@ class SearchForTeacherState extends State<SearchForTeacherViewTeachers> {
   Widget build(BuildContext context)  {
 
     return Scaffold(
+      key: _scaffoldKey,
+
 
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -64,12 +68,30 @@ class SearchForTeacherState extends State<SearchForTeacherViewTeachers> {
                                 iconSize: 50,
                                 alignment: Alignment.topLeft,
                                 onPressed: ()async {
-                                  List<dynamic> subjectsList= await Userbg.getSubjects();
-                                  List<dynamic> citiesList=await Userbg.getCities();
-                                  Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                                      builder: (context) => SearchForTeacherStudentActivity(this.widget.s,this.widget.googleSignIn,this.widget.auth,subjectsList,citiesList)
 
-                                  ));
+                                  try{
+                                    ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                                      duration: new Duration(seconds: 3),
+                                      content: new Row(
+                                        children: <Widget>[
+                                          new CircularProgressIndicator(),
+                                          SizedBox(
+                                            width: lRPadding*1.5,
+                                          ),
+                                          new Text(" Moving to Search For Teacher ")
+                                        ],
+                                      ),
+                                    ));
+                                    List<dynamic> subjectsList= await Userbg.getSubjects();
+                                    List<dynamic> citiesList=await Userbg.getCities();
+                                    Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                                        builder: (context) => SearchForTeacherStudentActivity(this.widget.s,this.widget.googleSignIn,this.widget.auth,subjectsList,citiesList)
+
+                                    ));
+                                  }catch(e){
+                                    print("problem with getting the subjects or the cities or navigator in line 92 Search_For_Teacher_Result_Second_Screen.dart");
+                                  }
+
                                 }
                             ),
 

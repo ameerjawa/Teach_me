@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:teach_me/DBManagment/CoursesManagment/Course_FireBase_Service.dart';
 import 'package:teach_me/DBManagment/ExamsManagment/Exam_FireBase_Service.dart';
+import 'package:teach_me/DBManagment/StudentsAccountManagment/Student_FireBase_Service.dart';
 import 'package:teach_me/DBManagment/TeacherAccountManagment/Teacher_FireBase_Service.dart';
 import 'package:teach_me/DBManagment/UserAccountManagment/User_FireBase_Service.dart';
 
@@ -33,7 +34,7 @@ class Student extends Userbg implements TeacherProfiles{
   }
 
   // static function that we use in signin page to get the student when succesful signin{from Student_FireBase_Service}
-  static Future<Student>  getStudentByIdFromFireBase(String id)async{
+  static Future<Student>  getStudentById(String id)async{
    return getStudentByIdFromFireBase(id);
 
   }

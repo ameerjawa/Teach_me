@@ -153,6 +153,8 @@ class SignUpStudentState extends State<SignUpStudent> {
                           ),
                           SizedBox(height: 10),
                           TextFormField(
+                            keyboardType: TextInputType.number,
+
 
                             textAlign: TextAlign.center,
                             onChanged: (value) {
@@ -291,31 +293,39 @@ class SignUpStudentState extends State<SignUpStudent> {
                           iconSize: 50,
                           alignment: Alignment.topLeft,
                           onPressed: () async {
-                            if (_formKey.currentState.validate()) {
-                              isTeacher = false;
 
-                              String userEmail = _auth.currentUser.email;
-                              String userId = _auth.currentUser.uid.toString();
-                              Student newStudent = Student(
-                                  userEmail,
-                                  "",
-                                  "",
-                                  studentfullname,
-                                  dateController.text,
-                                  phonenumber,
-                                  location,
-                                  isMale);
-                               newStudent.signUpASStudent(
-                                  newStudent, students, userId);
+                            try{
+                              if (_formKey.currentState.validate()) {
+                                isTeacher = false;
 
-                              if (image != null) {
-                                Userbg.uploadImage(
-                                    image, studentfullname, userId);
+                                String userEmail = _auth.currentUser.email;
+                                String userId = _auth.currentUser.uid.toString();
+                                Student newStudent = Student(
+                                    userEmail,
+                                    "",
+                                    "",
+                                    studentfullname,
+                                    dateController.text,
+                                    phonenumber,
+                                    location,
+                                    isMale);
+                                newStudent.signUpASStudent(
+                                    newStudent, students, userId);
+
+                                if (image != null) {
+                                  Userbg.uploadImage(
+                                      image, studentfullname, userId);
+                                }
+                                Navigator.of(context).pushReplacement(
+                                    SlideRightRoute(
+                                        page: StudentActivity(newStudent,googleSignIn)));
                               }
-                              Navigator.of(context).pushReplacement(
-                                  SlideRightRoute(
-                                      page: StudentActivity(newStudent,googleSignIn)));
+
+                            }catch(e){
+
+                              print("somthing wrong with sign up the student line 326 SignUpAsStudent");
                             }
+
                           }),
                     )
                   ])),

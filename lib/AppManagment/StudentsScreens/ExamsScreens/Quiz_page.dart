@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/AppManagment/StudentsScreens/ExamsScreens/Result_Screen.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
@@ -69,14 +70,14 @@ class _QuizPageState extends State<QuizPage> {
 
   Widget choiseButton(int k) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+      padding: EdgeInsets.symmetric(vertical: lRPadding*0.5, horizontal: lRPadding),
       child: MaterialButton(
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(lRPadding)),
         onPressed: () =>_checkresult(k,i),
         child: Text(
           this.widget.result["answers"][i.toString()][k],
-          style: TextStyle(color: Colors.white, fontSize: 16.0),
+          style: TextStyle(color: Colors.white, fontSize: lRPadding-4),
         ),
         color: btncolor[k],
         splashColor: Colors.indigoAccent[700],
@@ -114,14 +115,14 @@ class _QuizPageState extends State<QuizPage> {
           Expanded(
               flex: 3,
               child: Container(
-                padding: EdgeInsets.only(left: 20.0, bottom: 40.0),
+                padding: EdgeInsets.only(left:lRPadding, bottom: lRPadding),
                 width: double.infinity,
                 alignment: Alignment.bottomLeft,
                 child: Text(
                   this.widget.result["Questions"][i],
                   style: TextStyle(
                       fontFamily: 'Times New Roman',
-                      fontSize: 24.0,
+                      fontSize: lRPadding+4,
                       color: Colors.black),
                 ),
                 decoration: BoxDecoration(color: Colors.white),
@@ -130,7 +131,7 @@ class _QuizPageState extends State<QuizPage> {
               flex: 7,
               child: Container(
                 width: double.infinity,
-                decoration: BoxDecoration(color: Colors.white),
+                decoration: BoxDecoration(color:btnColor),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -149,7 +150,7 @@ class _QuizPageState extends State<QuizPage> {
                   child: Text(
                     showTimer,
                     style: TextStyle(
-                        fontSize: 30.0,
+                        fontSize: lRPadding*1.5,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Times New Roman'),
                   ),

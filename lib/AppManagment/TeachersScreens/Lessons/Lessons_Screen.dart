@@ -116,6 +116,7 @@ class LessonsDetails extends State<Lessons> {
               child: SingleChildScrollView(
                 child: Container(
                     height: 500,
+                    width: MediaQuery.of(context).size.width*0.8,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.white54),
@@ -126,7 +127,7 @@ class LessonsDetails extends State<Lessons> {
                           .getMeetingsByTeacherId(this.widget.teacher.id),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (!snapshot.hasData) return new Text('Loading...');
+                        if (!snapshot.hasData) return Center(child: new Text('Loading...'));
                         return new ListView(
                           children: snapshot.data.docs
                               .map((DocumentSnapshot document) {
@@ -143,13 +144,18 @@ class LessonsDetails extends State<Lessons> {
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 10.0),
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushReplacement(SlideRightRoute(
-                                          page: AddNewLesson(
-                                    teacher: this.widget.teacher,
-                                    document: document,
-                                    googleSignIn: this.widget.googleSignIn,
-                                  )));
+                                  try{
+                                    Navigator.of(context)
+                                        .pushReplacement(SlideRightRoute(
+                                        page: AddNewLesson(
+                                          teacher: this.widget.teacher,
+                                          document: document,
+                                          googleSignIn: this.widget.googleSignIn,
+                                        )));
+                                  }catch(e){
+                                    print("something went wrong with navigator line 146 LessonScreen");
+                                  }
+
                                 },
                                 leading: Container(
                                   height: 40.0,

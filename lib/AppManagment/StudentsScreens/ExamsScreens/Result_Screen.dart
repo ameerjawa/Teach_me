@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rainbow_color/rainbow_color.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 
 
 // ignore: must_be_immutable
@@ -77,7 +78,7 @@ class _ResultScreenState extends State<ResultScreen> with  SingleTickerProviderS
           Expanded(flex: 6,
 
           child: Padding(
-            padding: EdgeInsets.only(top: 30),
+            padding: EdgeInsets.only(top: lRPadding*1.5),
 
             child: Container(
 
@@ -117,10 +118,10 @@ class _ResultScreenState extends State<ResultScreen> with  SingleTickerProviderS
                           ),
 
                         ),
-                        padding: EdgeInsets.all(24.0),
+                        padding: EdgeInsets.all(lRPadding+4),
                         child: Text('$message \n You  Scored ${this.widget.mark*4>100?100:this.widget.mark*4}/100 marks',
                         textAlign: TextAlign.center,
-                        style: TextStyle( fontWeight: FontWeight.w600,fontSize: 30.0, fontFamily: 'Times New Roman',color: _rb[(_anim.value - 2) % 10]),), //shift one color backward
+                        style: TextStyle( fontWeight: FontWeight.w600,fontSize: lRPadding*1.5, fontFamily: 'Times New Roman',color: _rb[(_anim.value - 2) % 10]),), //shift one color backward
                       );
                     }
                 )
@@ -139,11 +140,11 @@ class _ResultScreenState extends State<ResultScreen> with  SingleTickerProviderS
               borderRadius: BorderRadius.circular(50)
             ),
             padding: EdgeInsets.only(bottom: 20),
-            height: 100,
-            width:220 ,
+            height: lRPadding*5,
+            width:lRPadding*11 ,
             child: MaterialButton( shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)), color:Colors.white24,child: Text("ExamsHomePage",style: TextStyle(
-              color: Colors.white70,fontSize: 20,fontWeight: FontWeight.bold,fontFamily: 'Times New Roman'
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(lRPadding)), color:Colors.white24,child: Text("ExamsHomePage",style: TextStyle(
+              color: Colors.white70,fontSize: lRPadding,fontWeight: FontWeight.bold,fontFamily: 'Times New Roman'
             ),),onPressed: (){
               Navigator.pop(context);
             },),

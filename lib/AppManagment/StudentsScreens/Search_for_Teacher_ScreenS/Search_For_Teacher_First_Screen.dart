@@ -51,14 +51,14 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
 
                 children: <Widget>[
                   SizedBox(
-                    height: 25,
+                    height: lRPadding+5,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       IconButton(
                           icon: const Icon(Icons.arrow_back),
-                          iconSize: 50,
+                          iconSize: lRPadding*2.5,
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                                 SlideRightRoute(
@@ -72,28 +72,28 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
                       Container(
                           child: Image.asset("assets/images/newlogologo.jpeg",
                               matchTextDirection: true,
-                              height: 160,
-                              width: 250)),
+                              height: lRPadding*8,
+                              width: lRPadding*12.5)),
                       Text(
                         'TeachMe',
                         style: TextStyle(
                             fontFamily: 'Kaushan',
                             fontWeight: FontWeight.bold,
-                            fontSize: 30,
+                            fontSize: lRPadding*1.5,
                             color: Colors.white),
                       ),
                     ]),
                   ),
                   SizedBox(
-                    height: 70,
+                    height: lRPadding*3.5,
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(lRPadding-5),
                     child: Column(children: <Widget>[
                       Center(
                         child: Text(
                           "Subject",
-                          style: TextStyle(color: Colors.black, fontSize: 20),
+                          style: TextStyle(color: Colors.black, fontSize: lRPadding),
                         ),
                       ),
                       SizedBox(
@@ -117,12 +117,12 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
                         },
                       ),
                       SizedBox(
-                        height: 10,
+                        height: lRPadding/2,
                       ),
                       Center(
                         child: Text(
                           "City",
-                          style: TextStyle(color: Colors.black, fontSize: 20),
+                          style: TextStyle(color: Colors.black, fontSize: lRPadding),
                         ),
                       ),
                       SizedBox(
@@ -149,18 +149,18 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: lRPadding,
                       ),
                     ]),
                   ),
                   Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(lRPadding-5),
                     child: Row(
                       children: [
                         Text(
                           "just Teachers who \ncan come to your home",
                           style: TextStyle(
-                            fontSize: 20,
+                            fontSize: lRPadding,
                             color: Colors.black,
                           ),
                         ),
@@ -176,25 +176,30 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
                     ),
                   ),
                   SizedBox(
-                    height: 50,
+                    height: lRPadding*2.5,
                   ),
                   IconButton(
                       icon: const Icon(Icons.done),
-                      iconSize: 50,
+                      iconSize: lRPadding*2.5,
                       alignment: Alignment.bottomCenter,
                       onPressed: () async {
 
 
 
-                        Navigator.of(context).pushReplacement(SlideRightRoute(
-                            page: SearchForTeacherViewTeachers(
-                          auth: this.widget.auth,
-                          selectedSubject: selectedSubject,
-                          selectedLocation: _selectedLocation,
-                          s: this.widget.student,
-                          googleSignIn: this.widget.googleSignIn,
-                              teacherCan: this.showvalue,
-                        )));
+                        try{
+                          Navigator.of(context).pushReplacement(SlideRightRoute(
+                              page: SearchForTeacherViewTeachers(
+                                auth: this.widget.auth,
+                                selectedSubject: selectedSubject,
+                                selectedLocation: _selectedLocation,
+                                s: this.widget.student,
+                                googleSignIn: this.widget.googleSignIn,
+                                teacherCan: this.showvalue,
+                              )));
+                        }catch(e){
+                          print("something wrong with navigator to SearchForTeacherViewTeachers class in line 200 SearchForTeacherFirstScreen ");
+                        }
+
                       }),
                 ]),
           ),

@@ -132,7 +132,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                             }
                             return null;
                           },
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType: TextInputType.name,
                           textAlign: TextAlign.center,
                           onChanged: (value) {
                             teacherFullName = value;
@@ -148,6 +148,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                         ),
                         SizedBox(height: 10),
                         TextFormField(
+                          keyboardType: TextInputType.phone,
                           validator: (value) {
                             if (value.isEmpty || value == null) {
                               return "Must Type PhoneNumber";
@@ -168,6 +169,13 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                           ),
                         ),
                         SizedBox(height: 10),
+                        Center(child: Text("City",style: TextStyle(
+
+                          color: const Color(0xCB101010),
+                          fontSize: InputFontSize,
+                          fontFamily: InputFont,
+                          fontWeight: FontWeight.bold,
+                        ),)),
                         Container(
                           decoration: BoxDecoration(
                               borderRadius: new BorderRadius.circular(15.0),
@@ -246,75 +254,80 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                 iconSize: 50,
                                 alignment: Alignment.topLeft,
                                 onPressed: () async {
-                                  if (_formKey.currentState.validate()) {
-                                    String userId = this.widget.userObj == null
-                                        ? this.widget.auth.currentUser.uid.toString()
-                                        : this.widget.userObj.id;
-                                    String email = this.widget.userObj == null
-                                        ? this.widget.auth.currentUser.email.toString()
-                                        : this.widget.userObj.email;
+                                  try{
+                                    if (_formKey.currentState.validate()) {
+                                      String userId = this.widget.userObj == null
+                                          ? this.widget.auth.currentUser.uid.toString()
+                                          : this.widget.userObj.id;
+                                      String email = this.widget.userObj == null
+                                          ? this.widget.auth.currentUser.email.toString()
+                                          : this.widget.userObj.email;
 
 
-                                    List<dynamic> subjectsList = await Userbg.getSubjects();
+                                      List<dynamic> subjectsList = await Userbg.getSubjects();
 
-                                    if (imageFile != null) {
-                                      Teacher newTeacher;
-                                      String imageUrl =
-                                          await Userbg.uploadImage(
-                                              imageFile,
-                                              teacherFullName,
-                                              userId);
-                                      newTeacher = Teacher(
-                                          email,
-                                          "",
-                                          "",
-                                          teacherFullName,
-                                          dateController.text,
-                                          phoneNumber,
-                                          location,
-                                          [],
-                                          "",
-                                          imageUrl,
-                                          1.1,
-                                          false,
-                                          "","",0);
-                                      newTeacher.signUpASTeacher(
-                                          newTeacher, teachers, userId);
-                                      Navigator.of(context)
-                                          .pushReplacement(SlideRightRoute(
-                                              page: TeacherLessonDetail(
-                                                teacher: newTeacher,
-                                        userObj: this.widget.userObj,
-                                        auth: this.widget.auth,
-                                        subjects: subjectsList,
-                                      )));
-                                    } else {
-                                      Teacher newTeacher = Teacher(
-                                          email,
-                                          "",
-                                          "",
-                                          teacherFullName,
-                                          dateController.text,
-                                          phoneNumber,
-                                          location,
-                                          [],
-                                          "",
-                                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU",
-                                          1.1,
-                                          false,
-                                          "","",0);
-                                      newTeacher.signUpASTeacher(
-                                          newTeacher, teachers, userId);
-                                      Navigator.of(context)
-                                          .pushReplacement(SlideRightRoute(
-                                              page: TeacherLessonDetail(
-                                                teacher: newTeacher,
-                                        userObj: this.widget.userObj,
-                                        auth: this.widget.auth,
-                                        subjects: subjectsList,
-                                      )));
+                                      if (imageFile != null) {
+                                        Teacher newTeacher;
+                                        String imageUrl =
+                                        await Userbg.uploadImage(
+                                            imageFile,
+                                            teacherFullName,
+                                            userId);
+                                        newTeacher = Teacher(
+                                            email,
+                                            "",
+                                            "",
+                                            teacherFullName,
+                                            dateController.text,
+                                            phoneNumber,
+                                            location,
+                                            [],
+                                            "",
+                                            imageUrl,
+                                            1.1,
+                                            false,
+                                            "","",0);
+                                        newTeacher.signUpASTeacher(
+                                            newTeacher, teachers, userId);
+                                        Navigator.of(context)
+                                            .pushReplacement(SlideRightRoute(
+                                            page: TeacherLessonDetail(
+                                              teacher: newTeacher,
+                                              userObj: this.widget.userObj,
+                                              auth: this.widget.auth,
+                                              subjects: subjectsList,
+                                            )));
+                                      } else {
+                                        Teacher newTeacher = Teacher(
+                                            email,
+                                            "",
+                                            "",
+                                            teacherFullName,
+                                            dateController.text,
+                                            phoneNumber,
+                                            location,
+                                            [],
+                                            "",
+                                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU",
+                                            1.1,
+                                            false,
+                                            "","",0);
+                                        newTeacher.signUpASTeacher(
+                                            newTeacher, teachers, userId);
+                                        Navigator.of(context)
+                                            .pushReplacement(SlideRightRoute(
+                                            page: TeacherLessonDetail(
+                                              teacher: newTeacher,
+                                              userObj: this.widget.userObj,
+                                              auth: this.widget.auth,
+                                              subjects: subjectsList,
+                                            )));
+                                      }
                                     }
+                                  }catch(e){
+                                    print("something went wrong in next Button line 328 Sign Up AS Teacher Screen");
                                   }
+
                                 }),
                             Text(
                               'Next',

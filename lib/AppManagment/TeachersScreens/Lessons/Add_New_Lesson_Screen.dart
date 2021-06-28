@@ -126,7 +126,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                         height: 15,
                       ),
                       TextField(
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.phone,
                         textAlign: TextAlign.center,
                         onChanged: (value) {
                           value != null
@@ -149,7 +149,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                         height: 15,
                       ),
                       TextField(
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.name,
                         textAlign: TextAlign.center,
                         onChanged: (value) {
                           value != null
@@ -245,57 +245,62 @@ class AddNewLessonState extends State<AddNewLesson> {
                               ),
                               onPressed: () {
                                 Map<String, dynamic> newLessonData;
-                                if (this.widget.document != null) {
-                                  newLessonData = {
-                                    "Date": dateController.text.isEmpty
-                                        ? this.widget.document["Date"]
-                                        : dateController.text,
-                                    "LessonSubject": lessonSubject == null
-                                        ? this.widget.document["LessonSubject"]
-                                        : lessonSubject,
-                                    "StuPhoneNumber": stuPhoneNumber == null
-                                        ? this.widget.document["StuPhoneNumber"]
-                                        : stuPhoneNumber,
-                                    "StudentName": stuName == null
-                                        ? this.widget.document["StudentName"]
-                                        : stuName,
-                                    "TeacherId": this.widget.teacher.id,
-                                    "TeacherName": this.widget.teacher.fullName,
-                                    "Time": time == null
-                                        ? this.widget.document["Time"]
-                                        : time
-                                  };
+                                try{
+                                  if (this.widget.document != null) {
+                                    newLessonData = {
+                                      "Date": dateController.text.isEmpty
+                                          ? this.widget.document["Date"]
+                                          : dateController.text,
+                                      "LessonSubject": lessonSubject == null
+                                          ? this.widget.document["LessonSubject"]
+                                          : lessonSubject,
+                                      "StuPhoneNumber": stuPhoneNumber == null
+                                          ? this.widget.document["StuPhoneNumber"]
+                                          : stuPhoneNumber,
+                                      "StudentName": stuName == null
+                                          ? this.widget.document["StudentName"]
+                                          : stuName,
+                                      "TeacherId": this.widget.teacher.id,
+                                      "TeacherName": this.widget.teacher.fullName,
+                                      "Time": time == null
+                                          ? this.widget.document["Time"]
+                                          : time
+                                    };
 
-                                  this.widget.teacher.editMeeting(
-                                      newLessonData, this.widget.document.id);
-                                  Navigator.of(context).pushReplacement(
-                                      SlideRightRoute(
-                                          page: Lessons(this.widget.teacher,
-                                              this.widget.auth, this.widget.googleSignIn)));
-                                } else if (dateController.text.isEmpty ||
-                                    lessonSubject.isEmpty ||
-                                    stuPhoneNumber.isEmpty ||
-                                    stuName.isEmpty ||
-                                    time.isEmpty) {
-                                  return showDialog(
-                                      context: context,
-                                      builder: (context) => SureDetails());
-                                } else {
-                                  Lesson lesson = new Lesson(
-                                      dateController.text,
-                                      stuName,
-                                      this.widget.teacher.id,
-                                      this.widget.teacher.fullName,
-                                      time,
-                                      stuPhoneNumber,
-                                      lessonSubject);
+                                    this.widget.teacher.editMeeting(
+                                        newLessonData, this.widget.document.id);
+                                    Navigator.of(context).pushReplacement(
+                                        SlideRightRoute(
+                                            page: Lessons(this.widget.teacher,
+                                                this.widget.auth, this.widget.googleSignIn)));
+                                  } else if (dateController.text.isEmpty ||
+                                      lessonSubject.isEmpty ||
+                                      stuPhoneNumber.isEmpty ||
+                                      stuName.isEmpty ||
+                                      time.isEmpty) {
+                                    return showDialog(
+                                        context: context,
+                                        builder: (context) => SureDetails("Must Enter All The Details !!"));
+                                  } else {
+                                    Lesson lesson = new Lesson(
+                                        dateController.text,
+                                        stuName,
+                                        this.widget.teacher.id,
+                                        this.widget.teacher.fullName,
+                                        time,
+                                        stuPhoneNumber,
+                                        lessonSubject);
 
-                                  this.widget.teacher.addMeeting(lesson);
-                                  Navigator.of(context).pushReplacement(
-                                      SlideRightRoute(
-                                          page: Lessons(this.widget.teacher,
-                                              this.widget.auth, this.widget.googleSignIn)));
+                                    this.widget.teacher.addMeeting(lesson);
+                                    Navigator.of(context).pushReplacement(
+                                        SlideRightRoute(
+                                            page: Lessons(this.widget.teacher,
+                                                this.widget.auth, this.widget.googleSignIn)));
+                                  }
+                                }catch(e){
+                                  print("something went wrong in addnewlesson on pressed line 301 AddNewLesson_Screen");
                                 }
+
                               })),
                     ],
                   ),

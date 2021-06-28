@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
 import 'Quiz_page.dart';
@@ -15,12 +16,12 @@ class SureEnterExam extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Container(
-          height: 100,
+          height: lRPadding*5,
           child: Column(
             children: <Widget>[
               new Text(" are U sure ?"),
               SizedBox(
-                height: 20,
+                height: lRPadding,
               ),
               Center(
                 child: Row(
@@ -38,7 +39,7 @@ class SureEnterExam extends StatelessWidget {
                         'Cancel',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontSize: lRPadding,
                         ),
                       ),
                     ),
@@ -55,7 +56,7 @@ class SureEnterExam extends StatelessWidget {
                         'Enter Exam',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontSize: lRPadding,
                         ),
                       ),
                     ),

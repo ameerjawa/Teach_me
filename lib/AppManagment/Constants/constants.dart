@@ -24,4 +24,9 @@ const InputTextStyle=TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+// main Colors
+const mainBackgroundColor=Color(0xFF90CAF9);
+const btnColor=Colors.white;
 
+// default padding
+const lRPadding=20.0;

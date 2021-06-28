@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:teach_me/AppManagment/UsersScreens/Account_Type_Screen.dart';
 import 'package:teach_me/AppManagment/UsersScreens/Sign_in_Screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,11 +12,14 @@ class Sign_Up_User extends StatelessWidget {
   String email, password, verifypassword;
   final _formKey = GlobalKey<FormState>();
   final auth = FirebaseAuth.instance;
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
 
   Widget build(BuildContext context) {
 
 
     return Scaffold(
+      key: _scaffoldKey,
       body: Container(
         height: MediaQuery.of(context).size.height,
         width:  MediaQuery.of(context).size.width,
@@ -145,18 +147,36 @@ class Sign_Up_User extends StatelessWidget {
                     textStyle: MaterialStateProperty.all(
                         TextStyle(color: Colors.blue))),
                 onPressed: () async {
-                  if (_formKey.currentState.validate()) {
-
-                    auth.createUserWithEmailAndPassword(email: this.email, password: this.password).then((value)  {
-                      Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                          // builder: (context) => VerifyEmail
-                          builder: (context) => AccountType(auth: this.auth,)
+                  try{
+                    if (_formKey.currentState.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                        duration: new Duration(seconds: 3),
+                        content: new Row(
+                          children: <Widget>[
+                            new CircularProgressIndicator(),
+                            SizedBox(
+                              width: 30,
+                            ),
+                            new Text(" Moving to Account Type ")
+                          ],
+                        ),
                       ));
-                    });
+
+                      auth.createUserWithEmailAndPassword(email: this.email, password: this.password).then((value)  {
+
+                        Navigator.of(context).pushReplacement(CupertinoPageRoute(
+                            builder: (context) => VerifyEmail(auth,value)
+                        ));
+                      });
+                      }
+                  }catch(e){
+                    print("something went wrong with signing up line 174 signupScreen");
+                  }
+
 
 
                   }
-                },
+                ,
 
                 child: const Text(
                   'sign up',

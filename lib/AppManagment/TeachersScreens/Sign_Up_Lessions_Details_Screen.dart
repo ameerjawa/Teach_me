@@ -218,6 +218,7 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                   height: 70,
                                   width: 150,
                                   child: TextFormField(
+                                    keyboardType: TextInputType.number,
                                     validator: (value) {
                                       if (value.isEmpty || value == null) {
                                         return "Must Type Price";
@@ -250,50 +251,55 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                       iconSize: 50,
                                       alignment: Alignment.topLeft,
                                       onPressed: () async {
-                                        if (_formKey.currentState.validate()) {
-                                          // TODO submit
+                                        try{
+                                          if (_formKey.currentState.validate()) {
+                                            // TODO submit
 
-                                          String userId = widget.userObj != null
-                                              ? widget.userObj.id
-                                              : this.widget.auth != null
-                                                  ? this.widget.auth
-                                                      .currentUser
-                                                      .uid
-                                                      .toString()
-                                                  : "";
+                                            String userId = widget.userObj != null
+                                                ? widget.userObj.id
+                                                : this.widget.auth != null
+                                                ? this.widget.auth
+                                                .currentUser
+                                                .uid
+                                                .toString()
+                                                : "";
 
 
-                                          List<String> finalsubjects = [];
-                                          for (int j = 0;
-                                              j < temp.length;
-                                              j++) {
-                                            finalsubjects.add(temp[j].name);
+                                            List<String> finalsubjects = [];
+                                            for (int j = 0;
+                                            j < temp.length;
+                                            j++) {
+                                              finalsubjects.add(temp[j].name);
+                                            }
+
+
+                                            Map<String, dynamic> data = {
+                                              "subjects": finalsubjects,
+                                              "Title Sentence": titleSentence,
+                                              "More": moreDetails,
+                                              "Price": price,
+                                              "CanGo": canGo
+                                            };
+
+                                            await this.widget.teacher.moreTeacherDet(
+                                                data, teachers, userId);
+
+                                            Student s;
+                                            Navigator.of(context).pushReplacement(
+                                                SlideRightRoute(
+                                                    page: TeacherHomepage(
+                                                        this.widget.teacher,
+                                                        s,
+                                                        "",
+                                                        "",
+                                                        this.widget.auth,
+                                                        this.widget.googleSignin,
+                                                        false)));
                                           }
-
-
-                                          Map<String, dynamic> data = {
-                                            "subjects": finalsubjects,
-                                            "Title Sentence": titleSentence,
-                                            "More": moreDetails,
-                                            "Price": price,
-                                            "CanGo": canGo
-                                          };
-
-                                          await this.widget.teacher.moreTeacherDet(
-                                              data, teachers, userId);
-
-                                          Student s;
-                                          Navigator.of(context).pushReplacement(
-                                              SlideRightRoute(
-                                                  page: TeacherHomepage(
-                                                      this.widget.teacher,
-                                                      s,
-                                                      "",
-                                                      "",
-                                                      this.widget.auth,
-                                                      this.widget.googleSignin,
-                                                      false)));
+                                        }catch(e){
+                                          print("something went wrong with Next Button in SignUpLessonDetailsScreen");
                                         }
+
                                       }),
                                   Text(
                                     'Next',

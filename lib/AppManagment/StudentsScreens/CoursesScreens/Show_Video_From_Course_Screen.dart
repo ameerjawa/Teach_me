@@ -41,11 +41,11 @@ return YoutubePlayerBuilder(player: YoutubePlayer(controller: _controller,), bui
                  Navigator.pop(context);
                }, child: Text("BACK",style: TextStyle(
                  fontFamily: BtnFont,
-                 fontSize: 30,
+                 fontSize: lRPadding+10,
                  color: Colors.black,
                  fontWeight: FontWeight.bold
                ),)),
-               SizedBox(height: 20,),
+               SizedBox(height: lRPadding,),
                player
              ],
 

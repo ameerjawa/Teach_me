@@ -44,20 +44,20 @@ class _CoursesHomePageState extends State<CoursesHomePage> {
         width: MediaQuery.of(context).size.width,
         decoration: MainBoxDecorationStyle,
         child: Padding(
-          padding: EdgeInsets.only(left: 20, top: 30, right: 20),
+          padding: EdgeInsets.only(left: lRPadding, top: lRPadding+10.0, right: lRPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               IconButton(
                   icon: const Icon(Icons.arrow_back),
-                  iconSize: 30,
+                  iconSize: lRPadding+10,
                   onPressed: () {
                     Navigator.of(context).pushReplacement(SlideRightRoute(
                         page: StudentActivity(this.widget.student, this.widget.googleSignIn)));
                   }),
               SizedBox(
-                height: 20,
+                height: lRPadding,
               ),
               Text(
                 'Hey ${this.widget.student.fullName}',
@@ -68,14 +68,15 @@ class _CoursesHomePageState extends State<CoursesHomePage> {
                 style: InputTextStyle,
               ),
               Container(
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  height: 60,
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  margin: EdgeInsets.symmetric(vertical: lRPadding),
+                  height: lRPadding*3,
+                  padding: EdgeInsets.symmetric(horizontal: lRPadding, vertical: lRPadding-8.0),
                   width: double.infinity,
                   decoration: BoxDecoration(
                       color: Color(0xFFF5F5F7),
-                      borderRadius: BorderRadius.circular(40)),
+                      borderRadius: BorderRadius.circular(lRPadding*2)),
                   child: TextField(
+
                     maxLines: 1,
                     onChanged: (value) {
                       value = value.toLowerCase();
@@ -88,8 +89,12 @@ class _CoursesHomePageState extends State<CoursesHomePage> {
                       });
                     },
                     decoration: InputDecoration(
+                      border: InputBorder.none,
                       icon: Icon(Icons.search),
                       hintText: "Search for any Course",
+                        hintStyle:TextStyle(
+                          fontWeight: FontWeight.w700
+                        )
                     ),
                   )),
               Row(
@@ -97,77 +102,93 @@ class _CoursesHomePageState extends State<CoursesHomePage> {
                 children: <Widget>[
                   Text(
                     'Category',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: lRPadding),
                   ),
                   Text(
                     'See All',
-                    style: TextStyle(fontSize: 15),
+                    style: TextStyle(fontSize: lRPadding-5.0),
                   )
                 ],
               ),
               SizedBox(
-                height: 50,
+                height: lRPadding*2.5,
               ),
               Expanded(
-                  child: StaggeredGridView.countBuilder(
-                      crossAxisCount: 2,
-                      itemCount: filteredCourses.length,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () async {
-                            String categoryName = this.widget.resultCat[index]["name"];
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white60,borderRadius: BorderRadius.only( topLeft: Radius.circular(lRPadding*0.5),topRight: Radius.circular(lRPadding*0.5)),border: Border.all(width: 1.0,color:Colors.white)
+                    ),
+                    child: StaggeredGridView.countBuilder(
+                        crossAxisCount: 2,
+                        itemCount: filteredCourses.length,
+                        crossAxisSpacing: lRPadding,
+                        mainAxisSpacing: lRPadding,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                              onTap: () async {
+                                String categoryName = this.widget.resultCat[index]["name"];
 
-                            // function that get name of categories and return all the Courses There
-                            QuerySnapshot<Map<String, dynamic>> catCourses =
-                                await this.widget.student.getCategoryCourses(categoryName);
+                                // function that get name of categories and return all the Courses There
+                                try{
+                                  QuerySnapshot<Map<String, dynamic>> catCourses =
+                                  await this.widget.student.getCategoryCourses(categoryName);
+                                  Navigator.of(context).pushReplacement(
+                                      SlideRightRoute(
+                                          page: CourseCategoryPage(
+                                              this.widget.student,
+                                              this.widget.googleSignIn,
+                                              filteredCourses[index]["name"],
+                                              this.widget.resultCat[index]["Courses"],
+                                              this.widget.resultCat[index]["categoryImage"],
+                                              catCourses)));
+                                }catch(e){
+                                  print("somthing wrong with getting the categories from firebase");
 
-                            Navigator.of(context).pushReplacement(
-                                SlideRightRoute(
-                                    page: CourseCategoryPage(
-                                        this.widget.student,
-                                        this.widget.googleSignIn,
+                                }
+
+
+
+                              },
+                              child: Container(
+                                height: index.isEven ? lRPadding*10 : lRPadding*12,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(lRPadding*0.5),
+                                    border:Border.all(width: 1.4,color: Colors.black),
+
+                                    image: DecorationImage(
+                                        colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.dstATop),
+
+                                        image: NetworkImage(
+                                            this.widget.resultCat[index]["categoryImage"] ),
+                                        fit: BoxFit.fill)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(lRPadding),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
                                         filteredCourses[index]["name"],
-                                        this.widget.resultCat[index]["Courses"],
-                                        this.widget.resultCat[index]["categoryImage"],
-                                        catCourses)));
-                          },
-                          child: Container(
-                            height: index.isEven ? 200 : 240,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-
-                                image: DecorationImage(
-                                    colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.dstATop),
-
-                                    image: NetworkImage(
-                                        this.widget.resultCat[index]["categoryImage"] ),
-                                    fit: BoxFit.fill)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    filteredCourses[index]["name"],
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: lRPadding),
+                                      ),
+                                      Text(
+                                        "${filteredCourses[index]["Courses"]} Courses",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black87),
+                                      )
+                                    ],
                                   ),
-                                  Text(
-                                    "${filteredCourses[index]["Courses"]} Courses",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black87),
-                                  )
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                      staggeredTileBuilder: (index) => StaggeredTile.fit(1)))
+                          );
+                        },
+                        staggeredTileBuilder: (index) => StaggeredTile.fit(1)),
+                  ))
             ],
           ),
         ),

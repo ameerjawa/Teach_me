@@ -16,11 +16,10 @@ class SearchForTeacherStudentActivity extends StatefulWidget {
   List<dynamic> subjects;
 
   SearchForTeacherStudentActivity(
-      this.student, this.googleSignIn, this.auth, this.subjects,this.cities);
+      this.student, this.googleSignIn, this.auth, this.subjects, this.cities);
 
   @override
-  SearchForTeacherState createState() => SearchForTeacherState(
-  );
+  SearchForTeacherState createState() => SearchForTeacherState();
 }
 
 class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
@@ -31,12 +30,9 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
   static String selectedSubject;
   String _selectedLocation;
 
-
-  SearchForTeacherState(
-      );
+  SearchForTeacherState();
 
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -44,164 +40,160 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
         decoration: MainBoxDecorationStyle,
         child: Padding(
           padding: const EdgeInsets.all(5.0),
-
-
           child: SingleChildScrollView(
-            child: Column(
-
+            child: Column(children: <Widget>[
+              SizedBox(
+                height: lRPadding + 5,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  SizedBox(
-                    height: lRPadding+5,
+                  IconButton(
+                      icon: const Icon(Icons.arrow_back),
+                      iconSize: lRPadding * 2.5,
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(SlideRightRoute(
+                            page: StudentActivity(this.widget.student,
+                                this.widget.googleSignIn)));
+                      }),
+                ],
+              ),
+              Center(
+                child: Column(children: [
+                  Container(
+                      child: Image.asset("assets/images/newlogologo.jpeg",
+                          matchTextDirection: true,
+                          height: lRPadding * 8,
+                          width: lRPadding * 12.5)),
+                  Text(
+                    'TeachMe',
+                    style: TextStyle(
+                        fontFamily: 'Kaushan',
+                        fontWeight: FontWeight.bold,
+                        fontSize: lRPadding * 1.5,
+                        color: Colors.white),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      IconButton(
-                          icon: const Icon(Icons.arrow_back),
-                          iconSize: lRPadding*2.5,
-                          onPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                SlideRightRoute(
-                                    page: StudentActivity(
-                                        this.widget.student, this.widget.googleSignIn)));
-                          }),
-                    ],
-                  ),
+                ]),
+              ),
+              SizedBox(
+                height: lRPadding * 3.5,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(lRPadding - 5),
+                child: Column(children: <Widget>[
                   Center(
-                    child: Column(children: [
-                      Container(
-                          child: Image.asset("assets/images/newlogologo.jpeg",
-                              matchTextDirection: true,
-                              height: lRPadding*8,
-                              width: lRPadding*12.5)),
-                      Text(
-                        'TeachMe',
-                        style: TextStyle(
-                            fontFamily: 'Kaushan',
-                            fontWeight: FontWeight.bold,
-                            fontSize: lRPadding*1.5,
-                            color: Colors.white),
-                      ),
-                    ]),
-                  ),
-                  SizedBox(
-                    height: lRPadding*3.5,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(lRPadding-5),
-                    child: Column(children: <Widget>[
-                      Center(
-                        child: Text(
-                          "Subject",
-                          style: TextStyle(color: Colors.black, fontSize: lRPadding),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Autocomplete(
-                        optionsBuilder: (TextEditingValue value) {
-                          // When the field is empty
-                          if (value.text.isEmpty) {
-                            return [];
-                          }
-                          // The logic to find out which ones should appear
-                          return this.widget.subjects.where((suggestion) => suggestion
-                              .toLowerCase()
-                              .startsWith(value.text.toLowerCase()));
-                        },
-                        onSelected: (value) {
-                          setState(() {
-                            selectedSubject = value;
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        height: lRPadding/2,
-                      ),
-                      Center(
-                        child: Text(
-                          "City",
-                          style: TextStyle(color: Colors.black, fontSize: lRPadding),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Container(
-                        child: Autocomplete(
-                          optionsBuilder: (TextEditingValue value) {
-                            // When the field is empty
-                            if (value.text.isEmpty) {
-                              return [];
-                            }
-
-                            // The logic to find out which ones should appear
-                            return this.widget.cities.where((suggestion) => suggestion
-                                .toLowerCase()
-                                .startsWith(value.text.toLowerCase()));
-                          },
-                          onSelected: (value) {
-                            setState(() {
-                              _selectedLocation = value;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: lRPadding,
-                      ),
-                    ]),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(lRPadding-5),
-                    child: Row(
-                      children: [
-                        Text(
-                          "just Teachers who \ncan come to your home",
-                          style: TextStyle(
-                            fontSize: lRPadding,
-                            color: Colors.black,
-                          ),
-                        ),
-                        Checkbox(
-                          value: this.showvalue,
-                          onChanged: (bool value) {
-                            setState(() {
-                              this.showvalue = value;
-                            });
-                          },
-                        ),
-                      ],
+                    child: Text(
+                      "Subject",
+                      style:
+                          TextStyle(color: Colors.black, fontSize: lRPadding),
                     ),
                   ),
                   SizedBox(
-                    height: lRPadding*2.5,
+                    height: 4,
                   ),
-                  IconButton(
-                      icon: const Icon(Icons.done),
-                      iconSize: lRPadding*2.5,
-                      alignment: Alignment.bottomCenter,
-                      onPressed: () async {
-
-
-
-                        try{
-                          Navigator.of(context).pushReplacement(SlideRightRoute(
-                              page: SearchForTeacherViewTeachers(
-                                auth: this.widget.auth,
-                                selectedSubject: selectedSubject,
-                                selectedLocation: _selectedLocation,
-                                s: this.widget.student,
-                                googleSignIn: this.widget.googleSignIn,
-                                teacherCan: this.showvalue,
-                              )));
-                        }catch(e){
-                          print("something wrong with navigator to SearchForTeacherViewTeachers class in line 200 SearchForTeacherFirstScreen ");
+                  Autocomplete(
+                    optionsBuilder: (TextEditingValue value) {
+                      // When the field is empty
+                      if (value.text.isEmpty) {
+                        return [];
+                      }
+                      // The logic to find out which ones should appear
+                      return this.widget.subjects.where((suggestion) =>
+                          suggestion
+                              .toLowerCase()
+                              .startsWith(value.text.toLowerCase()));
+                    },
+                    onSelected: (value) {
+                      setState(() {
+                        selectedSubject = value;
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    height: lRPadding / 2,
+                  ),
+                  Center(
+                    child: Text(
+                      "City",
+                      style:
+                          TextStyle(color: Colors.black, fontSize: lRPadding),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Container(
+                    child: Autocomplete(
+                      optionsBuilder: (TextEditingValue value) {
+                        // When the field is empty
+                        if (value.text.isEmpty) {
+                          return [];
                         }
 
-                      }),
+                        // The logic to find out which ones should appear
+                        return this.widget.cities.where((suggestion) =>
+                            suggestion
+                                .toLowerCase()
+                                .startsWith(value.text.toLowerCase()));
+                      },
+                      onSelected: (value) {
+                        setState(() {
+                          _selectedLocation = value;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: lRPadding,
+                  ),
                 ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(lRPadding - 5),
+                child: Row(
+                  children: [
+                    Text(
+                      "just Teachers who \ncan come to your home",
+                      style: TextStyle(
+                        fontSize: lRPadding,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Checkbox(
+                      value: this.showvalue,
+                      onChanged: (bool value) {
+                        setState(() {
+                          this.showvalue = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: lRPadding * 2.5,
+              ),
+              IconButton(
+                  icon: const Icon(Icons.done),
+                  iconSize: lRPadding * 2.5,
+                  alignment: Alignment.bottomCenter,
+                  onPressed: () async {
+                    try {
+                      Navigator.of(context).pushReplacement(SlideRightRoute(
+                          page: SearchForTeacherViewTeachers(
+                        auth: this.widget.auth,
+                        selectedSubject: selectedSubject,
+                        selectedLocation: _selectedLocation,
+                        s: this.widget.student,
+                        googleSignIn: this.widget.googleSignIn,
+                        teacherCan: this.showvalue,
+                      )));
+                    } catch (e) {
+                      print(
+                          "something wrong with navigator to SearchForTeacherViewTeachers class in line 200 SearchForTeacherFirstScreen ");
+                    }
+                  }),
+            ]),
           ),
         ),
       ),

@@ -119,8 +119,9 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
                     decoration: BoxDecoration(
                       border:Border.all(color: Colors.white,width: 2.0),
                       color: Colors.white60,
-                        borderRadius: BorderRadius.only( topLeft: Radius.circular(lRPadding*0.5),topRight: Radius.circular(lRPadding*0.5))
-                    ),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(lRPadding * 0.5),
+                        topRight: Radius.circular(lRPadding * 0.5))),
                     child: StaggeredGridView.countBuilder(
                         crossAxisCount: 2,
                         itemCount: filteredExams.length,

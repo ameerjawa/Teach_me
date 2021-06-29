@@ -1,4 +1,3 @@
-
 // ignore: camel_case_types
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,59 +13,59 @@ import 'Teacher_Home_Page_Screen.dart';
 
 // ignore: must_be_immutable
 class EditLessonInformation extends StatefulWidget {
-Teacher teacher;
+  Teacher teacher;
   final auth;
   GoogleSignIn googleSignIn;
   List<dynamic> subjects;
-  EditLessonInformation({Key key,this.teacher,this.auth,this.googleSignIn,this.subjects}) : super(key: key);
+
+  EditLessonInformation(
+      {Key key, this.teacher, this.auth, this.googleSignIn, this.subjects})
+      : super(key: key);
+
   @override
   EditLessonInformationState createState() => EditLessonInformationState();
 }
 
 class EditLessonInformationState extends State<EditLessonInformation> {
-  String subjects,titleSentence,moreDetails,price,selectedSubject,selectedSubjectsText;
-  bool canGo=false;
+  String subjects,
+      titleSentence,
+      moreDetails,
+      price,
+      selectedSubject,
+      selectedSubjectsText;
+  bool canGo = false;
   List<dynamic> temp;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-
-
   EditLessonInformationState();
 
-
-
   Widget build(BuildContext context) {
-    CollectionReference teachers = FirebaseFirestore.instance.collection("Teachers");
-
-
-
+    CollectionReference teachers =
+        FirebaseFirestore.instance.collection("Teachers");
 
     return Scaffold(
       key: _scaffoldKey,
 
       body: Container(
         height: MediaQuery.of(context).size.height,
-        width:  MediaQuery.of(context).size.width,
-
+        width: MediaQuery.of(context).size.width,
         decoration: MainBoxDecorationStyle,
         child: Padding(
           padding: const EdgeInsets.only(top: 20),
-
           child: SingleChildScrollView(
             child: Column(
-
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-
                       Column(
                         children: [
                           SizedBox(
                             height: 25,
                           ),
-                          Image.asset("assets/images/newlogologo.jpeg",matchTextDirection: true,height: 80,width: 120),
+                          Image.asset("assets/images/newlogologo.jpeg",
+                              matchTextDirection: true, height: 80, width: 120),
                           Text(
                             'TeachMe',
                             style: TextStyle(
@@ -78,192 +77,193 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                         ],
                       ),
                     ]),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Center(
                     child: Text(
-                      'Lessions Information',
-                      style:TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30,
-                          color: Colors.white),
-                    )
+                  'Lessions Information',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30,
+                      color: Colors.white),
+                )),
+                SizedBox(
+                  height: 40,
                 ),
-
-
-
-                SizedBox(height: 40,),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
                       Center(
                         child: Text(
-                          "subjects",style:TextStyle(color:Colors.black,fontSize: 20),
+                          "subjects",
+                          style: TextStyle(color: Colors.black, fontSize: 20),
                         ),
                       ),
-                      SizedBox(height: 4,),
+                      SizedBox(
+                        height: 4,
+                      ),
                       Container(
-
                         decoration: BoxDecoration(
                             color: Colors.white60,
-                            borderRadius: BorderRadius.circular(15.0)
-                        ),
+                            borderRadius: BorderRadius.circular(15.0)),
                         child: ListTile(
-                          onTap: () async{
-                            final List<Subject> _response = await Navigator.push(context, MaterialPageRoute(
-                                builder: (context)=>SubjectsScreen(this.widget.subjects)
-                            ));
+                          onTap: () async {
+                            final List<Subject> _response =
+                                await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SubjectsScreen(
+                                            this.widget.subjects)));
                             setState(() {
-                              temp=_response;
-                              selectedSubjectsText=temp.map((e) => e.name).join(", ");
+                              temp = _response;
+                              selectedSubjectsText =
+                                  temp.map((e) => e.name).join(", ");
                             });
-
                           },
-                          title:Text(
-                            selectedSubjectsText!=null && selectedSubjectsText!=""?"$selectedSubjectsText":"subjects",
-                            overflow:TextOverflow.ellipsis,
-                          ) ,
+                          title: Text(
+                            selectedSubjectsText != null &&
+                                    selectedSubjectsText != ""
+                                ? "$selectedSubjectsText"
+                                : "subjects",
+                            overflow: TextOverflow.ellipsis,
+                          ),
                           trailing: Icon(Icons.arrow_drop_down),
                         ),
-
                       ),
-
-                      SizedBox(height: 15,),
+                      SizedBox(
+                        height: 15,
+                      ),
                       TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         textAlign: TextAlign.center,
                         onChanged: (value) {
-                          titleSentence=value;
+                          titleSentence = value;
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.white60,
                           filled: true,
                           border: OutlineInputBorder(
-                              borderRadius: new BorderRadius.circular(15.0)
-                          ),
-
+                              borderRadius: new BorderRadius.circular(15.0)),
                           hintText: 'Enter a Title Sentence',
                           hintStyle: InputTextStyle,
-
-
                         ),
                       ),
-                      SizedBox(height: 15,),
-
+                      SizedBox(
+                        height: 15,
+                      ),
                       Container(
-
-
                         child: TextFormField(
-
                           keyboardType: TextInputType.emailAddress,
                           textAlign: TextAlign.center,
                           onChanged: (value) {
-                            moreDetails=value;
+                            moreDetails = value;
                           },
                           decoration: InputDecoration(
-                            contentPadding: new EdgeInsets.symmetric(vertical: 75.0, horizontal: 10.0),
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 75.0, horizontal: 10.0),
                             fillColor: Colors.white60,
                             filled: true,
                             border: OutlineInputBorder(
-                                borderRadius: new BorderRadius.circular(15.0)
-                            ),
-
+                                borderRadius: new BorderRadius.circular(15.0)),
                             hintText: 'More About you',
-
-
                             hintStyle: InputTextStyle,
-
-
-
                           ),
                         ),
                       ),
-                      Row(
-                          children:<Widget>[
-                            Text(
-                                'Can You Go to Student House ?'
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Container(
-
-
-                                  child: Row(
-
-                                    children: [
-
-                                      // ignore: deprecated_member_use
-                                      FlatButton(onPressed: (){
-
-                                        setState(() {
-                                          canGo=!canGo;
-
-                                        });
-
-
-
-                                      }, child: Text('Can',style:TextStyle(
-                                        color: Colors.white70
-                                      )),
-                                        color: canGo ? Colors.green : Colors.red,),
-
-
-                                    ],
-                                  )
+                      Row(children: <Widget>[
+                        Text('Can You Go to Student House ?'),
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Container(
+                              child: Row(
+                            children: [
+                              // ignore: deprecated_member_use
+                              FlatButton(
+                                onPressed: () {
+                                  setState(() {
+                                    canGo = !canGo;
+                                  });
+                                },
+                                child: Text('Can',
+                                    style: TextStyle(color: Colors.white70)),
+                                color: canGo ? Colors.green : Colors.red,
                               ),
-                            ),
-                          ]
-
-                      ),
+                            ],
+                          )),
+                        ),
+                      ]),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                          children:<Widget>[
+                          children: <Widget>[
                             Container(
                                 height: 70,
                                 width: 150,
-                                child:TextFormField(
+                                child: TextFormField(
                                   textAlign: TextAlign.center,
                                   onChanged: (value) {
-                                    price=value;
+                                    price = value;
                                   },
                                   decoration: InputDecoration(
-                                    contentPadding: new EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
+                                    contentPadding: new EdgeInsets.symmetric(
+                                        vertical: 25.0, horizontal: 10.0),
                                     fillColor: Colors.white60,
                                     filled: true,
                                     border: OutlineInputBorder(
-                                        borderRadius: new BorderRadius.circular(15.0)
-                                    ),
-
+                                        borderRadius:
+                                            new BorderRadius.circular(15.0)),
                                     hintText: 'Price',
-
-
                                     hintStyle: InputTextStyle,
-
-
-
                                   ),
-                                )
+                                )),
+                            SizedBox(
+                              width: 30,
                             ),
-                            SizedBox(width: 30,),
                             Column(
                               children: [
-                                TextButton(onPressed: ()async{
+                                TextButton(
+                                    onPressed: () async {
+                                      Student s;
+                                      DocumentSnapshot isTeacher =
+                                          await Teacher.getTeacherById(
+                                              this.widget.teacher.id);
+                                      Teacher newTeacher = new Teacher(
+                                          isTeacher["email"],
+                                          "",
+                                          "",
+                                          isTeacher["FullName"],
+                                          isTeacher["BirthDate"],
+                                          isTeacher["PhoneNumber"],
+                                          isTeacher["Location"],
+                                          isTeacher["subjects"],
+                                          isTeacher["More"],
+                                          isTeacher["ProfileImg"],
+                                          isTeacher["Rating"],
+                                          isTeacher["CanGo"],
+                                          isTeacher.id,
+                                          isTeacher["Title Sentence"],
+                                          isTeacher["Price"]);
 
-                                  Student s;
-                                  DocumentSnapshot isTeacher=await Teacher.getTeacherById(this.widget.teacher.id);
-                                  Teacher newTeacher=new Teacher(isTeacher["email"], "", "", isTeacher["FullName"], isTeacher["BirthDate"], isTeacher["PhoneNumber"], isTeacher["Location"], isTeacher["subjects"], isTeacher["More"], isTeacher["ProfileImg"], isTeacher["Rating"], isTeacher["CanGo"], isTeacher.id, isTeacher["Title Sentence"], isTeacher["Price"]);
-
-                                  Navigator.of(context).pushReplacement(SlideRightRoute(
-                                      page: TeacherHomepage(newTeacher,s,"","",this.widget.auth,this.widget.googleSignIn,false)
-                                  ));
-                                }, child:Text(
-                                  'skip',
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
-                                ))
-
+                                      Navigator.of(context).pushReplacement(
+                                          SlideRightRoute(
+                                              page: TeacherHomepage(
+                                                  newTeacher,
+                                                  s,
+                                                  "",
+                                                  "",
+                                                  this.widget.auth,
+                                                  this.widget.googleSignIn,
+                                                  false)));
+                                    },
+                                    child: Text(
+                                      'skip',
+                                      textAlign: TextAlign.center,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20),
+                                    ))
                               ],
                             ),
                             Column(
@@ -271,11 +271,11 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                                 IconButton(
                                     icon: const Icon(Icons.arrow_forward),
                                     iconSize: 50,
-
                                     alignment: Alignment.topLeft,
                                     onPressed: () async {
-                                      try{
-                                        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                                      try {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(new SnackBar(
                                           duration: new Duration(seconds: 3),
                                           content: new Row(
                                             children: <Widget>[
@@ -288,47 +288,84 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                                           ),
                                         ));
 
-                                        String userId =this.widget.teacher.id;
+                                        String userId = this.widget.teacher.id;
 
+                                        selectedSubject = selectedSubject != ""
+                                            ? selectedSubject
+                                            : this.widget.teacher.subjects;
+                                        titleSentence = titleSentence != ""
+                                            ? titleSentence
+                                            : this.widget.teacher.titleSentence;
 
-                                        selectedSubject=selectedSubject!=""?selectedSubject:this.widget.teacher.subjects;
-                                        titleSentence=titleSentence != ""?titleSentence:this.widget.teacher.titleSentence;
+                                        moreDetails = moreDetails != null
+                                            ? moreDetails
+                                            : this
+                                                .widget
+                                                .teacher
+                                                .detailsOnExperience;
+                                        canGo = canGo != null
+                                            ? canGo
+                                            : this.widget.teacher.canGo;
 
-                                        moreDetails=moreDetails != null?moreDetails:this.widget.teacher.detailsOnExperience;
-                                        canGo = canGo!=null?canGo:this.widget.teacher.canGo;
+                                        price = price != ""
+                                            ? price
+                                            : this.widget.teacher.price;
 
-                                        price=price != ""?price:this.widget.teacher.price;
-
-                                        List<String> finalsubjects=[];
-                                        for (int j=0;j<temp.length;j++){
+                                        List<String> finalsubjects = [];
+                                        for (int j = 0; j < temp.length; j++) {
                                           finalsubjects.add(temp[j].name);
                                         }
 
+                                        Map<String, dynamic> data = {
+                                          "subjects": finalsubjects,
+                                          "Title Sentence": titleSentence,
+                                          "More": moreDetails,
+                                          "Price": price,
+                                          "CanGo": canGo
+                                        };
 
-                                        Map <String,dynamic> data = {"subjects":finalsubjects,"Title Sentence":titleSentence,"More":moreDetails,"Price":price,"CanGo":canGo} ;
+                                        await this
+                                            .widget
+                                            .teacher
+                                            .moreTeacherDet(
+                                                data, teachers, userId);
 
-
-
-                                        await this.widget.teacher.moreTeacherDet(data,teachers,userId);
-
-                                        DocumentSnapshot isTeacher=await Teacher.getTeacherById(this.widget.teacher.id);
-                                        Teacher newTeacher=new Teacher(isTeacher["email"], "", "", isTeacher["FullName"], isTeacher["BirthDate"], isTeacher["PhoneNumber"], isTeacher["Location"], isTeacher["subjects"], isTeacher["More"], isTeacher["ProfileImg"], isTeacher["Rating"], isTeacher["CanGo"], isTeacher.id, isTeacher["Title Sentence"], isTeacher["Price"]);
+                                        DocumentSnapshot isTeacher =
+                                            await Teacher.getTeacherById(
+                                                this.widget.teacher.id);
+                                        Teacher newTeacher = new Teacher(
+                                            isTeacher["email"],
+                                            "",
+                                            "",
+                                            isTeacher["FullName"],
+                                            isTeacher["BirthDate"],
+                                            isTeacher["PhoneNumber"],
+                                            isTeacher["Location"],
+                                            isTeacher["subjects"],
+                                            isTeacher["More"],
+                                            isTeacher["ProfileImg"],
+                                            isTeacher["Rating"],
+                                            isTeacher["CanGo"],
+                                            isTeacher.id,
+                                            isTeacher["Title Sentence"],
+                                            isTeacher["Price"]);
 
                                         Student s;
-                                        Navigator.of(context).pushReplacement(SlideRightRoute(
-                                            page: TeacherHomepage(newTeacher,s,"","",this.widget.auth,this.widget.googleSignIn,false)
-                                        ));
-                                      }catch(e){
-                                        print("something went wrong with Next Button in line 322 Update Lesson Details Screen");
+                                        Navigator.of(context).pushReplacement(
+                                            SlideRightRoute(
+                                                page: TeacherHomepage(
+                                                    newTeacher,
+                                                    s,
+                                                    "",
+                                                    "",
+                                                    this.widget.auth,
+                                                    this.widget.googleSignIn,
+                                                    false)));
+                                      } catch (e) {
+                                        print(
+                                            "something went wrong with Next Button in line 322 Update Lesson Details Screen");
                                       }
-
-
-
-
-
-
-                                    }
-                                ),
+                                    }),
                                 Text(
                                   'Next',
                                   textAlign: TextAlign.center,
@@ -337,24 +374,17 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                                 )
                               ],
                             ),
-                          ]
-                      )
+                          ])
                     ],
                   ),
                 ),
-
-
               ],
             ),
           ),
-
         ),
       ),
 
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-
 }
-
-

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+
+
+// slideRight Router class useds in Navigator
+
 class SlideRightRoute extends PageRouteBuilder {
   final Widget page;
   SlideRightRoute({this.page})
@@ -24,6 +28,9 @@ class SlideRightRoute extends PageRouteBuilder {
         ),
   );
 }
+
+// ScaleRoute Router class useds in Navigator
+
 class ScaleRoute extends PageRouteBuilder {
   final Widget page;
   ScaleRoute({this.page})

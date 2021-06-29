@@ -14,23 +14,19 @@ class Sign_Up_User extends StatelessWidget {
   final auth = FirebaseAuth.instance;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
         height: MediaQuery.of(context).size.height,
-        width:  MediaQuery.of(context).size.width,
-
+        width: MediaQuery.of(context).size.width,
         decoration: MainBoxDecorationStyle,
         child: SingleChildScrollView(
           child: Column(
-
-
             children: <Widget>[
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
               Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -43,7 +39,6 @@ class Sign_Up_User extends StatelessWidget {
                         })
                   ]),
               Container(
-
                   child: SvgPicture.asset("assets/images/bookimage.svg",
                       allowDrawingOutsideViewBox: true,
                       matchTextDirection: true,
@@ -54,7 +49,6 @@ class Sign_Up_User extends StatelessWidget {
                 'TeachMe',
                 style: TextStyle(
                     fontFamily: 'Kaushan',
-
                     fontWeight: FontWeight.bold,
                     fontSize: 50,
                     color: Colors.white),
@@ -82,8 +76,7 @@ class Sign_Up_User extends StatelessWidget {
                             fillColor: Colors.white60,
                             filled: true,
                             border: OutlineInputBorder(
-                                borderRadius:
-                                    new BorderRadius.circular(15.0)),
+                                borderRadius: new BorderRadius.circular(15.0)),
                             hintText: 'Enter your email',
                             hintStyle: InputTextStyle,
                           ),
@@ -105,8 +98,7 @@ class Sign_Up_User extends StatelessWidget {
                             fillColor: Colors.white60,
                             filled: true,
                             border: OutlineInputBorder(
-                                borderRadius:
-                                    new BorderRadius.circular(15.0)),
+                                borderRadius: new BorderRadius.circular(15.0)),
                             hintText: 'Enter new password',
                             hintStyle: InputTextStyle,
                           ),
@@ -120,17 +112,15 @@ class Sign_Up_User extends StatelessWidget {
                           },
                           validator: (value) {
                             if (value.isEmpty || value == null)
-                                  return "ReType Your Password";
-                            if(value!=password)
-                                  return'Passwords not Match';
+                              return "ReType Your Password";
+                            if (value != password) return 'Passwords not Match';
                             return null;
                           },
                           decoration: InputDecoration(
                             fillColor: Colors.white60,
                             filled: true,
                             border: OutlineInputBorder(
-                                borderRadius:
-                                    new BorderRadius.circular(15.0)),
+                                borderRadius: new BorderRadius.circular(15.0)),
                             hintText: 'Verify your password',
                             hintStyle: InputTextStyle,
                           ),
@@ -140,14 +130,12 @@ class Sign_Up_User extends StatelessWidget {
               ),
               SizedBox(height: 2),
               ElevatedButton(
-
                 style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Colors.white60),
+                    backgroundColor: MaterialStateProperty.all(Colors.white60),
                     textStyle: MaterialStateProperty.all(
                         TextStyle(color: Colors.blue))),
                 onPressed: () async {
-                  try{
+                  try {
                     if (_formKey.currentState.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                         duration: new Duration(seconds: 3),
@@ -162,27 +150,25 @@ class Sign_Up_User extends StatelessWidget {
                         ),
                       ));
 
-                      auth.createUserWithEmailAndPassword(email: this.email, password: this.password).then((value)  {
-
-                        Navigator.of(context).pushReplacement(CupertinoPageRoute(
-                            builder: (context) => VerifyEmail(auth,value)
-                        ));
+                      auth
+                          .createUserWithEmailAndPassword(
+                              email: this.email, password: this.password)
+                          .then((value) {
+                        Navigator.of(context).pushReplacement(
+                            CupertinoPageRoute(
+                                builder: (context) =>
+                                    VerifyEmail(auth, value)));
                       });
-                      }
-                  }catch(e){
-                    print("something went wrong with signing up line 174 signupScreen");
+                    }
+                  } catch (e) {
+                    print(
+                        "something went wrong with signing up line 174 signupScreen");
                   }
-
-
-
-                  }
-                ,
-
+                },
                 child: const Text(
                   'sign up',
-                  style: TextStyle(fontSize: BtnFontSize,fontFamily: BtnFont),
+                  style: TextStyle(fontSize: BtnFontSize, fontFamily: BtnFont),
                 ),
-
               ),
             ],
           ),

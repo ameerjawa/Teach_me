@@ -7,12 +7,8 @@ import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
-
-
-
 // ignore: must_be_immutable
-class TeachersList extends StatefulWidget  {
-
+class TeachersList extends StatefulWidget {
   String subject;
   bool showValue;
   String location;
@@ -20,69 +16,84 @@ class TeachersList extends StatefulWidget  {
   final auth;
   GoogleSignIn googleSignIn;
 
-  TeachersList(this.subject,this.location,this.student,this.auth,this.googleSignIn,this.showValue);
+  TeachersList(this.subject, this.location, this.student, this.auth,
+      this.googleSignIn, this.showValue);
 
   @override
   _TeachersListState createState() => _TeachersListState();
 }
 
 class _TeachersListState extends State<TeachersList> {
-
-
-
-
   _TeachersListState();
-  Widget build(BuildContext context) {
 
+  Widget build(BuildContext context) {
     return new StreamBuilder<QuerySnapshot>(
-      stream: this.widget.student.getTeachers(this.widget.subject, this.widget.location, this.widget.showValue),
+      stream: this.widget.student.getTeachers(
+          this.widget.subject, this.widget.location, this.widget.showValue),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return new Text('Loading...');
         return new ListView(
           children: snapshot.data.docs.map((DocumentSnapshot document) {
-            String subjectsintext='';
+            String subjectsintext = '';
 
-            for (int i=0;i<document["subjects"].length;i++){
-
-              subjectsintext+="${document["subjects"][i].toString()} - ";
+            for (int i = 0; i < document["subjects"].length; i++) {
+              subjectsintext += "${document["subjects"][i].toString()} - ";
             }
 
-
-
-
-
-            return new ListTile(  contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                onTap: (){
-                  Teacher teacher=  new Teacher(document["email"], "", "", document["FullName"], document["BirthDate"], document["PhoneNumber"], document["Location"], document["subjects"], document["More"], document["ProfileImg"], document["Rating"],document["CanGo"],document.id,document["Title Sentence"],document["Price"]);
+            return new ListTile(
+                contentPadding:
+                    EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                onTap: () {
+                  Teacher teacher = new Teacher(
+                      document["email"],
+                      "",
+                      "",
+                      document["FullName"],
+                      document["BirthDate"],
+                      document["PhoneNumber"],
+                      document["Location"],
+                      document["subjects"],
+                      document["More"],
+                      document["ProfileImg"],
+                      document["Rating"],
+                      document["CanGo"],
+                      document.id,
+                      document["Title Sentence"],
+                      document["Price"]);
                   Navigator.of(context).pushReplacement(SlideRightRoute(
-                      page: TeacherHomepage(teacher,this.widget.student,this.widget.subject,this.widget.location,this.widget.auth,this.widget.googleSignIn,this.widget.showValue)
-                  ));
+                      page: TeacherHomepage(
+                          teacher,
+                          this.widget.student,
+                          this.widget.subject,
+                          this.widget.location,
+                          this.widget.auth,
+                          this.widget.googleSignIn,
+                          this.widget.showValue)));
                 },
                 leading: Container(
-
                   padding: EdgeInsets.only(right: 12.0),
                   decoration: new BoxDecoration(
                       border: new Border(
-                          right: new BorderSide(width: 1.0, color: Colors.white24))),
+                          right: new BorderSide(
+                              width: 1.0, color: Colors.white24))),
                   child: GestureDetector(
-
                     child: CircleAvatar(
                       radius: 30,
                       backgroundImage: document["ProfileImg"] != null
-                          ?NetworkImage(document["ProfileImg"])
+                          ? NetworkImage(document["ProfileImg"])
                           : NetworkImage(
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU"),
+                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU"),
                     ),
                   ),
                 ),
                 title: Text(
                   document["FullName"],
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.bold),
                 ),
                 // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
                 subtitle: Row(
-
                   children: <Widget>[
                     RatingBarIndicator(
                       rating: document["Rating"],
@@ -94,20 +105,22 @@ class _TeachersListState extends State<TeachersList> {
                       itemSize: 5.0,
                       direction: Axis.horizontal,
                     ),
-                    SizedBox(width: 5,),
-                    Expanded(child: Text(subjectsintext!=null?subjectsintext:"subject", style: TextStyle(color: Colors.white),maxLines: 1,))
-
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                        child: Text(
+                      subjectsintext != null ? subjectsintext : "subject",
+                      style: TextStyle(color: Colors.white),
+                      maxLines: 1,
+                    ))
                   ],
                 ),
-
-                trailing:
-                Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0)
-            );
+                trailing: Icon(Icons.keyboard_arrow_right,
+                    color: Colors.white, size: 30.0));
           }).toList(),
         );
       },
     );
   }
-
-
 }

@@ -4,8 +4,6 @@ import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
 import 'Quiz_page.dart';
 
-
-
 // ignore: must_be_immutable
 class SureEnterExam extends StatelessWidget {
   Map<String, dynamic> result;
@@ -16,7 +14,7 @@ class SureEnterExam extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       content: Container(
-          height: lRPadding*5,
+          height: lRPadding * 5,
           child: Column(
             children: <Widget>[
               new Text(" are U sure ?"),

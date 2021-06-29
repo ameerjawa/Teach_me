@@ -15,19 +15,3 @@ class Exam{
 
 
 }
-
-// Future<List<Map<String,dynamic>>> getExamsFromFireBase() async {
-//   QuerySnapshot<dynamic> d = await FirebaseFirestore.instance.collection(
-//       'Exams').get();
-//   List<dynamic> examsList = [];
-//
-//   d.docs.forEach((element) {
-//     examsList.add(element);
-//   });
-//
-//
-//
-//
-//   debugPrint( examsList.toString());
-//
-// }

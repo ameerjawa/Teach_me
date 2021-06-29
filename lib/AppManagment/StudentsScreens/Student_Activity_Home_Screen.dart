@@ -62,8 +62,7 @@ class StudentActivity extends StatelessWidget {
                 ),
                 child: TextButton(
                   onPressed: () async {
-
-                    try{
+                    try {
                       ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                         duration: new Duration(seconds: 3),
                         content: new Row(
@@ -76,9 +75,9 @@ class StudentActivity extends StatelessWidget {
                           ],
                         ),
                       ));
-                      List<dynamic> subjectsList =await Userbg.getSubjects();
+                      List<dynamic> subjectsList = await Userbg.getSubjects();
 
-                      List<dynamic> citiesList =await Userbg.getCities();
+                      List<dynamic> citiesList = await Userbg.getCities();
 
                       Navigator.of(context).pushReplacement(SlideRightRoute(
                           page: SearchForTeacherStudentActivity(
@@ -87,18 +86,16 @@ class StudentActivity extends StatelessWidget {
                               this._auth,
                               subjectsList,
                               citiesList)));
-                    }catch(e){
-                      print("somthing wrong with getting the subjects or the cities or the navigator line 79 Student_Activity");
+                    } catch (e) {
+                      print(
+                          "somthing wrong with getting the subjects or the cities or the navigator line 79 Student_Activity");
                     }
-
                   },
-
                   child: Text("Search For Teacher",
                       style: TextStyle(
                           fontSize: BtnFontSize,
                           color: btnColor,
                           fontFamily: BtnFont)),
-
                 ),
               ),
               SizedBox(height: 20.0),
@@ -116,7 +113,7 @@ class StudentActivity extends StatelessWidget {
                 ),
                 child: TextButton(
                   onPressed: () async {
-                    try{
+                    try {
                       ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                         duration: new Duration(seconds: 3),
                         content: new Row(
@@ -131,19 +128,21 @@ class StudentActivity extends StatelessWidget {
                       ));
                       List<dynamic> result = [];
 
-                      await student.getExams()
+                      await student
+                          .getExams()
                           .then((value) => {result.add(value)});
                       Navigator.of(context).pushReplacement(ScaleRoute(
-                          page: ExamsHomeScreen(student, googleSignIn, result)));
-                    }catch(e){
-                      print("problem in line {130-140} StudentActivityHomeScreen GoToExamsButton");
+                          page:
+                              ExamsHomeScreen(student, googleSignIn, result)));
+                    } catch (e) {
+                      print(
+                          "problem in line {130-140} StudentActivityHomeScreen GoToExamsButton");
                     }
-
                   },
                   child: Text("Level Exams",
                       style: TextStyle(
                           fontSize: BtnFontSize,
-                          color:btnColor,
+                          color: btnColor,
                           fontFamily: BtnFont)),
                   // padding: EdgeInsets.only(top:40.0,bottom: 40.0,right: 80.0,left: 80.0),
                   // shape: new RoundedRectangleBorder(
@@ -180,25 +179,23 @@ class StudentActivity extends StatelessWidget {
                       ),
                     ));
 
-                    try{
+                    try {
                       // here we store all the CoursesCategories from the firebase in resultcat variable
                       var resultCat = await this.student.getCategories();
 
-
                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                          page:
-                          CoursesHomePage(student, googleSignIn, resultCat)));
-                    }catch(e){
-                      print("somthing went wrong with getting the categories from firebase line 163 StudentActivity");
+                          page: CoursesHomePage(
+                              student, googleSignIn, resultCat)));
+                    } catch (e) {
+                      print(
+                          "somthing went wrong with getting the categories from firebase line 163 StudentActivity");
                     }
-
                   },
                   child: Text("Courses",
                       style: TextStyle(
                           fontSize: BtnFontSize,
                           color: btnColor,
                           fontFamily: BtnFont)),
-
                 ),
               ),
               SizedBox(
@@ -223,7 +220,3 @@ class StudentActivity extends StatelessWidget {
     );
   }
 }
-
-
-
-

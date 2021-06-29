@@ -33,7 +33,6 @@ class LessonsDetails extends State<Lessons> {
   String subject;
   bool showValue = false;
 
-
   LessonsDetails();
 
   Widget build(BuildContext context) {
@@ -116,7 +115,7 @@ class LessonsDetails extends State<Lessons> {
               child: SingleChildScrollView(
                 child: Container(
                     height: 500,
-                    width: MediaQuery.of(context).size.width*0.8,
+                    width: MediaQuery.of(context).size.width * 0.8,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
                         color: Colors.white54),
@@ -127,7 +126,8 @@ class LessonsDetails extends State<Lessons> {
                           .getMeetingsByTeacherId(this.widget.teacher.id),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (!snapshot.hasData) return Center(child: new Text('Loading...'));
+                        if (!snapshot.hasData)
+                          return Center(child: new Text('Loading...'));
                         return new ListView(
                           children: snapshot.data.docs
                               .map((DocumentSnapshot document) {
@@ -144,34 +144,36 @@ class LessonsDetails extends State<Lessons> {
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 10.0),
                                 onTap: () {
-                                  try{
+                                  try {
                                     Navigator.of(context)
                                         .pushReplacement(SlideRightRoute(
-                                        page: AddNewLesson(
-                                          teacher: this.widget.teacher,
-                                          document: document,
-                                          googleSignIn: this.widget.googleSignIn,
-                                        )));
-                                  }catch(e){
-                                    print("something went wrong with navigator line 146 LessonScreen");
+                                            page: AddNewLesson(
+                                      teacher: this.widget.teacher,
+                                      document: document,
+                                      googleSignIn: this.widget.googleSignIn,
+                                    )));
+                                  } catch (e) {
+                                    print(
+                                        "something went wrong with navigator line 146 LessonScreen");
                                   }
-
                                 },
                                 leading: Container(
                                   height: 40.0,
                                   width: 1,
                                   padding: EdgeInsets.all(12.0),
                                   decoration: new BoxDecoration(
+                                      color: Colors.black,
                                       border: new Border(
-                                    right: new BorderSide(
-                                        width: 1.0, color: Colors.grey),
-                                  )),
+                                        right: new BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                      )),
                                 ),
                                 title: Text(
-                                  "${lesson.subject} Lesson ${lesson.date} ${lesson.time}",
+                                  "${lesson.subject.toUpperCase()} Lesson \n${lesson.date}  -  ${lesson.time}",
                                   style: TextStyle(
                                       color: Colors.black,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: "Times New Roman"),
                                 ),
                                 // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
@@ -180,6 +182,7 @@ class LessonsDetails extends State<Lessons> {
                                     SizedBox(width: .0),
                                     Text(
                                         "${lesson.studentName} : ${lesson.studentphonenumber}",
+                                        maxLines: 1,
                                         style: TextStyle(color: Colors.black))
                                     //
                                   ],

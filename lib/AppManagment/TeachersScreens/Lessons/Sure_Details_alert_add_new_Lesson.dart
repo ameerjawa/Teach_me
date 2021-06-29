@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
-
-
 // ignore: must_be_immutable
 class SureDetails extends StatelessWidget {
   String text;
-   SureDetails(this.text,{Key key}) : super(key: key);
+
+  SureDetails(this.text, {Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,5 +20,3 @@ class SureDetails extends StatelessWidget {
     );
   }
 }
-
-

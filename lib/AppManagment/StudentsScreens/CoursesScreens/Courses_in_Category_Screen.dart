@@ -52,14 +52,15 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
         width: MediaQuery.of(context).size.width,
         decoration: MainBoxDecorationStyle,
         child: Padding(
-          padding: EdgeInsets.only(left: lRPadding, top: lRPadding+10, right: lRPadding),
+          padding: EdgeInsets.only(
+              left: lRPadding, top: lRPadding + 10, right: lRPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               IconButton(
                   icon: const Icon(Icons.arrow_back),
-                  iconSize: lRPadding+10,
+                  iconSize: lRPadding + 10,
                   onPressed: () async {
                     // ignore: deprecated_member_use
                     ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
@@ -68,7 +69,7 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
                         children: <Widget>[
                           new CircularProgressIndicator(),
                           SizedBox(
-                            width: lRPadding+10,
+                            width: lRPadding + 10,
                           ),
                           new Text(" Moving to Courses ")
                         ],
@@ -98,23 +99,24 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
                 style: InputTextStyle,
               ),
               SizedBox(
-                height: lRPadding+10,
+                height: lRPadding + 10,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
                     'Course',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: lRPadding),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: lRPadding),
                   ),
                   Text(
                     'See All',
-                    style: TextStyle(fontSize: lRPadding-5),
+                    style: TextStyle(fontSize: lRPadding - 5),
                   )
                 ],
               ),
               SizedBox(
-                height: lRPadding*2.5,
+                height: lRPadding * 2.5,
               ),
               Expanded(
                   child: Container(
@@ -136,13 +138,14 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
                           onTap: () async {
                             videosDuration = [];
 
-                            ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(new SnackBar(
                               duration: new Duration(seconds: 40),
                               content: new Row(
                                 children: <Widget>[
                                   new CircularProgressIndicator(),
                                   SizedBox(
-                                    width: lRPadding+10,
+                                    width: lRPadding + 10,
                                   ),
                                   new Text(
                                       " Moving to Course ,may take more than 20 sec ")
@@ -188,13 +191,15 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
                                               .elementAt(index)
                                               .data())));
                             } catch (e) {
-                              print("somthing wrong with getting the durations of the videos line 191 Courses_in_Cateegory_Screen");
+                              print(
+                                  "somthing wrong with getting the durations of the videos line 191 Courses_in_Cateegory_Screen");
                             }
                           },
                           child: Container(
                             height: index.isEven ? 190 : 230,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(lRPadding*0.5),
+                                borderRadius:
+                                    BorderRadius.circular(lRPadding * 0.5),
                                 border:
                                     Border.all(width: 1.4, color: Colors.black),
                                 image: DecorationImage(
@@ -218,7 +223,7 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
                                         .data()["CourseName"],
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: lRPadding+2),
+                                        fontSize: lRPadding + 2),
                                   ),
                                 ],
                               ),

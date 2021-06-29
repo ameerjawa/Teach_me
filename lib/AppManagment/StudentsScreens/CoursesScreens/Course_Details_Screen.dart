@@ -56,7 +56,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
             return Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: lRPadding, top: 50, right: lRPadding),
+                  padding: EdgeInsets.only(
+                      left: lRPadding, top: 50, right: lRPadding),
                   child: Column(
                     children: <Widget>[
                       Row(
@@ -66,6 +67,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                               icon: const Icon(Icons.arrow_back),
                               iconSize: 50,
                               onPressed: () {
+
+                                // moving to  CourseCategoryPage
                                 Navigator.of(context).pushReplacement(
                                     SlideRightRoute(
                                         page: CourseCategoryPage(
@@ -104,7 +107,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                         height: 16,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: lRPadding, right:lRPadding),
+                        padding: const EdgeInsets.only(
+                            left: lRPadding, right: lRPadding),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -164,7 +168,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                           Text(
                             "Course content",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: lRPadding),
+                                fontWeight: FontWeight.bold,
+                                fontSize: lRPadding),
                           ),
                           SizedBox(
                             height: lRPadding,
@@ -257,8 +262,8 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                                                         .course)));
                                                       },
                                                       child: Container(
-                                                        width: lRPadding*2,
-                                                        height: lRPadding*2,
+                                                        width: lRPadding * 2,
+                                                        height: lRPadding * 2,
                                                         decoration:
                                                             BoxDecoration(
                                                                 shape: BoxShape
@@ -334,8 +339,8 @@ class CourseContent extends StatelessWidget {
         Spacer(),
         Container(
           margin: EdgeInsets.only(left: lRPadding),
-          width: lRPadding*2,
-          height: lRPadding*2,
+          width: lRPadding * 2,
+          height: lRPadding * 2,
           decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.greenAccent.withOpacity(isDone ? 1 : 0.5)),

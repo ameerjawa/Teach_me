@@ -17,12 +17,10 @@ class CoursesHomePage extends StatefulWidget {
   CoursesHomePage(this.student, this.googleSignIn, this.resultCat);
 
   @override
-  _CoursesHomePageState createState() =>
-      _CoursesHomePageState();
+  _CoursesHomePageState createState() => _CoursesHomePageState();
 }
 
 class _CoursesHomePageState extends State<CoursesHomePage> {
-
   String selectedCourse = "";
   List<dynamic> filteredCourses = [];
 
@@ -44,17 +42,20 @@ class _CoursesHomePageState extends State<CoursesHomePage> {
         width: MediaQuery.of(context).size.width,
         decoration: MainBoxDecorationStyle,
         child: Padding(
-          padding: EdgeInsets.only(left: lRPadding, top: lRPadding+10.0, right: lRPadding),
+          padding: EdgeInsets.only(
+              left: lRPadding, top: lRPadding + 10.0, right: lRPadding),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               IconButton(
                   icon: const Icon(Icons.arrow_back),
-                  iconSize: lRPadding+10,
+                  iconSize: lRPadding + 10,
                   onPressed: () {
+                    // moving to StudentActivity
                     Navigator.of(context).pushReplacement(SlideRightRoute(
-                        page: StudentActivity(this.widget.student, this.widget.googleSignIn)));
+                        page: StudentActivity(
+                            this.widget.student, this.widget.googleSignIn)));
                   }),
               SizedBox(
                 height: lRPadding,
@@ -69,126 +70,135 @@ class _CoursesHomePageState extends State<CoursesHomePage> {
               ),
               Container(
                   margin: EdgeInsets.symmetric(vertical: lRPadding),
-                  height: lRPadding*3,
-                  padding: EdgeInsets.symmetric(horizontal: lRPadding, vertical: lRPadding-8.0),
+                  height: lRPadding * 3,
+                  padding: EdgeInsets.symmetric(
+                      horizontal: lRPadding, vertical: lRPadding - 8.0),
                   width: double.infinity,
                   decoration: BoxDecoration(
                       color: Color(0xFFF5F5F7),
-                      borderRadius: BorderRadius.circular(lRPadding*2)),
+                      borderRadius: BorderRadius.circular(lRPadding * 2)),
                   child: TextField(
-
                     maxLines: 1,
                     onChanged: (value) {
                       value = value.toLowerCase();
 
                       setState(() {
-                        filteredCourses = this.widget.resultCat.where((element) {
+                        filteredCourses =
+                            this.widget.resultCat.where((element) {
                           String categoryName = element["name"].toLowerCase();
                           return categoryName.contains(value);
                         }).toList();
                       });
                     },
                     decoration: InputDecoration(
-                      border: InputBorder.none,
-                      icon: Icon(Icons.search),
-                      hintText: "Search for any Course",
-                        hintStyle:TextStyle(
-                          fontWeight: FontWeight.w700
-                        )
-                    ),
+                        border: InputBorder.none,
+                        icon: Icon(Icons.search),
+                        hintText: "Search for any Course",
+                        hintStyle: TextStyle(fontWeight: FontWeight.w700)),
                   )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
                     'Category',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: lRPadding),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: lRPadding),
                   ),
                   Text(
                     'See All',
-                    style: TextStyle(fontSize: lRPadding-5.0),
+                    style: TextStyle(fontSize: lRPadding - 5.0),
                   )
                 ],
               ),
               SizedBox(
-                height: lRPadding*2.5,
+                height: lRPadding * 2.5,
               ),
               Expanded(
                   child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white60,borderRadius: BorderRadius.only( topLeft: Radius.circular(lRPadding*0.5),topRight: Radius.circular(lRPadding*0.5)),border: Border.all(width: 1.0,color:Colors.white)
-                    ),
-                    child: StaggeredGridView.countBuilder(
-                        crossAxisCount: 2,
-                        itemCount: filteredCourses.length,
-                        crossAxisSpacing: lRPadding,
-                        mainAxisSpacing: lRPadding,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: GestureDetector(
-                              onTap: () async {
-                                String categoryName = this.widget.resultCat[index]["name"];
+                decoration: BoxDecoration(
+                    color: Colors.white60,
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(lRPadding * 0.5),
+                        topRight: Radius.circular(lRPadding * 0.5)),
+                    border: Border.all(width: 1.0, color: Colors.white)),
+                child: StaggeredGridView.countBuilder(
+                    crossAxisCount: 2,
+                    itemCount: filteredCourses.length,
+                    crossAxisSpacing: lRPadding,
+                    mainAxisSpacing: lRPadding,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: () async {
+                            String categoryName =
+                                this.widget.resultCat[index]["name"];
 
-                                // function that get name of categories and return all the Courses There
-                                try{
-                                  QuerySnapshot<Map<String, dynamic>> catCourses =
-                                  await this.widget.student.getCategoryCourses(categoryName);
-                                  Navigator.of(context).pushReplacement(
-                                      SlideRightRoute(
-                                          page: CourseCategoryPage(
-                                              this.widget.student,
-                                              this.widget.googleSignIn,
-                                              filteredCourses[index]["name"],
-                                              this.widget.resultCat[index]["Courses"],
-                                              this.widget.resultCat[index]["categoryImage"],
-                                              catCourses)));
-                                }catch(e){
-                                  print("somthing wrong with getting the categories from firebase");
-
-                                }
-
-
-
-                              },
-                              child: Container(
-                                height: index.isEven ? lRPadding*10 : lRPadding*12,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(lRPadding*0.5),
-                                    border:Border.all(width: 1.4,color: Colors.black),
-
-                                    image: DecorationImage(
-                                        colorFilter: new ColorFilter.mode(Colors.black.withOpacity(0.7), BlendMode.dstATop),
-
-                                        image: NetworkImage(
-                                            this.widget.resultCat[index]["categoryImage"] ),
-                                        fit: BoxFit.fill)),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(lRPadding),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        filteredCourses[index]["name"],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: lRPadding),
-                                      ),
-                                      Text(
-                                        "${filteredCourses[index]["Courses"]} Courses",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black87),
-                                      )
-                                    ],
+                            // function that get name of categories and return all the Courses There
+                            try {
+                              QuerySnapshot<Map<String, dynamic>> catCourses =
+                                  await this
+                                      .widget
+                                      .student
+                                      .getCategoryCourses(categoryName);
+                              Navigator.of(context).pushReplacement(
+                                  SlideRightRoute(
+                                      page: CourseCategoryPage(
+                                          this.widget.student,
+                                          this.widget.googleSignIn,
+                                          filteredCourses[index]["name"],
+                                          this.widget.resultCat[index]
+                                              ["Courses"],
+                                          this.widget.resultCat[index]
+                                              ["categoryImage"],
+                                          catCourses)));
+                            } catch (e) {
+                              print(
+                                  "somthing wrong with getting the categories from firebase");
+                            }
+                          },
+                          child: Container(
+                            height:
+                                index.isEven ? lRPadding * 10 : lRPadding * 12,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(lRPadding * 0.5),
+                                border:
+                                    Border.all(width: 1.4, color: Colors.black),
+                                image: DecorationImage(
+                                    colorFilter: new ColorFilter.mode(
+                                        Colors.black.withOpacity(0.7),
+                                        BlendMode.dstATop),
+                                    image: NetworkImage(this
+                                        .widget
+                                        .resultCat[index]["categoryImage"]),
+                                    fit: BoxFit.fill)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(lRPadding),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    filteredCourses[index]["name"],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: lRPadding),
                                   ),
-                                ),
+                                  Text(
+                                    "${filteredCourses[index]["Courses"]} Courses",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black87),
+                                  )
+                                ],
                               ),
                             ),
-                          );
-                        },
-                        staggeredTileBuilder: (index) => StaggeredTile.fit(1)),
-                  ))
+                          ),
+                        ),
+                      );
+                    },
+                    staggeredTileBuilder: (index) => StaggeredTile.fit(1)),
+              ))
             ],
           ),
         ),

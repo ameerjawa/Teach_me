@@ -1,12 +1,7 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/UsersScreens/Sign_in_Screen.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
-
-
-
 
 // ignore: must_be_immutable
 class SureLogout extends StatelessWidget {

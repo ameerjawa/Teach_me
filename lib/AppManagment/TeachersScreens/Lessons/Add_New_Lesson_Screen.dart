@@ -15,22 +15,29 @@ class AddNewLesson extends StatefulWidget {
   Teacher teacher;
   final auth;
   GoogleSignIn googleSignIn;
+
   AddNewLesson(
       {Key key, this.teacher, this.document, this.auth, this.googleSignIn})
       : super(key: key);
 
   @override
-  AddNewLessonState createState() =>
-      AddNewLessonState();
+  AddNewLessonState createState() => AddNewLessonState();
 }
 
 class AddNewLessonState extends State<AddNewLesson> {
-  String lessonSubject, stuPhoneNumber, stuName, time;
+  String lessonSubject, stuPhoneNumber, stuName;
   bool canGo = false;
   final dateController = TextEditingController();
-
+  TextEditingController timeInput = TextEditingController();
 
   AddNewLessonState();
+
+  @override
+  void initState() {
+    timeInput.text = ""; //set the initial value of text field
+
+    super.initState();
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,8 +60,10 @@ class AddNewLessonState extends State<AddNewLesson> {
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                                 SlideRightRoute(
-                                    page: Lessons(this.widget.teacher,
-                                        this.widget.auth, this.widget.googleSignIn)));
+                                    page: Lessons(
+                                        this.widget.teacher,
+                                        this.widget.auth,
+                                        this.widget.googleSignIn)));
                           }),
                       Column(
                         children: [
@@ -132,14 +141,14 @@ class AddNewLessonState extends State<AddNewLesson> {
                           value != null
                               ? stuPhoneNumber = value
                               : stuPhoneNumber =
-                          this.widget.document["StuPhoneNumber"];
+                                  this.widget.document["StuPhoneNumber"];
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.white60,
                           filled: true,
                           border: OutlineInputBorder(
                               borderRadius: new BorderRadius.circular(15.0)),
-                          hintText: this.widget.document!= null
+                          hintText: this.widget.document != null
                               ? this.widget.document["StuPhoneNumber"]
                               : 'Student Phone Number',
                           hintStyle: InputTextStyle,
@@ -192,7 +201,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                                   value != null
                                       ? dateController.text = value
                                       : dateController.text =
-                                  this.widget.document["Date"];
+                                          this.widget.document["Date"];
 
                                   dateController.text = value;
                                 },
@@ -213,11 +222,29 @@ class AddNewLessonState extends State<AddNewLesson> {
                                 height: 70,
                                 width: 150,
                                 child: TextField(
+                                  style: TextStyle(
+                                    color: const Color(0xCB101010),
+                                    fontSize: InputFontSize + 15,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  readOnly: true,
+                                  controller: timeInput,
                                   textAlign: TextAlign.center,
-                                  onChanged: (value) {
-                                    value.isEmpty
-                                        ? time = this.widget.document["Time"]
-                                        : time = value.toString();
+                                  onTap: () async {
+                                    TimeOfDay pickedTime = await showTimePicker(
+                                      initialTime: TimeOfDay.now(),
+                                      context: context,
+                                    );
+
+                                    if (pickedTime != null) {
+                                      setState(() {
+                                        timeInput.text = pickedTime
+                                            .format(context)
+                                            .toString(); //set the value of text field.
+                                      });
+                                    } else {
+                                      print("Time is not selected");
+                                    }
                                   },
                                   decoration: InputDecoration(
                                     contentPadding: new EdgeInsets.symmetric(
@@ -228,7 +255,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                                         borderRadius:
                                             new BorderRadius.circular(15.0)),
                                     hintText: this.widget.document != null
-                                        ?this.widget.document["Time"]
+                                        ? this.widget.document["Time"]
                                         : 'Time',
                                     hintStyle: InputTextStyle,
                                   ),
@@ -245,62 +272,72 @@ class AddNewLessonState extends State<AddNewLesson> {
                               ),
                               onPressed: () {
                                 Map<String, dynamic> newLessonData;
-                                try{
+                                try {
                                   if (this.widget.document != null) {
                                     newLessonData = {
                                       "Date": dateController.text.isEmpty
                                           ? this.widget.document["Date"]
                                           : dateController.text,
                                       "LessonSubject": lessonSubject == null
-                                          ? this.widget.document["LessonSubject"]
+                                          ? this
+                                              .widget
+                                              .document["LessonSubject"]
                                           : lessonSubject,
                                       "StuPhoneNumber": stuPhoneNumber == null
-                                          ? this.widget.document["StuPhoneNumber"]
+                                          ? this
+                                              .widget
+                                              .document["StuPhoneNumber"]
                                           : stuPhoneNumber,
                                       "StudentName": stuName == null
                                           ? this.widget.document["StudentName"]
                                           : stuName,
                                       "TeacherId": this.widget.teacher.id,
-                                      "TeacherName": this.widget.teacher.fullName,
-                                      "Time": time == null
+                                      "TeacherName":
+                                          this.widget.teacher.fullName,
+                                      "Time": timeInput.text == ""
                                           ? this.widget.document["Time"]
-                                          : time
+                                          : timeInput.text
                                     };
 
                                     this.widget.teacher.editMeeting(
                                         newLessonData, this.widget.document.id);
                                     Navigator.of(context).pushReplacement(
                                         SlideRightRoute(
-                                            page: Lessons(this.widget.teacher,
-                                                this.widget.auth, this.widget.googleSignIn)));
+                                            page: Lessons(
+                                                this.widget.teacher,
+                                                this.widget.auth,
+                                                this.widget.googleSignIn)));
                                   } else if (dateController.text.isEmpty ||
                                       lessonSubject.isEmpty ||
                                       stuPhoneNumber.isEmpty ||
                                       stuName.isEmpty ||
-                                      time.isEmpty) {
+                                      timeInput.text.isEmpty) {
                                     return showDialog(
                                         context: context,
-                                        builder: (context) => SureDetails("Must Enter All The Details !!"));
+                                        builder: (context) => SureDetails(
+                                            "Must Enter All The Details !!"));
                                   } else {
                                     Lesson lesson = new Lesson(
                                         dateController.text,
                                         stuName,
                                         this.widget.teacher.id,
                                         this.widget.teacher.fullName,
-                                        time,
+                                        timeInput.text,
                                         stuPhoneNumber,
                                         lessonSubject);
 
                                     this.widget.teacher.addMeeting(lesson);
                                     Navigator.of(context).pushReplacement(
                                         SlideRightRoute(
-                                            page: Lessons(this.widget.teacher,
-                                                this.widget.auth, this.widget.googleSignIn)));
+                                            page: Lessons(
+                                                this.widget.teacher,
+                                                this.widget.auth,
+                                                this.widget.googleSignIn)));
                                   }
-                                }catch(e){
-                                  print("something went wrong in addnewlesson on pressed line 301 AddNewLesson_Screen");
+                                } catch (e) {
+                                  print(
+                                      "something went wrong in addnewlesson on pressed line 301 AddNewLesson_Screen");
                                 }
-
                               })),
                     ],
                   ),
@@ -315,4 +352,3 @@ class AddNewLessonState extends State<AddNewLesson> {
     );
   }
 }
-

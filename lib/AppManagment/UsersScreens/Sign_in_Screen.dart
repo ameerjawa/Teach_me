@@ -29,7 +29,7 @@ class _MyHomePageState extends State<SignInUser> {
   Teacher teacher;
   final auth = FirebaseAuth.instance;
   DocumentSnapshot isTeacher;
-  bool successFullyLogin=false;
+  bool successFullyLogin = false;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GoogleSignIn _googleSignIn = new GoogleSignIn(
     scopes: [
@@ -143,7 +143,6 @@ class _MyHomePageState extends State<SignInUser> {
                           TextStyle(color: Colors.blue))),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
-
                       // TODO submit
 
                       try {
@@ -198,7 +197,6 @@ class _MyHomePageState extends State<SignInUser> {
                                         this._googleSignIn,
                                         false)));
                           } else {
-
                             student = await Student.getStudentById(
                                 userCredential.user.uid);
                             Navigator.of(context).pushReplacement(
@@ -208,19 +206,18 @@ class _MyHomePageState extends State<SignInUser> {
                           }
                         }
                       } on FirebaseAuthException catch (e) {
-
                         if (e.code == 'user-not-found') {
                           print('No user found for that email.');
                           return showDialog(
                               context: context,
-                              builder: (context) => SureDetails("No user found for that email !"));
+                              builder: (context) => SureDetails(
+                                  "No user found for that email !"));
                         } else if (e.code == 'wrong-password') {
                           print('Wrong password provided for that user.');
                           return showDialog(
                               context: context,
-                              builder: (context) => SureDetails("wrong Email or Password !"));
-
-
+                              builder: (context) =>
+                                  SureDetails("wrong Email or Password !"));
                         }
                       }
                     }
@@ -251,7 +248,7 @@ class _MyHomePageState extends State<SignInUser> {
                     color: Colors.black,
                     icon: Icon(FontAwesomeIcons.google),
                     onPressed: () async {
-                      try{
+                      try {
                         ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
                           duration: new Duration(seconds: 3),
                           content: new Row(
@@ -269,14 +266,14 @@ class _MyHomePageState extends State<SignInUser> {
                         if (isLogedin == true) {
                           Navigator.of(context).pushReplacement(SlideRightRoute(
                               page: AccountType(
-                                googleSignIn: _googleSignIn,
-                                userObj: _userObj,
-                              )));
+                            googleSignIn: _googleSignIn,
+                            userObj: _userObj,
+                          )));
                         }
-                      }catch(e){
-                        print("something went wrong with googl sign in line 277 Sign_in_Screen");
+                      } catch (e) {
+                        print(
+                            "something went wrong with googl sign in line 277 Sign_in_Screen");
                       }
-
                     },
                   ),
                 ),

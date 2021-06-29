@@ -30,23 +30,17 @@ class TeacherLessonDetail extends StatefulWidget {
       : super(key: key);
 
   @override
-  TeacherlessionsDetails createState() => TeacherlessionsDetails(
-     );
+  TeacherlessionsDetails createState() => TeacherlessionsDetails();
 }
 
 class TeacherlessionsDetails extends State<TeacherLessonDetail> {
-  String titleSentence,
-      moreDetails,
-
-      selectedSubject,
-      selectedsubjectstext;
+  String titleSentence, moreDetails, selectedSubject, selectedsubjectstext;
   int price;
   bool canGo = false;
   final _formKey = GlobalKey<FormState>();
   List<Subject> temp = [];
 
-  TeacherlessionsDetails(
-    );
+  TeacherlessionsDetails();
 
   Widget build(BuildContext context) {
     CollectionReference teachers =
@@ -120,8 +114,8 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                 await Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            SubjectsScreen(this.widget.subjects)));
+                                        builder: (context) => SubjectsScreen(
+                                            this.widget.subjects)));
                             setState(() {
                               temp = _response;
                               selectedsubjectstext =
@@ -137,7 +131,6 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                           ),
                           trailing: Icon(Icons.arrow_drop_down),
                         ),
-
                       ),
                       SizedBox(
                         height: 15,
@@ -251,27 +244,29 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                       iconSize: 50,
                                       alignment: Alignment.topLeft,
                                       onPressed: () async {
-                                        try{
-                                          if (_formKey.currentState.validate()) {
+                                        try {
+                                          if (_formKey.currentState
+                                              .validate()) {
                                             // TODO submit
 
-                                            String userId = widget.userObj != null
-                                                ? widget.userObj.id
-                                                : this.widget.auth != null
-                                                ? this.widget.auth
-                                                .currentUser
-                                                .uid
-                                                .toString()
-                                                : "";
-
+                                            String userId =
+                                                widget.userObj != null
+                                                    ? widget.userObj.id
+                                                    : this.widget.auth != null
+                                                        ? this
+                                                            .widget
+                                                            .auth
+                                                            .currentUser
+                                                            .uid
+                                                            .toString()
+                                                        : "";
 
                                             List<String> finalsubjects = [];
                                             for (int j = 0;
-                                            j < temp.length;
-                                            j++) {
+                                                j < temp.length;
+                                                j++) {
                                               finalsubjects.add(temp[j].name);
                                             }
-
 
                                             Map<String, dynamic> data = {
                                               "subjects": finalsubjects,
@@ -281,25 +276,31 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
                                               "CanGo": canGo
                                             };
 
-                                            await this.widget.teacher.moreTeacherDet(
-                                                data, teachers, userId);
+                                            await this
+                                                .widget
+                                                .teacher
+                                                .moreTeacherDet(
+                                                    data, teachers, userId);
 
                                             Student s;
-                                            Navigator.of(context).pushReplacement(
-                                                SlideRightRoute(
-                                                    page: TeacherHomepage(
-                                                        this.widget.teacher,
-                                                        s,
-                                                        "",
-                                                        "",
-                                                        this.widget.auth,
-                                                        this.widget.googleSignin,
-                                                        false)));
+                                            Navigator.of(context)
+                                                .pushReplacement(
+                                                    SlideRightRoute(
+                                                        page: TeacherHomepage(
+                                                            this.widget.teacher,
+                                                            s,
+                                                            "",
+                                                            "",
+                                                            this.widget.auth,
+                                                            this
+                                                                .widget
+                                                                .googleSignin,
+                                                            false)));
                                           }
-                                        }catch(e){
-                                          print("something went wrong with Next Button in SignUpLessonDetailsScreen");
+                                        } catch (e) {
+                                          print(
+                                              "something went wrong with Next Button in SignUpLessonDetailsScreen");
                                         }
-
                                       }),
                                   Text(
                                     'Next',
@@ -327,4 +328,3 @@ class TeacherlessionsDetails extends State<TeacherLessonDetail> {
     );
   }
 }
-

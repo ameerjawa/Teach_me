@@ -25,8 +25,7 @@ class SignUpTeacher extends StatefulWidget {
       : super(key: key);
 
   @override
-  SignUpTeacherState createState() =>
-      SignUpTeacherState();
+  SignUpTeacherState createState() => SignUpTeacherState();
 }
 
 class SignUpTeacherState extends State<SignUpTeacher> {
@@ -169,13 +168,16 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                           ),
                         ),
                         SizedBox(height: 10),
-                        Center(child: Text("City",style: TextStyle(
-
-                          color: const Color(0xCB101010),
-                          fontSize: InputFontSize,
-                          fontFamily: InputFont,
-                          fontWeight: FontWeight.bold,
-                        ),)),
+                        Center(
+                            child: Text(
+                          "City",
+                          style: TextStyle(
+                            color: const Color(0xCB101010),
+                            fontSize: InputFontSize,
+                            fontFamily: InputFont,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
                         Container(
                           decoration: BoxDecoration(
                               borderRadius: new BorderRadius.circular(15.0),
@@ -200,11 +202,9 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                             },
                           ),
                         ),
-
                         SizedBox(
                           height: 10,
                         ),
-
                         Container(
                           width: 130,
                           child: TextFormField(
@@ -254,25 +254,34 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                 iconSize: 50,
                                 alignment: Alignment.topLeft,
                                 onPressed: () async {
-                                  try{
+                                  try {
                                     if (_formKey.currentState.validate()) {
-                                      String userId = this.widget.userObj == null
-                                          ? this.widget.auth.currentUser.uid.toString()
-                                          : this.widget.userObj.id;
+                                      String userId =
+                                          this.widget.userObj == null
+                                              ? this
+                                                  .widget
+                                                  .auth
+                                                  .currentUser
+                                                  .uid
+                                                  .toString()
+                                              : this.widget.userObj.id;
                                       String email = this.widget.userObj == null
-                                          ? this.widget.auth.currentUser.email.toString()
+                                          ? this
+                                              .widget
+                                              .auth
+                                              .currentUser
+                                              .email
+                                              .toString()
                                           : this.widget.userObj.email;
 
-
-                                      List<dynamic> subjectsList = await Userbg.getSubjects();
+                                      List<dynamic> subjectsList =
+                                          await Userbg.getSubjects();
 
                                       if (imageFile != null) {
                                         Teacher newTeacher;
                                         String imageUrl =
-                                        await Userbg.uploadImage(
-                                            imageFile,
-                                            teacherFullName,
-                                            userId);
+                                            await Userbg.uploadImage(imageFile,
+                                                teacherFullName, userId);
                                         newTeacher = Teacher(
                                             email,
                                             "",
@@ -286,17 +295,19 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                             imageUrl,
                                             1.1,
                                             false,
-                                            "","",0);
+                                            "",
+                                            "",
+                                            0);
                                         newTeacher.signUpASTeacher(
                                             newTeacher, teachers, userId);
                                         Navigator.of(context)
                                             .pushReplacement(SlideRightRoute(
-                                            page: TeacherLessonDetail(
-                                              teacher: newTeacher,
-                                              userObj: this.widget.userObj,
-                                              auth: this.widget.auth,
-                                              subjects: subjectsList,
-                                            )));
+                                                page: TeacherLessonDetail(
+                                          teacher: newTeacher,
+                                          userObj: this.widget.userObj,
+                                          auth: this.widget.auth,
+                                          subjects: subjectsList,
+                                        )));
                                       } else {
                                         Teacher newTeacher = Teacher(
                                             email,
@@ -311,23 +322,25 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdWchFLU6qyuDDjtM9Pyo9Oi63MoVpzbhkww&usqp=CAU",
                                             1.1,
                                             false,
-                                            "","",0);
+                                            "",
+                                            "",
+                                            0);
                                         newTeacher.signUpASTeacher(
                                             newTeacher, teachers, userId);
                                         Navigator.of(context)
                                             .pushReplacement(SlideRightRoute(
-                                            page: TeacherLessonDetail(
-                                              teacher: newTeacher,
-                                              userObj: this.widget.userObj,
-                                              auth: this.widget.auth,
-                                              subjects: subjectsList,
-                                            )));
+                                                page: TeacherLessonDetail(
+                                          teacher: newTeacher,
+                                          userObj: this.widget.userObj,
+                                          auth: this.widget.auth,
+                                          subjects: subjectsList,
+                                        )));
                                       }
                                     }
-                                  }catch(e){
-                                    print("something went wrong in next Button line 328 Sign Up AS Teacher Screen");
+                                  } catch (e) {
+                                    print(
+                                        "something went wrong in next Button line 328 Sign Up AS Teacher Screen");
                                   }
-
                                 }),
                             Text(
                               'Next',
@@ -359,6 +372,4 @@ class SignUpTeacherState extends State<SignUpTeacher> {
       });
     }
   }
-
-
 }

@@ -30,13 +30,16 @@ class Userbg{
   // static function that get all the cities from firebase {from User_FireBase_Service}
   static Future<List<dynamic>>  getCities()async{
 
-  return getCitiesFromFireBase();
+  return await getCitiesFromFireBase();
 
   }
 
   // function that get an image file and upload it on firestore {from User_FireBase_Service}
   static Future<String> uploadImage(File imageFile,String userFullName,String userId)async{
     return await uploadImageToFireStorage(imageFile,userFullName,userId);
+  }
+  static Future<String> uploadfile(File file,String userFullName,String userId)async{
+    return await uploadfileToFireStorage(file, userFullName, userId);
   }
 
 

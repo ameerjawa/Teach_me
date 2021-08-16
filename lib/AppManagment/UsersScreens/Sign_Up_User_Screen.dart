@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teach_me/AppManagment/TeachersScreens/Sign_Up_As_Teacher_Screen.dart';
 import 'package:teach_me/AppManagment/UsersScreens/Sign_in_Screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
@@ -150,15 +151,20 @@ class Sign_Up_User extends StatelessWidget {
                         ),
                       ));
 
-                      auth
-                          .createUserWithEmailAndPassword(
-                              email: this.email, password: this.password)
-                          .then((value) {
-                        Navigator.of(context).pushReplacement(
-                            CupertinoPageRoute(
-                                builder: (context) =>
-                                    VerifyEmail(auth, value)));
-                      });
+                      // auth
+                      //     .createUserWithEmailAndPassword(
+                      //         email: this.email, password: this.password)
+                      //     .then((value) {
+                      //   Navigator.of(context).pushReplacement(
+                      //       CupertinoPageRoute(
+                      //           builder: (context) =>
+                      //               VerifyEmail(auth, value)));
+                      // });
+
+                      Navigator.of(context).pushReplacement(
+                          CupertinoPageRoute(
+                              builder: (context) =>
+                              SignUpTeacher()  ));
                     }
                   } catch (e) {
                     print(

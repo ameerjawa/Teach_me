@@ -32,9 +32,17 @@ class _TeachersListState extends State<TeachersList> {
           this.widget.subject, this.widget.location, this.widget.showValue),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return new Text('Loading...');
+        List list=  snapshot.data.docs.toList();
+        list.sort((a,b){if(a["Rating"]<b["Rating"]){
+          return 1;
+        }else{
+          return 0;
+        }
+        });
         return new ListView(
-          children: snapshot.data.docs.map((DocumentSnapshot document) {
+          children: list.map((dynamic document) {
             String subjectsintext = '';
+
 
             for (int i = 0; i < document["subjects"].length; i++) {
               subjectsintext += "${document["subjects"][i].toString()} - ";
@@ -59,7 +67,8 @@ class _TeachersListState extends State<TeachersList> {
                       document["CanGo"],
                       document.id,
                       document["Title Sentence"],
-                      document["Price"]);
+                      document["Price"],
+                      document["fileUrl"]);
                   Navigator.of(context).pushReplacement(SlideRightRoute(
                       page: TeacherHomepage(
                           teacher,

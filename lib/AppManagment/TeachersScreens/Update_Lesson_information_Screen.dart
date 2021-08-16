@@ -243,7 +243,8 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                                           isTeacher["CanGo"],
                                           isTeacher.id,
                                           isTeacher["Title Sentence"],
-                                          isTeacher["Price"]);
+                                          isTeacher["Price"],
+                                      isTeacher["CertifecationFileUrl"]);
 
                                       Navigator.of(context).pushReplacement(
                                           SlideRightRoute(
@@ -348,7 +349,8 @@ class EditLessonInformationState extends State<EditLessonInformation> {
                                             isTeacher["CanGo"],
                                             isTeacher.id,
                                             isTeacher["Title Sentence"],
-                                            isTeacher["Price"]);
+                                            isTeacher["Price"]
+                                        ,isTeacher["CertifecationFileUrl"]);
 
                                         Student s;
                                         Navigator.of(context).pushReplacement(

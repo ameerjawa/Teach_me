@@ -130,7 +130,8 @@ class AccountType extends StatelessWidget {
                                   isTeacher["CanGo"],
                                   isTeacher.id,
                                   isTeacher["Title Sentence"],
-                                  isTeacher["Price"]);
+                                  isTeacher["Price"],
+                              isTeacher["CertifecationFileUrl"]);
 
                               Navigator.of(context).pushReplacement(
                                   SlideRightRoute(

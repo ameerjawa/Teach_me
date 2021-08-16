@@ -73,6 +73,26 @@ Future<List<dynamic>> getSubjectsFromFireBase()async{
 
  }
 
+ Future<String> uploadfileToFireStorage(File file,String userFullName,String userId)async{
+
+
+  try{
+   final _firebaseStorage = FirebaseStorage.instance;
+   var filepath = File(file.path);
+
+   var snapshot = await _firebaseStorage.ref()
+       .child('CertifecationFiles/$userFullName${userId}Certifecation')
+       .putFile(filepath).whenComplete(() => null);
+   String downloadUrl = await snapshot.ref.getDownloadURL();
+   return downloadUrl.toString();
+  }catch(e){
+   print("Exception is $e");
+  }
+
+
+
+ }
+
 
 
  ////////////////// ADD Courses To DB ///////////////////////

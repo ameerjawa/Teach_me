@@ -185,7 +185,8 @@ class _MyHomePageState extends State<SignInUser> {
                                 isTeacher["CanGo"],
                                 isTeacher.id,
                                 isTeacher["Title Sentence"],
-                                isTeacher["Price"]);
+                                isTeacher["Price"],
+                            isTeacher["CertifecationFileUrl"]);
                             Navigator.of(context).pushReplacement(
                                 CupertinoPageRoute(
                                     builder: (context) => TeacherHomepage(

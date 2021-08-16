@@ -23,9 +23,10 @@ class Teacher extends Userbg with TeacherProfiles{
  final String proImg;
  final String id;
  final int price;
+ final String fileUrl;
 
 
-  Teacher(String email, String password, String verifyPassword, String fullName, String birthDate, String phoneNumber, String location, this.subjects, this.detailsOnExperience, this.proImg, this.rating, this.canGo, this.id, this.titleSentence, this.price) : super(email, password, verifyPassword, fullName, birthDate, phoneNumber, location);
+  Teacher(String email, String password, String verifyPassword, String fullName, String birthDate, String phoneNumber, String location, this.subjects, this.detailsOnExperience, this.proImg, this.rating, this.canGo, this.id, this.titleSentence, this.price, this.fileUrl) : super(email, password, verifyPassword, fullName, birthDate, phoneNumber, location);
 
 
 
@@ -108,7 +109,7 @@ class Teacher extends Userbg with TeacherProfiles{
   Future<void> signUpASTeacher(Teacher newTeacher,CollectionReference collectionReference,String userId)async{
 
    var isTeacher=true;
-    Map <String,dynamic> data = {"email":newTeacher.email,"ProfileImg":newTeacher.proImg,"FullName":newTeacher.fullName,"PhoneNumber":newTeacher.phoneNumber,"UserType":isTeacher,"Location":newTeacher.location,"BirthDate":newTeacher.birthDate,"Rating":newTeacher.rating} ;
+    Map <String,dynamic> data = {"email":newTeacher.email,"ProfileImg":newTeacher.proImg,"FullName":newTeacher.fullName,"PhoneNumber":newTeacher.phoneNumber,"CertifecationFileUrl":newTeacher.fileUrl,"UserType":isTeacher,"Location":newTeacher.location,"BirthDate":newTeacher.birthDate,"Rating":newTeacher.rating} ;
 
     await userSetup(data,collectionReference,userId);
   }

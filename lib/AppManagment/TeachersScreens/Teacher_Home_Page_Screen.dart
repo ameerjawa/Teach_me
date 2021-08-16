@@ -1,7 +1,18 @@
+import 'dart:async';
+import 'dart:io';
 import 'dart:ui';
 
+import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:http/http.dart' as http;
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
+
+
+
+
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/StudentsScreens/Sure_Log_Out_Widget.dart';
@@ -13,6 +24,8 @@ import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/UserManagment/User/Userbg.dart';
+
+import 'PdfViewer_Screen.dart';
 
 // ignore: must_be_immutable
 class TeacherHomepage extends StatefulWidget {
@@ -34,10 +47,41 @@ class HomepageteacherState extends State<TeacherHomepage> {
   bool showvalue = false;
   String subjectsintext = "";
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  String remotePDFpath="";
+  PDFDocument doc;
 
   HomepageteacherState();
 
+
+  @override
+  void initState(){
+    super.initState();
+
+
+
+  }
+
+  Future<File> createFileOfPdfUrl(String url) async {
+    print("Start download file from internet!");
+    try {
+      // "https://berlin2017.droidcon.cod.newthinking.net/sites/global.droidcon.cod.newthinking.net/files/media/documents/Flutter%20-%2060FPS%20UI%20of%20the%20future%20%20-%20DroidconDE%2017.pdf";
+      // final url = "https://pdfkit.org/docs/guide.pdf";
+
+      var data = await http.get(Uri.parse(url));
+      var bytes = data.bodyBytes;
+      var dir = await getApplicationDocumentsDirectory();
+      File file = File("${dir.path}/Certifecation.pdf");
+      print(dir.path);
+      File urlFile = await file.writeAsBytes(bytes);
+      return urlFile;
+    } catch (e) {
+      throw Exception('Error parsing asset file!');
+    }
+
+  }
+
   Widget build(BuildContext context) {
+
     subjectsintext = "";
     for (int i = 0; i < this.widget.teacher.subjects.length; i++) {
       if (this.widget.teacher.subjects.length >= 4 && i % 3 == 0) {
@@ -307,6 +351,22 @@ class HomepageteacherState extends State<TeacherHomepage> {
                             ),
                           ),
                         ]),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(child: Text("Certifecations"),
+                            onPressed: ()async{
+                              print("amr");
+
+
+
+
+                              Navigator.of(context).pushReplacement(
+                                  CupertinoPageRoute(
+                                      builder: (context) => PDFScreen(path:this.widget.teacher.fileUrl)));
+                             },)
+                          ],
+                        ),
                       ],
                     ),
                   ),

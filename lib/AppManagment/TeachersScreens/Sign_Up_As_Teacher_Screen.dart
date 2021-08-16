@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -12,6 +13,8 @@ import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 import 'package:teach_me/UserManagment/User/Userbg.dart';
+import 'package:path/path.dart';
+
 
 import 'Sign_Up_Lessions_Details_Screen.dart';
 
@@ -37,10 +40,20 @@ class SignUpTeacherState extends State<SignUpTeacher> {
       FirebaseFirestore.instance.collection("Teachers");
   bool isTeacher = true;
   final _formKey = GlobalKey<FormState>();
+  File file;
 
   SignUpTeacherState();
+  Future selectfile()async{
+    var result= await FilePicker.platform.pickFiles();
+    if(result==null)return ;
+    final path= result.files.single.path;
+
+    setState(() => file=File(path));
+  }
 
   Widget build(BuildContext context) {
+    final filename=file!=null?basename(file.path):"no file selected";
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -240,6 +253,24 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                             ),
                           ),
                         ),
+
+                        Container(
+                        child:  Column(
+                          children: [
+                            TextButton(
+                              child: Text("Pick a certifecation file"),
+                              onPressed: (){
+                                selectfile();
+                              },
+
+
+                            ),
+                            Text(filename)
+                          ],
+                        ),
+
+
+                        )
                       ],
                     ),
                   ),
@@ -276,9 +307,17 @@ class SignUpTeacherState extends State<SignUpTeacher> {
 
                                       List<dynamic> subjectsList =
                                           await Userbg.getSubjects();
+                                      String fileUrl;
+
 
                                       if (imageFile != null) {
                                         Teacher newTeacher;
+
+                                        if(file!=null){
+
+                                          fileUrl=await Userbg.uploadfile(file, teacherFullName, userId);
+
+                                                 }
                                         String imageUrl =
                                             await Userbg.uploadImage(imageFile,
                                                 teacherFullName, userId);
@@ -297,7 +336,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                             false,
                                             "",
                                             "",
-                                            0);
+                                            0,fileUrl);
                                         newTeacher.signUpASTeacher(
                                             newTeacher, teachers, userId);
                                         Navigator.of(context)
@@ -309,6 +348,11 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                           subjects: subjectsList,
                                         )));
                                       } else {
+                                        if(file!=null){
+
+                                           fileUrl=await Userbg.uploadfile(file, teacherFullName, userId);
+
+                                        }
                                         Teacher newTeacher = Teacher(
                                             email,
                                             "",
@@ -324,7 +368,8 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                             false,
                                             "",
                                             "",
-                                            0);
+                                            0,
+                                            fileUrl);
                                         newTeacher.signUpASTeacher(
                                             newTeacher, teachers, userId);
                                         Navigator.of(context)
@@ -339,7 +384,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                                     }
                                   } catch (e) {
                                     print(
-                                        "something went wrong in next Button line 328 Sign Up AS Teacher Screen");
+                                        "something went wrong in next Button line 378 Sign Up AS Teacher Screen "+e.toString());
                                   }
                                 }),
                             Text(

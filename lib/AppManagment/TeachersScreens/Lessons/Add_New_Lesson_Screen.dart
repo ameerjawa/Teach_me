@@ -13,11 +13,12 @@ import 'Sure_Details_alert_add_new_Lesson.dart';
 class AddNewLesson extends StatefulWidget {
   final DocumentSnapshot document;
   Teacher teacher;
+  final lessons;
   final auth;
   GoogleSignIn googleSignIn;
 
   AddNewLesson(
-      {Key key, this.teacher, this.document, this.auth, this.googleSignIn})
+      {Key key, this.teacher, this.document, this.auth, this.googleSignIn,this.lessons})
       : super(key: key);
 
   @override
@@ -29,6 +30,7 @@ class AddNewLessonState extends State<AddNewLesson> {
   bool canGo = false;
   final dateController = TextEditingController();
   TextEditingController timeInput = TextEditingController();
+  var lessonslist;
 
   AddNewLessonState();
 
@@ -39,7 +41,21 @@ class AddNewLessonState extends State<AddNewLesson> {
     super.initState();
   }
 
+
+  void checkIfSameTimeAndDateForEdit( Map<String, dynamic> lesson,dynamic lessons){
+    print(lessons);
+    print(lesson);
+
+  }
+  void checkIfSameTimeAndDateForAdd( Lesson lesson,dynamic lessons){
+    print(lessons);
+    print(lesson);
+
+  }
+
+
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -270,10 +286,13 @@ class AddNewLessonState extends State<AddNewLesson> {
                                 Icons.done,
                                 size: 50,
                               ),
-                              onPressed: () {
+                              onPressed: () async{
                                 Map<String, dynamic> newLessonData;
                                 try {
-                                  if (this.widget.document != null) {
+
+
+
+                                if (this.widget.document != null) {
                                     newLessonData = {
                                       "Date": dateController.text.isEmpty
                                           ? this.widget.document["Date"]
@@ -298,9 +317,10 @@ class AddNewLessonState extends State<AddNewLesson> {
                                           ? this.widget.document["Time"]
                                           : timeInput.text
                                     };
+                                    checkIfSameTimeAndDateForEdit(newLessonData, widget.lessons);
 
-                                    this.widget.teacher.editMeeting(
-                                        newLessonData, this.widget.document.id);
+                                   // this.widget.teacher.editMeeting(
+                                    //    newLessonData, this.widget.document.id);
                                     Navigator.of(context).pushReplacement(
                                         SlideRightRoute(
                                             page: Lessons(
@@ -326,7 +346,8 @@ class AddNewLessonState extends State<AddNewLesson> {
                                         stuPhoneNumber,
                                         lessonSubject);
 
-                                    this.widget.teacher.addMeeting(lesson);
+                                    checkIfSameTimeAndDateForAdd(lesson,widget.lessons);
+                                  //  this.widget.teacher.addMeeting(lesson);
                                     Navigator.of(context).pushReplacement(
                                         SlideRightRoute(
                                             page: Lessons(

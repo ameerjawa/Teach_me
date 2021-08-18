@@ -317,7 +317,9 @@ class SignUpTeacherState extends State<SignUpTeacher> {
 
                                           fileUrl=await Userbg.uploadfile(file, teacherFullName, userId);
 
-                                                 }
+                                                 }else{
+                                          fileUrl="";
+                                        }
                                         String imageUrl =
                                             await Userbg.uploadImage(imageFile,
                                                 teacherFullName, userId);
@@ -352,6 +354,8 @@ class SignUpTeacherState extends State<SignUpTeacher> {
 
                                            fileUrl=await Userbg.uploadfile(file, teacherFullName, userId);
 
+                                        }else{
+                                          fileUrl="";
                                         }
                                         Teacher newTeacher = Teacher(
                                             email,

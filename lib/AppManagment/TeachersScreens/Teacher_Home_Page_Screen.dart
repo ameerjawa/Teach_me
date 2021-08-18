@@ -2,13 +2,11 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
-import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 
 
@@ -48,7 +46,6 @@ class HomepageteacherState extends State<TeacherHomepage> {
   String subjectsintext = "";
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   String remotePDFpath="";
-  PDFDocument doc;
 
   HomepageteacherState();
 
@@ -291,6 +288,32 @@ class HomepageteacherState extends State<TeacherHomepage> {
                                 height: 7,
                               ),
                               Padding(
+                                padding: const EdgeInsets.only(right: 30,left: 30),
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      "Price :  ",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          fontFamily: 'Times New Roman'),
+                                    ),
+                                    Text(
+                                      "${this.widget.teacher.price != null ? this.widget.teacher.price : ""}"+"\$ P/H",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          fontFamily: 'Times New Roman'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 7,
+                              ),
+                              Padding(
                                 padding: const EdgeInsets.only(left: 32),
                                 child: Text(
                                   "More :",
@@ -359,11 +382,14 @@ class HomepageteacherState extends State<TeacherHomepage> {
                               print("amr");
 
 
+                              Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) => PDFScreen(path:this.widget.teacher.fileUrl)),
+                              );
 
 
-                              Navigator.of(context).pushReplacement(
-                                  CupertinoPageRoute(
-                                      builder: (context) => PDFScreen(path:this.widget.teacher.fileUrl)));
+
                              },)
                           ],
                         ),
@@ -443,6 +469,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
                                 ),
                               ));
                               List<dynamic> cities = await Userbg.getCities();
+
                               print(widget.teacher.id);
                               Navigator.of(context).pushReplacement(
                                   CupertinoPageRoute(

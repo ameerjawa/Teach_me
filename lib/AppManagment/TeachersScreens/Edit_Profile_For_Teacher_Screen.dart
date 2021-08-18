@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
+
 
 import 'package:firebase_database/firebase_database.dart';
 
@@ -15,6 +17,8 @@ import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/UserManagment/User/Userbg.dart';
 import 'Update_Lesson_information_Screen.dart';
+
+import 'package:path/path.dart';
 
 // ignore: must_be_immutable
 class EditProfileForTeacher extends StatefulWidget {
@@ -40,10 +44,22 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
   CollectionReference teachers =
       FirebaseFirestore.instance.collection("Teachers");
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  File file;
+  String fileUrl;
+
 
   EditProfileForTeacherState();
+  Future selectfile()async{
+    var result= await FilePicker.platform.pickFiles();
+    if(result==null)return ;
+    final path= result.files.single.path;
+
+    setState(() => file=File(path));
+  }
 
   Widget build(BuildContext context) {
+    final filename=file!=null?basename(file.path):"no file selected";
+
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
@@ -237,6 +253,23 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                       ),
                     ),
                   ),
+                  Container(
+                    child:  Column(
+                      children: [
+                        TextButton(
+                          child: Text("Pick a certifecation file"),
+                          onPressed: (){
+                            selectfile();
+                          },
+
+
+                        ),
+                        Text(filename)
+                      ],
+                    ),
+
+
+                  ),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -270,6 +303,7 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                                           imageFile, fullName, userId);
                                     }
 
+
                                     fullName = fullName != null
                                         ? fullName
                                         : this.widget.teacher.fullName;
@@ -287,13 +321,21 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
                                     url = url == ""
                                         ? this.widget.teacher.proImg
                                         : url;
+                                    if(file!=null){
+                                      fileUrl=await Userbg.uploadfile(file,fullName , userId);
+
+                                    }
+
+                                    fileUrl=fileUrl==null?this.widget.teacher.fileUrl:fileUrl;
+
 
                                     Map<String, dynamic> data = {
                                       "FullName": fullName,
                                       "PhoneNumber": phoneNumber,
                                       "Location": location,
                                       "BirthDate": date,
-                                      "ProfileImg": url
+                                      "ProfileImg": url,
+                                      "CertifecationFileUrl":fileUrl
                                     };
                                     await this
                                         .widget

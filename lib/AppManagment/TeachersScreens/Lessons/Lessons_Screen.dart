@@ -32,8 +32,10 @@ class LessonsDetails extends State<Lessons> {
   String location;
   String subject;
   bool showValue = false;
+  var lessons=[];
 
   LessonsDetails();
+
 
   Widget build(BuildContext context) {
     print(this.widget.teacher.id);
@@ -101,11 +103,14 @@ class LessonsDetails extends State<Lessons> {
                 width: 10,
               ),
               TextButton(
-                  onPressed: () {
+                  onPressed: ()async {
+                    final list=await widget.teacher.getMeetingsByTeacherIdFuture(widget.teacher.id);
+                    print(list);
                     Navigator.of(context).pushReplacement(SlideRightRoute(
                         page: AddNewLesson(
                       teacher: this.widget.teacher,
                       googleSignIn: this.widget.googleSignIn,
+                          lessons: list,
                     )));
                   },
                   child: Text("+ Add New Lesson "))
@@ -139,6 +144,8 @@ class LessonsDetails extends State<Lessons> {
                                 document.get("Time"),
                                 document.get("StuPhoneNumber"),
                                 document.get("LessonSubject"));
+
+
 
                             return new ListTile(
                                 contentPadding: EdgeInsets.symmetric(

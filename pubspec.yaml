@@ -46,11 +46,9 @@ dependencies:
   youtube_player_flutter: ^8.0.0
   flutter_staggered_grid_view: ^0.4.0
   file_picker: ^4.0.0
-  flutter_pdfview: ^1.1.0
   http: ^0.13.3
-  advance_pdf_viewer: ^2.0.0
   path_provider: ^2.0.2
-  syncfusion_flutter_pdfviewer: ^19.2.55-beta
+  flutter_cached_pdfview: any
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0

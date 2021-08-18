@@ -115,6 +115,7 @@ class AccountType extends StatelessWidget {
                             DocumentSnapshot isTeacher =
                                 await Teacher.getTeacherById(this.userObj.id);
                             if (isTeacher.exists) {
+
                               Teacher teacher = new Teacher(
                                   isTeacher["email"],
                                   "",
@@ -154,6 +155,7 @@ class AccountType extends StatelessWidget {
                         } catch (e) {
                           print(
                               "somthing went wrong with Teacher Button line 156 AccountType");
+                          print(e);
                         }
                       },
                     ),

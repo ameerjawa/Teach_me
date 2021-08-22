@@ -45,9 +45,9 @@ Stream<QuerySnapshot<Map<String, dynamic>>> getMeetingsByTeacherIdFromFireBase(S
   }
 
 }
-Future<dynamic> getMeetingsByTeacherIdFromFireBaseFuture(String id)async{
+Stream<QuerySnapshot<Map<String, dynamic>>> getMeetingsByTeacherIdFromFireBaseFuture(String id){
   try{
-    return  await FirebaseFirestore.instance.collection('Meetings')
+    return  FirebaseFirestore.instance.collection('Meetings')
         .where("TeacherId" ,isEqualTo: id).snapshots();
   }catch(e){
     print("Exception is $e");

@@ -103,9 +103,12 @@ class LessonsDetails extends State<Lessons> {
                 width: 10,
               ),
               TextButton(
-                  onPressed: ()async {
-                    final list=await widget.teacher.getMeetingsByTeacherIdFuture(widget.teacher.id);
+                  onPressed: () {
+                    Stream<QuerySnapshot<Map<String, dynamic>>> list= widget.teacher.getMeetingsByTeacherIdFuture(widget.teacher.id);
+
+
                     print(list);
+                    // list.forEach((element) { print(element.docs.first.data());});
                     Navigator.of(context).pushReplacement(SlideRightRoute(
                         page: AddNewLesson(
                       teacher: this.widget.teacher,
@@ -152,12 +155,15 @@ class LessonsDetails extends State<Lessons> {
                                     horizontal: 10.0, vertical: 10.0),
                                 onTap: () {
                                   try {
+                                    Stream<QuerySnapshot<Map<String, dynamic>>> list= widget.teacher.getMeetingsByTeacherIdFuture(widget.teacher.id);
+
                                     Navigator.of(context)
                                         .pushReplacement(SlideRightRoute(
                                             page: AddNewLesson(
                                       teacher: this.widget.teacher,
                                       document: document,
                                       googleSignIn: this.widget.googleSignIn,
+                                              lessons: list,
                                     )));
                                   } catch (e) {
                                     print(

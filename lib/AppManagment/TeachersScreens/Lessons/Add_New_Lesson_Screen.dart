@@ -13,7 +13,7 @@ import 'Sure_Details_alert_add_new_Lesson.dart';
 class AddNewLesson extends StatefulWidget {
   final DocumentSnapshot document;
   Teacher teacher;
-  final lessons;
+  Stream<QuerySnapshot<Map<String, dynamic>>> lessons;
   final auth;
   GoogleSignIn googleSignIn;
 
@@ -30,7 +30,7 @@ class AddNewLessonState extends State<AddNewLesson> {
   bool canGo = false;
   final dateController = TextEditingController();
   TextEditingController timeInput = TextEditingController();
-  var lessonslist;
+
 
   AddNewLessonState();
 
@@ -42,14 +42,35 @@ class AddNewLessonState extends State<AddNewLesson> {
   }
 
 
-  void checkIfSameTimeAndDateForEdit( Map<String, dynamic> lesson,dynamic lessons){
-    print(lessons);
-    print(lesson);
+  bool checkIfSameTimeAndDateForEdit( Map<String, dynamic> lesson,Stream<QuerySnapshot<Map<String, dynamic>>> lessons){
 
+
+    lessons.forEach((element) {
+      element.docs.forEach((element) {
+        if(element["Time"].toString() == lesson["Time"].toString() && element["Date"].toString() == lesson["Date"].toString() ){
+          return false;
+        }
+      });
+    });
+    return true;
   }
-  void checkIfSameTimeAndDateForAdd( Lesson lesson,dynamic lessons){
-    print(lessons);
-    print(lesson);
+  bool checkIfSameTimeAndDateForAdd( Lesson lesson,Stream<QuerySnapshot<Map<String, dynamic>>> lessons){
+    bool flag = true;
+    lessons.first.then((value) => {
+
+      value.docs.forEach((element) {
+
+    if(element["Time"] == lesson.time && element["Date"] == lesson.date ) {
+         flag=false;
+    }
+    })
+
+
+
+    });
+
+
+    return flag;
 
   }
 
@@ -317,16 +338,29 @@ class AddNewLessonState extends State<AddNewLesson> {
                                           ? this.widget.document["Time"]
                                           : timeInput.text
                                     };
-                                    checkIfSameTimeAndDateForEdit(newLessonData, widget.lessons);
 
-                                   // this.widget.teacher.editMeeting(
-                                    //    newLessonData, this.widget.document.id);
-                                    Navigator.of(context).pushReplacement(
-                                        SlideRightRoute(
-                                            page: Lessons(
-                                                this.widget.teacher,
-                                                this.widget.auth,
-                                                this.widget.googleSignIn)));
+
+
+                                    if(checkIfSameTimeAndDateForEdit(newLessonData, widget.lessons)){
+                                      this.widget.teacher.editMeeting(
+                                          newLessonData, this.widget.document.id);
+                                      Navigator.of(context).pushReplacement(
+                                          SlideRightRoute(
+                                              page: Lessons(
+                                                  this.widget.teacher,
+                                                  this.widget.auth,
+                                                  this.widget.googleSignIn)));
+                                    }else{
+
+                                      return showDialog(
+                                          context: context,
+                                          builder: (context) => SureDetails(
+                                              "Cant add this Meeting .. you have in the same date and time already"));
+                                    }
+
+
+
+
                                   } else if (dateController.text.isEmpty ||
                                       lessonSubject.isEmpty ||
                                       stuPhoneNumber.isEmpty ||
@@ -346,14 +380,25 @@ class AddNewLessonState extends State<AddNewLesson> {
                                         stuPhoneNumber,
                                         lessonSubject);
 
-                                    checkIfSameTimeAndDateForAdd(lesson,widget.lessons);
-                                  //  this.widget.teacher.addMeeting(lesson);
-                                    Navigator.of(context).pushReplacement(
-                                        SlideRightRoute(
-                                            page: Lessons(
-                                                this.widget.teacher,
-                                                this.widget.auth,
-                                                this.widget.googleSignIn)));
+                                    var b= checkIfSameTimeAndDateForAdd(lesson, widget.lessons);
+                                    print("hererererere");
+                                    print(b);
+
+                                    if( checkIfSameTimeAndDateForAdd(lesson,widget.lessons)){
+                                      this.widget.teacher.addMeeting(lesson);
+                                      Navigator.of(context).pushReplacement(
+                                          SlideRightRoute(
+                                              page: Lessons(
+                                                  this.widget.teacher,
+                                                  this.widget.auth,
+                                                  this.widget.googleSignIn)));
+                                   }else{
+                                     return showDialog(
+                                         context: context,
+                                         builder: (context) => SureDetails(
+                                             "Cant add this Meeting .. you have in the same date and time already"));
+                                   }
+
                                   }
                                 } catch (e) {
                                   print(

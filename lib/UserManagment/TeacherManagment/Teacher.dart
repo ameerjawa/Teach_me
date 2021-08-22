@@ -79,8 +79,8 @@ class Teacher extends Userbg with TeacherProfiles{
    Stream<QuerySnapshot<Map<String, dynamic>>> getMeetingsByTeacherId(String id){
     return   getMeetingsByTeacherIdFromFireBase(id);
   }
- Future<dynamic> getMeetingsByTeacherIdFuture(String id)async{
-    return await getMeetingsByTeacherIdFromFireBaseFuture(id);
+  Stream<QuerySnapshot<Map<String, dynamic>>>  getMeetingsByTeacherIdFuture(String id){
+    return  getMeetingsByTeacherIdFromFireBaseFuture(id);
  }
 
 

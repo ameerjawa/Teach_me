@@ -33,6 +33,7 @@ class LessonsDetails extends State<Lessons> {
   String subject;
   bool showValue = false;
   var lessons=[];
+  var index=0;
 
   LessonsDetails();
 
@@ -139,6 +140,7 @@ class LessonsDetails extends State<Lessons> {
                         return new ListView(
                           children: snapshot.data.docs
                               .map((DocumentSnapshot document) {
+
                             Lesson lesson = new Lesson(
                                 document.get("Date"),
                                 document.get("StudentName"),
@@ -148,9 +150,10 @@ class LessonsDetails extends State<Lessons> {
                                 document.get("StuPhoneNumber"),
                                 document.get("LessonSubject"));
 
-
+                            
 
                             return new ListTile(
+
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 10.0, vertical: 10.0),
                                 onTap: () {
@@ -162,6 +165,7 @@ class LessonsDetails extends State<Lessons> {
                                             page: AddNewLesson(
                                       teacher: this.widget.teacher,
                                       document: document,
+                                      index:index,
                                       googleSignIn: this.widget.googleSignIn,
                                               lessons: list,
                                     )));

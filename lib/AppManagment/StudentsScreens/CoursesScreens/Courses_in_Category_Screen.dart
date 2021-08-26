@@ -140,7 +140,7 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
 
                             ScaffoldMessenger.of(context)
                                 .showSnackBar(new SnackBar(
-                              duration: new Duration(seconds: 40),
+                              duration: new Duration(seconds: 2),
                               content: new Row(
                                 children: <Widget>[
                                   new CircularProgressIndicator(),
@@ -148,31 +148,34 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
                                     width: lRPadding + 10,
                                   ),
                                   new Text(
-                                      " Moving to Course ,may take more than 20 sec ")
+                                      " Moving to Course ,may take more than 2 sec ")
                                 ],
                               ),
                             ));
 
                             try {
-                              List<dynamic> videos = await this
-                                  .widget
-                                  .catcourses
-                                  .docs
-                                  .elementAt(index)
-                                  .data()["Videos"];
+                              // List<dynamic> videos = await this
+                              //     .widget
+                              //     .catcourses
+                              //     .docs
+                              //     .elementAt(index)
+                              //     .data()["Videos"];
 
-                              if (videos.length > 0) {
-                                for (int i = 0; i < videos.length; i++) {
-                                  if (videos[i] != "") {
-                                    var video = await yt.videos.get(videos[i]);
-
-                                    setState(() {
-                                      time = video.duration;
-                                      videosDuration.add(time.toString());
-                                    });
-                                  }
-                                }
-                              }
+                              // if (videos.length > 0) {
+                              //   for (int i = 0; i < videos.length; i++) {
+                              //     if (videos[i] != "") {
+                              //       var video = await yt.videos.get(videos[i]);
+                              //
+                              //       setState(() {
+                              //         time = video.duration;
+                              //         videosDuration.add(time.toString());
+                              //       });
+                              //     }
+                              //   }
+                              // }
+                              
+                             await FirebaseFirestore.instance.collection("CoursesData").doc("Arabic").collection("Courses").doc("Yfkf2Uohi7UKmAGLKQvr").update(
+                                  {"videosTimes":videosDuration});
 
                               Navigator.of(context).pushReplacement(
                                   SlideRightRoute(
@@ -193,6 +196,7 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
                             } catch (e) {
                               print(
                                   "somthing wrong with getting the durations of the videos line 191 Courses_in_Cateegory_Screen");
+                              print(e);
                             }
                           },
                           child: Container(

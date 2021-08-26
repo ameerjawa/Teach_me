@@ -16,9 +16,10 @@ class AddNewLesson extends StatefulWidget {
   Stream<QuerySnapshot<Map<String, dynamic>>> lessons;
   final auth;
   GoogleSignIn googleSignIn;
+  var index;
 
   AddNewLesson(
-      {Key key, this.teacher, this.document, this.auth, this.googleSignIn,this.lessons})
+      {Key key, this.teacher, this.document, this.auth, this.googleSignIn,this.lessons,this.index})
       : super(key: key);
 
   @override
@@ -26,10 +27,11 @@ class AddNewLesson extends StatefulWidget {
 }
 
 class AddNewLessonState extends State<AddNewLesson> {
-  String lessonSubject, stuPhoneNumber, stuName;
+  String lessonSubject="", stuPhoneNumber="", stuName="";
   bool canGo = false;
   final dateController = TextEditingController();
   TextEditingController timeInput = TextEditingController();
+  var lessonslist=[];
 
 
   AddNewLessonState();
@@ -38,44 +40,49 @@ class AddNewLessonState extends State<AddNewLesson> {
   void initState() {
     timeInput.text = ""; //set the initial value of text field
 
+
     super.initState();
+
   }
 
 
-  bool checkIfSameTimeAndDateForEdit( Map<String, dynamic> lesson,Stream<QuerySnapshot<Map<String, dynamic>>> lessons){
 
-
-    lessons.forEach((element) {
-      element.docs.forEach((element) {
-        if(element["Time"].toString() == lesson["Time"].toString() && element["Date"].toString() == lesson["Date"].toString() ){
-          return false;
-        }
-      });
-    });
-    return true;
-  }
-  bool checkIfSameTimeAndDateForAdd( Lesson lesson,Stream<QuerySnapshot<Map<String, dynamic>>> lessons){
-    bool flag = true;
-    lessons.first.then((value) => {
-
-      value.docs.forEach((element) {
-
-    if(element["Time"] == lesson.time && element["Date"] == lesson.date ) {
-         flag=false;
+  bool checkIfSameTimeAndDateForAdd( Lesson lesson,List<dynamic> lessons){
+    // lessons.first.then((value) => {
+    //
+    //   value.docs.forEach((element) {
+    //
+    // if(element["Time"] == lesson.time && element["Date"] == lesson.date ) {
+    //      flag=false;
+    // }
+    // })
+    //
+    //
+    //
+    // });
+    for (var i=0;i<lessonslist.length;i++){
+      if(lessonslist[i]["Time"]==lesson.time && lessonslist[i]["Date"]==lesson.date){
+        return false;
+      }
     }
-    })
 
 
 
-    });
-
-
-    return flag;
+    return true;
 
   }
 
 
   Widget build(BuildContext context) {
+    widget.lessons.first.then((value) => {
+
+      value.docs.forEach((element) {
+
+        //  if(element["Time"] == lesson.time && element["Date"] == lesson.date ) {
+lessonslist.add(element.data());
+        // }
+      })});
+
 
     return Scaffold(
       body: Container(
@@ -175,10 +182,13 @@ class AddNewLessonState extends State<AddNewLesson> {
                         keyboardType: TextInputType.phone,
                         textAlign: TextAlign.center,
                         onChanged: (value) {
-                          value != null
-                              ? stuPhoneNumber = value
-                              : stuPhoneNumber =
-                                  this.widget.document["StuPhoneNumber"];
+                          if(this.widget.document!=null){
+                            value != null
+                                ? stuPhoneNumber = value
+                                : stuPhoneNumber =
+                            this.widget.document["StuPhoneNumber"];
+                          }
+                         stuPhoneNumber=value;
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.white60,
@@ -198,9 +208,14 @@ class AddNewLessonState extends State<AddNewLesson> {
                         keyboardType: TextInputType.name,
                         textAlign: TextAlign.center,
                         onChanged: (value) {
-                          value != null
-                              ? stuName = value
+                          print(value);
+                          if(this.widget.document!=null){
+                          value != ""
+                          ? stuName = value
                               : stuName = this.widget.document["StudentName"];
+                          }
+                            stuName=value;
+
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.white60,
@@ -235,12 +250,15 @@ class AddNewLessonState extends State<AddNewLesson> {
                                       date.toString().substring(0, 10);
                                 },
                                 onChanged: (value) {
+                                  if(this.widget.document!=null){
                                   value != null
-                                      ? dateController.text = value
+                                  ? dateController.text = value
                                       : dateController.text =
-                                          this.widget.document["Date"];
+                                  this.widget.document["Date"];
+                                  }
+                                    dateController.text=value;
 
-                                  dateController.text = value;
+
                                 },
                                 decoration: InputDecoration(
                                   fillColor: Colors.white60,
@@ -313,22 +331,23 @@ class AddNewLessonState extends State<AddNewLesson> {
 
 
 
+
                                 if (this.widget.document != null) {
                                     newLessonData = {
                                       "Date": dateController.text.isEmpty
                                           ? this.widget.document["Date"]
                                           : dateController.text,
-                                      "LessonSubject": lessonSubject == null
+                                      "LessonSubject": lessonSubject == ""
                                           ? this
                                               .widget
                                               .document["LessonSubject"]
                                           : lessonSubject,
-                                      "StuPhoneNumber": stuPhoneNumber == null
+                                      "StuPhoneNumber": stuPhoneNumber == ""
                                           ? this
                                               .widget
                                               .document["StuPhoneNumber"]
                                           : stuPhoneNumber,
-                                      "StudentName": stuName == null
+                                      "StudentName": stuName == ""
                                           ? this.widget.document["StudentName"]
                                           : stuName,
                                       "TeacherId": this.widget.teacher.id,
@@ -341,7 +360,7 @@ class AddNewLessonState extends State<AddNewLesson> {
 
 
 
-                                    if(checkIfSameTimeAndDateForEdit(newLessonData, widget.lessons)){
+
                                       this.widget.teacher.editMeeting(
                                           newLessonData, this.widget.document.id);
                                       Navigator.of(context).pushReplacement(
@@ -350,27 +369,26 @@ class AddNewLessonState extends State<AddNewLesson> {
                                                   this.widget.teacher,
                                                   this.widget.auth,
                                                   this.widget.googleSignIn)));
-                                    }else{
-
-                                      return showDialog(
-                                          context: context,
-                                          builder: (context) => SureDetails(
-                                              "Cant add this Meeting .. you have in the same date and time already"));
-                                    }
 
 
 
 
-                                  } else if (dateController.text.isEmpty ||
+
+
+                                  } else if (dateController.text=="" ||
                                       lessonSubject.isEmpty ||
                                       stuPhoneNumber.isEmpty ||
                                       stuName.isEmpty ||
                                       timeInput.text.isEmpty) {
+                                  print("ameer is here");
                                     return showDialog(
                                         context: context,
                                         builder: (context) => SureDetails(
                                             "Must Enter All The Details !!"));
                                   } else {
+
+
+
                                     Lesson lesson = new Lesson(
                                         dateController.text,
                                         stuName,
@@ -380,11 +398,15 @@ class AddNewLessonState extends State<AddNewLesson> {
                                         stuPhoneNumber,
                                         lessonSubject);
 
-                                    var b= checkIfSameTimeAndDateForAdd(lesson, widget.lessons);
-                                    print("hererererere");
-                                    print(b);
 
-                                    if( checkIfSameTimeAndDateForAdd(lesson,widget.lessons)){
+                                    print(lesson);
+
+
+
+
+
+
+                                    if(checkIfSameTimeAndDateForAdd(lesson,lessonslist)){
                                       this.widget.teacher.addMeeting(lesson);
                                       Navigator.of(context).pushReplacement(
                                           SlideRightRoute(
@@ -402,7 +424,7 @@ class AddNewLessonState extends State<AddNewLesson> {
                                   }
                                 } catch (e) {
                                   print(
-                                      "something went wrong in addnewlesson on pressed line 301 AddNewLesson_Screen");
+                                      "something went wrong in addnewlesson on pressed line 406 AddNewLesson_Screen");
                                 }
                               })),
                     ],

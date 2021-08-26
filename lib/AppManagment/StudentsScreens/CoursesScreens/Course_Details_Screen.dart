@@ -229,24 +229,24 @@ class _CourseDetailsScreenState extends State<CourseDetailsScreen> {
                                                           children: <Widget>[
                                                             Text(
                                                                 "${this.widget.course["Titles"][position]}"),
-                                                            Text(
-                                                              this
-                                                                          .widget
-                                                                          .videosDuration
-                                                                          .length ==
-                                                                      0
-                                                                  ? ""
-                                                                  : this
-                                                                      .widget
-                                                                      .videosDuration[
-                                                                          position]
-                                                                      .substring(
-                                                                          0, 7),
-                                                              style: TextStyle(
-                                                                  fontSize: 15,
-                                                                  color: Colors
-                                                                      .black26),
-                                                            ),
+                                                            // Text(
+                                                            //   this
+                                                            //               .widget
+                                                            //               .videosDuration
+                                                            //               .length ==
+                                                            //           0
+                                                            //       ? ""
+                                                            //       : this
+                                                            //           .widget
+                                                            //           .videosDuration[
+                                                            //               position]
+                                                            //           .substring(
+                                                            //               0, 7),
+                                                            //   style: TextStyle(
+                                                            //       fontSize: 15,
+                                                            //       color: Colors
+                                                            //           .black26),
+                                                            // ),
                                                           ],
                                                         ),
                                                       ],
@@ -330,10 +330,10 @@ class CourseContent extends StatelessWidget {
         ),
         RichText(
           text: TextSpan(children: [
-            TextSpan(
-                text: "$duration mins\n",
-                style: TextStyle(fontSize: 15, color: Colors.black26)),
-            TextSpan(text: title),
+            // TextSpan(
+            //     text: "$duration mins\n",
+            //     style: TextStyle(fontSize: 15, color: Colors.black26)),
+            // TextSpan(text: title),
           ]),
         ),
         Spacer(),

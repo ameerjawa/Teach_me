@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:teach_me/AppManagment/TeachersScreens/Sign_Up_As_Teacher_Screen.dart';
 import 'package:teach_me/AppManagment/UsersScreens/Sign_in_Screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
@@ -146,29 +145,27 @@ class Sign_Up_User extends StatelessWidget {
                             SizedBox(
                               width: 30,
                             ),
-                            new Text(" Moving to Account Type ")
+                            new Text(" Moving to verify email ")
                           ],
                         ),
                       ));
 
-                      // auth
-                      //     .createUserWithEmailAndPassword(
-                      //         email: this.email, password: this.password)
-                      //     .then((value) {
-                      //   Navigator.of(context).pushReplacement(
-                      //       CupertinoPageRoute(
-                      //           builder: (context) =>
-                      //               VerifyEmail(auth, value)));
-                      // });
+                      auth
+                          .createUserWithEmailAndPassword(
+                              email: this.email, password: this.password)
+                          .then((value) {
+                        Navigator.of(context).pushReplacement(
+                            CupertinoPageRoute(
+                                builder: (context) =>
+                                    VerifyEmail(auth, value)));
+                      });
 
-                      Navigator.of(context).pushReplacement(
-                          CupertinoPageRoute(
-                              builder: (context) =>
-                              SignUpTeacher()  ));
+
+
                     }
                   } catch (e) {
                     print(
-                        "something went wrong with signing up line 174 signupScreen");
+                        "something went wrong with signing up line 168 signupScreen"+e.toString());
                   }
                 },
                 child: const Text(

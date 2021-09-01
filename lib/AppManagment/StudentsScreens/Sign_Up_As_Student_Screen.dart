@@ -18,8 +18,9 @@ import 'package:teach_me/UserManagment/User/Userbg.dart';
 class SignUpStudent extends StatefulWidget {
   final Student student;
   List<dynamic> citiesList;
+  final auth;
 
-  SignUpStudent({Key key, this.student, this.citiesList}) : super(key: key);
+  SignUpStudent({Key key, this.student, this.citiesList,this.auth}) : super(key: key);
 
   @override
   SignUpStudentState createState() =>
@@ -32,7 +33,6 @@ class SignUpStudentState extends State<SignUpStudent> {
   String studentfullname, phonenumber, location;
   CollectionReference students =
       FirebaseFirestore.instance.collection("Students");
-  final _auth = FirebaseAuth.instance;
   File image;
   bool isTeacher = false;
   String googlePhotoUrl;
@@ -66,7 +66,7 @@ class SignUpStudentState extends State<SignUpStudent> {
                           alignment: Alignment.topLeft,
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
-                                SlideRightRoute(page: AccountType()));
+                                SlideRightRoute(page: AccountType(auth: widget.auth,)));
                           }),
                       Column(
                         children: [
@@ -278,8 +278,8 @@ class SignUpStudentState extends State<SignUpStudent> {
                           if (_formKey.currentState.validate()) {
                             isTeacher = false;
 
-                            String userEmail = _auth.currentUser.email;
-                            String userId = _auth.currentUser.uid.toString();
+                            String userEmail = widget.auth.currentUser.email;
+                            String userId = widget.auth.currentUser.uid.toString();
                             Student newStudent = Student(
                                 userEmail,
                                 "",

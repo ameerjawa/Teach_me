@@ -75,7 +75,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                         alignment: Alignment.topLeft,
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
-                              SlideRightRoute(page: AccountType()));
+                              SlideRightRoute(page: AccountType(auth: widget.auth,)));
                         }),
                     Text(
                       'TeachMe',

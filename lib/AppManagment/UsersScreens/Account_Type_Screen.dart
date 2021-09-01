@@ -148,6 +148,7 @@ class AccountType extends StatelessWidget {
                               Navigator.of(context).pushReplacement(
                                   SlideRightRoute(
                                       page: SignUpTeacher(
+                                        auth: auth,
                                           userObj: userObj,
                                           cities: citiesList)));
                             }
@@ -209,6 +210,7 @@ class AccountType extends StatelessWidget {
                             Navigator.of(context).pushReplacement(
                                 SlideRightRoute(
                                     page: SignUpStudent(
+                                      auth:auth,
                                         student: student,
                                         citiesList: citiesList)));
                           }

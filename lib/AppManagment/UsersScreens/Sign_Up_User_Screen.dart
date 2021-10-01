@@ -9,7 +9,7 @@ import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
 // ignore: camel_case_types, must_be_immutable
 class Sign_Up_User extends StatelessWidget {
-  String email, password, verifypassword;
+  String email="", password="", verifypassword="";
   final _formKey = GlobalKey<FormState>();
   final auth = FirebaseAuth.instance;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -64,11 +64,13 @@ class Sign_Up_User extends StatelessWidget {
                           keyboardType: TextInputType.emailAddress,
                           textAlign: TextAlign.center,
                           onChanged: (value) {
-                            email = value;
+                            this.email = value;
                           },
                           validator: (value) {
                             if (value.isEmpty || value == null) {
                               return "Must Type Email";
+                            }else if (!value.contains("@")){
+                              return "Envalid email!";
                             }
                             return null;
                           },
@@ -86,7 +88,7 @@ class Sign_Up_User extends StatelessWidget {
                           obscureText: true,
                           textAlign: TextAlign.center,
                           onChanged: (value) {
-                            password = value;
+                            this.password = value;
                           },
                           validator: (value) {
                             if (value.isEmpty || value == null) {
@@ -150,15 +152,20 @@ class Sign_Up_User extends StatelessWidget {
                         ),
                       ));
 
+
                       auth
                           .createUserWithEmailAndPassword(
-                              email: this.email, password: this.password)
+                          email: this.email, password: this.password)
                           .then((value) {
+                        auth.signInWithCredential(value.credential);
                         Navigator.of(context).pushReplacement(
                             CupertinoPageRoute(
                                 builder: (context) =>
-                                    VerifyEmail(auth, value)));
+                                    VerifyEmail(auth,)));
                       });
+
+
+
 
 
 

@@ -30,7 +30,9 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
 
         ],
       ),
-      body: const PDF().fromUrl(widget.path),
+      body:  widget.path!=""? const PDF().fromUrl(widget.path):Center(
+        child: Text("didn't add cetifecation yet!"),
+      ),
     );
   }
 }

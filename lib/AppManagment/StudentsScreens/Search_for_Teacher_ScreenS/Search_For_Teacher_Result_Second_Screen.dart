@@ -124,7 +124,7 @@ class SearchForTeacherState extends State<SearchForTeacherViewTeachers> {
                           fontWeight: FontWeight.bold),
                     ),
                     Text(
-                        "Here You Can Find Very Professional ${this.widget.selectedSubject} Teachers"),
+                        "Here You Can Find Very Professional ${this.widget.selectedSubject!=null?this.widget.selectedSubject:"all"} Teachers"),
                   ],
                 ),
               ),

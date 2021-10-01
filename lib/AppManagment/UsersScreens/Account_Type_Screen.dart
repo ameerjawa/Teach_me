@@ -77,7 +77,7 @@ class AccountType extends StatelessWidget {
                   width: 300,
                   child: Column(children: <Widget>[
                     Text(
-                      userObj != null ? "sign in as" : 'sign up as',
+                      userObj != null? "sign in as" : 'sign up as',
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 30,
@@ -104,16 +104,17 @@ class AccountType extends StatelessWidget {
                         try {
                           List<dynamic> citiesList = await Userbg.getCities();
 
-                          if (googleSignIn == null) {
+                          if (googleSignIn == null || googleSignIn.currentUser == null) {
                             Navigator.of(context).pushReplacement(
                                 SlideRightRoute(
                                     page: SignUpTeacher(
                                         userObj: userObj,
                                         auth: this.auth,
+                                        googleSignIn: this.googleSignIn,
                                         cities: citiesList)));
                           } else {
                             DocumentSnapshot isTeacher =
-                                await Teacher.getTeacherById(this.userObj.id);
+                            await Teacher.getTeacherById(this.userObj.id);
                             if (isTeacher.exists) {
 
                               Teacher teacher = new Teacher(
@@ -212,11 +213,12 @@ class AccountType extends StatelessWidget {
                                     page: SignUpStudent(
                                       auth:auth,
                                         student: student,
+                                        googleSignIn: this.googleSignIn,
                                         citiesList: citiesList)));
                           }
                         } catch (e) {
                           print(
-                              "somthing went wrong with Teacher Button line 156 AccountType");
+                              "somthing went wrong with student Button line 219 AccountType");
                         }
                       },
                     ),

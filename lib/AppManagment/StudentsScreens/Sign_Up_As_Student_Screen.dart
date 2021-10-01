@@ -18,9 +18,11 @@ import 'package:teach_me/UserManagment/User/Userbg.dart';
 class SignUpStudent extends StatefulWidget {
   final Student student;
   List<dynamic> citiesList;
+  final  GoogleSignIn googleSignIn;
+
   final auth;
 
-  SignUpStudent({Key key, this.student, this.citiesList,this.auth}) : super(key: key);
+  SignUpStudent({Key key, this.student, this.citiesList,this.auth,this.googleSignIn}) : super(key: key);
 
   @override
   SignUpStudentState createState() =>
@@ -66,7 +68,7 @@ class SignUpStudentState extends State<SignUpStudent> {
                           alignment: Alignment.topLeft,
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
-                                SlideRightRoute(page: AccountType(auth: widget.auth,)));
+                                SlideRightRoute(page: AccountType(auth: widget.auth,googleSignIn: this.googleSignIn,)));
                           }),
                       Column(
                         children: [

@@ -31,6 +31,7 @@ Future<List<Map<String,dynamic>>> getCategoriesFromFireBase() async{
 
   try{
     QuerySnapshot<dynamic> d= await FirebaseFirestore.instance.collection('CoursesData').get();
+    print(d.docs.length);
     List<String> categories=[];
     List<Map<String,dynamic>> categoriesList=[];
     List<String> categoriesimages=[];
@@ -43,6 +44,8 @@ Future<List<Map<String,dynamic>>> getCategoriesFromFireBase() async{
       categoriesimages.add(element["categoryImage"]);
     });
 
+
+
     for (int i=0;i<categories.length;i++) {
       final int documents = await FirebaseFirestore.instance.collection(
           'CoursesData').doc(categories[i]).collection("Courses").get()
@@ -51,6 +54,7 @@ Future<List<Map<String,dynamic>>> getCategoriesFromFireBase() async{
       });
       categoriesList.add({"name":categories[i],"Courses":documents,"categoryImage":categoriesimages[i]});
     }
+
     return categoriesList;
   }catch(e){
     print("Exception is $e");

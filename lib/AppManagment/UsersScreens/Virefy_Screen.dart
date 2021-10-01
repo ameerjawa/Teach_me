@@ -7,11 +7,12 @@ import 'package:teach_me/AppManagment/UsersScreens/Sign_Up_User_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
+import 'Sign_in_Screen.dart';
+
 class VerifyEmail extends StatefulWidget {
   final auth;
-  final dynamic value;
 
-  VerifyEmail(this.auth, this.value);
+  VerifyEmail(this.auth,);
 
   @override
   _VerifyState createState() => _VerifyState();
@@ -19,6 +20,7 @@ class VerifyEmail extends StatefulWidget {
 
 class _VerifyState extends State<VerifyEmail> {
   User user;
+
   Timer timer;
 
   _VerifyState();
@@ -26,7 +28,8 @@ class _VerifyState extends State<VerifyEmail> {
   @override
   void initState() {
     // TODO: implement initState
-    user = widget.auth.currentUser;
+
+
     user.sendEmailVerification();
     timer = Timer.periodic(Duration(seconds: 3), (timer) {
       checkEmailVerified();
@@ -76,7 +79,7 @@ class _VerifyState extends State<VerifyEmail> {
                   padding: const EdgeInsets.all(20.0),
                   child: Center(
                       child: Text(
-                          "An Email Has been Sent to ${user.email} please press the link in the message you get!")),
+                          "An Email Has been Sent to ${widget.auth.currentUser.email} please press the link in the message you get!")),
                 ),
               ),
 
@@ -89,17 +92,24 @@ class _VerifyState extends State<VerifyEmail> {
   }
 
   Future<void> checkEmailVerified() async {
-    user = widget.auth.currentUser;
 
-    await user.reload();
-    if (user.emailVerified) {
+
+
+    await widget.auth.currentUser.reload();
+    if (widget.auth.currentUser.emailVerified) {
       timer.cancel();
-      widget.auth.signInWithCredential(widget.value.credential);
 
       Navigator.of(context).pushReplacement(CupertinoPageRoute(
-          builder: (context) => AccountType(
+          builder: (context) =>
+              AccountType(
                 auth: widget.auth,
               )));
     }
+    //  else{
+    //   user.delete();
+    //   Navigator.of(context).pushReplacement(CupertinoPageRoute(
+    //       builder: (context) => Sign_Up_User()));
+    //
+    // }
   }
 }

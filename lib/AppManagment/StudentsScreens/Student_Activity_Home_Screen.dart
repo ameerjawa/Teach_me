@@ -181,11 +181,14 @@ class StudentActivity extends StatelessWidget {
 
                     try {
                       // here we store all the CoursesCategories from the firebase in resultcat variable
-                      var resultCat = await this.student.getCategories();
+                      dynamic resultCat = await this.student.getCategories();
 
-                      Navigator.of(context).pushReplacement(SlideRightRoute(
-                          page: CoursesHomePage(
-                              student, googleSignIn, resultCat)));
+                      if(resultCat != null){
+                        Navigator.of(context).pushReplacement(SlideRightRoute(
+                            page: CoursesHomePage(
+                                student, googleSignIn, resultCat)));
+                      }
+
                     } catch (e) {
                       print(
                           "somthing went wrong with getting the categories from firebase line 163 StudentActivity");

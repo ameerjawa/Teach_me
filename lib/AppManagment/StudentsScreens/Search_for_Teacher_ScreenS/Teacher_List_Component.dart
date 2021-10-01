@@ -44,9 +44,9 @@ class _TeachersListState extends State<TeachersList> {
             String subjectsintext = '';
 
 
-            for (int i = 0; i < document["subjects"].length; i++) {
-              subjectsintext += "${document["subjects"][i].toString()} - ";
-            }
+            // for (int i = 0; i < document["subjects"].length; i++) {
+            //   subjectsintext += "${document["subjects"][i].toString()} - ";
+            // }
 
             return new ListTile(
                 contentPadding:
@@ -68,7 +68,9 @@ class _TeachersListState extends State<TeachersList> {
                       document.id,
                       document["Title Sentence"],
                       document["Price"],
-                      document["fileUrl"]);
+                      document["CertifecationFileUrl"]);
+                  //
+
                   Navigator.of(context).pushReplacement(SlideRightRoute(
                       page: TeacherHomepage(
                           teacher,

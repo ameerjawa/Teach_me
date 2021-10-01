@@ -43,6 +43,15 @@ class _MyHomePageState extends State<SignInUser> {
   Future<bool> _login() async {
     try {
       _userObj = await _googleSignIn.signIn();
+      GoogleSignInAuthentication googleSignInAuthentication =
+      await _userObj.authentication;
+      AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+      await auth.signInWithCredential(credential);
+
+
       setState(() {
         isLoggedin = true;
       });
@@ -94,6 +103,8 @@ class _MyHomePageState extends State<SignInUser> {
                             validator: (value) {
                               if (value.isEmpty || value == null) {
                                 return "Must Type Email";
+                              }else if (!value.contains("@")){
+                                return "Invalid email";
                               }
                               return null;
                             },
@@ -200,10 +211,18 @@ class _MyHomePageState extends State<SignInUser> {
                           } else {
                             student = await Student.getStudentById(
                                 userCredential.user.uid);
-                            Navigator.of(context).pushReplacement(
-                                CupertinoPageRoute(
-                                    builder: (context) => StudentActivity(
-                                        student, _googleSignIn)));
+
+                            if(student == null){
+                              Navigator.of(context).pushReplacement(
+                                  CupertinoPageRoute(
+                                      builder: (context) => AccountType(auth: this.auth,googleSignIn: this._googleSignIn,userObj: this._userObj,)));
+                            }else{
+                              Navigator.of(context).pushReplacement(
+                                  CupertinoPageRoute(
+                                      builder: (context) => StudentActivity(
+                                          student, _googleSignIn)));
+                            }
+
                           }
                         }
                       } on FirebaseAuthException catch (e) {

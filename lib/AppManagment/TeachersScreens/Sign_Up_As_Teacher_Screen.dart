@@ -21,10 +21,13 @@ import 'Sign_Up_Lessions_Details_Screen.dart';
 // ignore: must_be_immutable
 class SignUpTeacher extends StatefulWidget {
   final GoogleSignInAccount userObj;
+  final  GoogleSignIn googleSignIn;
+
   final auth;
+
   List<dynamic> cities;
 
-  SignUpTeacher({Key key, this.userObj, this.auth, this.cities})
+  SignUpTeacher({Key key, this.userObj, this.auth, this.cities,this.googleSignIn})
       : super(key: key);
 
   @override
@@ -75,7 +78,7 @@ class SignUpTeacherState extends State<SignUpTeacher> {
                         alignment: Alignment.topLeft,
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
-                              SlideRightRoute(page: AccountType(auth: widget.auth,)));
+                              SlideRightRoute(page: AccountType(auth: widget.auth,googleSignIn: widget.googleSignIn,userObj: widget.userObj,)));
                         }),
                     Text(
                       'TeachMe',

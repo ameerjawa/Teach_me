@@ -135,6 +135,7 @@ class AccountType extends StatelessWidget {
                                   isTeacher["Price"],
                               isTeacher["CertifecationFileUrl"]);
 
+                              print(this.googleSignIn==null);
                               Navigator.of(context).pushReplacement(
                                   SlideRightRoute(
                                       page: TeacherHomepage(

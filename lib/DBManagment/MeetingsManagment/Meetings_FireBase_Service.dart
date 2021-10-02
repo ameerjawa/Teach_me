@@ -54,6 +54,16 @@ Stream<QuerySnapshot<Map<String, dynamic>>> getMeetingsByTeacherIdFromFireBaseFu
   }
 
 }
+Stream<QuerySnapshot<Map<String, dynamic>>> getMeetingsByStudentEmailFromFireBase(String email){
+  try{
+    return  FirebaseFirestore.instance.collection('Meetings')
+        .where("StuEmail" ,isEqualTo: email).snapshots();
+  }catch(e){
+    print("Exception is $e");
+  }
+
+}
+
 
 
 // function that delete speciefic meeting from database

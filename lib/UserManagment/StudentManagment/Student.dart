@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:teach_me/DBManagment/CoursesManagment/Course_FireBase_Service.dart';
 import 'package:teach_me/DBManagment/ExamsManagment/Exam_FireBase_Service.dart';
+import 'package:teach_me/DBManagment/MeetingsManagment/Meetings_FireBase_Service.dart';
 import 'package:teach_me/DBManagment/StudentsAccountManagment/Student_FireBase_Service.dart';
 import 'package:teach_me/DBManagment/TeacherAccountManagment/Teacher_FireBase_Service.dart';
 import 'package:teach_me/DBManagment/UserAccountManagment/User_FireBase_Service.dart';
@@ -77,6 +78,10 @@ class Student extends Userbg implements TeacherProfiles{
      return getTeachersFromFireBaseBySubjectAndLocation(subject,location,showValue);
    }
 
+  // function that get all the meetings of speciefic student {from Meetings_FireBase_Service}
+  Stream<QuerySnapshot<Map<String, dynamic>>> getMeetingsByStudentEmail(String email){
+    return   getMeetingsByStudentEmailFromFireBase(email);
+  }
 
 
 

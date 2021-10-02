@@ -69,7 +69,7 @@ class Teacher extends Userbg with TeacherProfiles{
       "TeacherName":
       lesson.teacherName,
       "Time":
-      lesson.time};
+      lesson.time,"StuEmail":lesson.email};
     await addMeetingToFireStoreAsTeacher(data);
   }
 

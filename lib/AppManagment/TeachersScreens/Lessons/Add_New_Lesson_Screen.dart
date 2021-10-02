@@ -17,9 +17,10 @@ class AddNewLesson extends StatefulWidget {
   final auth;
   GoogleSignIn googleSignIn;
   var index;
+  Map<String,dynamic> data;
 
   AddNewLesson(
-      {Key key, this.teacher, this.document, this.auth, this.googleSignIn,this.lessons,this.index})
+      {Key key, this.teacher, this.document, this.auth, this.googleSignIn,this.lessons,this.index,this.data})
       : super(key: key);
 
   @override
@@ -27,7 +28,7 @@ class AddNewLesson extends StatefulWidget {
 }
 
 class AddNewLessonState extends State<AddNewLesson> {
-  String lessonSubject="", stuPhoneNumber="", stuName="";
+  String lessonSubject="", stuPhoneNumber="", stuName="",stuEmail="";
   bool canGo = false;
   final dateController = TextEditingController();
   TextEditingController timeInput = TextEditingController();
@@ -187,8 +188,13 @@ lessonslist.add(element.data());
                                 ? stuPhoneNumber = value
                                 : stuPhoneNumber =
                             this.widget.document["StuPhoneNumber"];
+                          }else if (this.widget.data != null){
+
+                            stuPhoneNumber=this.widget.data["StuPhone"];
+                          }else{
+                            stuPhoneNumber=value;
                           }
-                         stuPhoneNumber=value;
+
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.white60,
@@ -197,7 +203,7 @@ lessonslist.add(element.data());
                               borderRadius: new BorderRadius.circular(15.0)),
                           hintText: this.widget.document != null
                               ? this.widget.document["StuPhoneNumber"]
-                              : 'Student Phone Number',
+                              : this.widget.data!=null?this.widget.data["StuPhone"]:'Student Phone Number',
                           hintStyle: InputTextStyle,
                         ),
                       ),
@@ -213,8 +219,12 @@ lessonslist.add(element.data());
                           value != ""
                           ? stuName = value
                               : stuName = this.widget.document["StudentName"];
+                          }else if (this.widget.data != null){
+                            stuName=this.widget.data["StuName"];
                           }
                             stuName=value;
+
+
 
                         },
                         decoration: InputDecoration(
@@ -224,7 +234,35 @@ lessonslist.add(element.data());
                               borderRadius: new BorderRadius.circular(15.0)),
                           hintText: this.widget.document != null
                               ? this.widget.document["StudentName"]
-                              : 'Student Name',
+                              : this.widget.data!=null?this.widget.data["StuName"]: 'Student Name',
+                          hintStyle: InputTextStyle,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),TextField(
+                        keyboardType: TextInputType.emailAddress,
+                        textAlign: TextAlign.center,
+                        onChanged: (value) {
+                          print(value);
+                          if(this.widget.document!=null){
+                            value != ""
+                                ? stuEmail = value
+                                : stuEmail = this.widget.document["Email"];
+                          }else if (this.widget.data!=null){
+                            stuEmail=this.widget.data["StuEmail"];
+                          }
+                          stuEmail=value;
+
+                        },
+                        decoration: InputDecoration(
+                          fillColor: Colors.white60,
+                          filled: true,
+                          border: OutlineInputBorder(
+                              borderRadius: new BorderRadius.circular(15.0)),
+                          hintText: this.widget.document != null
+                              ? this.widget.document["StuEmail"]
+                              : this.widget.data!=null?this.widget.data["StuEmail"]: 'Student Email',
                           hintStyle: InputTextStyle,
                         ),
                       ),
@@ -329,6 +367,12 @@ lessonslist.add(element.data());
                                 Map<String, dynamic> newLessonData;
                                 try {
 
+                                  if(this.widget.data!=null){
+
+                                    stuPhoneNumber=this.widget.data["StuPhone"];
+                                    stuName=this.widget.data["StuName"];
+                                    stuEmail=this.widget.data["StuEmail"];
+                                  }
 
 
 
@@ -349,7 +393,8 @@ lessonslist.add(element.data());
                                           : stuPhoneNumber,
                                       "StudentName": stuName == ""
                                           ? this.widget.document["StudentName"]
-                                          : stuName,
+                                          : stuName,"StuEmail":stuEmail == ""
+                                          ?this.widget.document["StuEmail"]:stuEmail,
                                       "TeacherId": this.widget.teacher.id,
                                       "TeacherName":
                                           this.widget.teacher.fullName,
@@ -396,7 +441,7 @@ lessonslist.add(element.data());
                                         this.widget.teacher.fullName,
                                         timeInput.text,
                                         stuPhoneNumber,
-                                        lessonSubject);
+                                        lessonSubject,stuEmail);
 
 
                                     print(lesson);
@@ -424,7 +469,7 @@ lessonslist.add(element.data());
                                   }
                                 } catch (e) {
                                   print(
-                                      "something went wrong in addnewlesson on pressed line 406 AddNewLesson_Screen");
+                                      "something went wrong in addnewlesson on pressed line 406 AddNewLesson_Screen $e");
                                 }
                               })),
                     ],

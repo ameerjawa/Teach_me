@@ -1,45 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
-import 'package:teach_me/DBManagment/MeetingsManagment/Lession.dart';
-
-import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
-import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
+import 'package:teach_me/DBManagment/MeetingsManagment/Lession.dart';
+import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 
-import 'Add_New_Lesson_Screen.dart';
-import '../Teacher_Home_Page_Screen.dart';
+import '../Student_Activity_Home_Screen.dart';
 
-// ignore: must_be_immutable
-class Lessons extends StatefulWidget {
-  Student student;
-  String location;
-  String subject;
-  final auth;
-  GoogleSignIn googleSignIn;
-  Teacher teacher;
 
-  Lessons(this.teacher, this.auth, this.googleSignIn);
+class StudentLessons extends StatefulWidget {
+ final Student student;
+ GoogleSignIn googleSignIn;
+ final auth ;
+   StudentLessons({Key key,this.student,this.googleSignIn,this.auth}) : super(key: key);
+
 
   @override
-  LessonsDetails createState() => LessonsDetails();
+  _StudentLessonsState createState() => _StudentLessonsState();
 }
 
-class LessonsDetails extends State<Lessons> {
-  Student student;
-  String location;
-  String subject;
-  bool showValue = false;
-  var lessons=[];
-  var index=0;
-
-  LessonsDetails();
-
+class _StudentLessonsState extends State<StudentLessons> {
+  @override
 
   Widget build(BuildContext context) {
-    print(this.widget.teacher.id);
 
     return Scaffold(
       body: Container(
@@ -59,14 +43,8 @@ class LessonsDetails extends State<Lessons> {
                       iconSize: 50,
                       onPressed: () {
                         Navigator.of(context).pushReplacement(SlideRightRoute(
-                            page: TeacherHomepage(
-                                this.widget.teacher,
-                                student,
-                                subject,
-                                location,
-                                this.widget.auth,
-                                this.widget.googleSignIn,
-                                false)));
+                            page: StudentActivity(student: widget.student,googleSignIn: this.widget.googleSignIn,auth: widget.auth,)));
+
                       }),
                   Column(children: [
                     SizedBox(
@@ -103,21 +81,7 @@ class LessonsDetails extends State<Lessons> {
               SizedBox(
                 width: 10,
               ),
-              TextButton(
-                  onPressed: () {
-                    Stream<QuerySnapshot<Map<String, dynamic>>> list= widget.teacher.getMeetingsByTeacherIdFuture(widget.teacher.id);
 
-
-                    print(list);
-                    // list.forEach((element) { print(element.docs.first.data());});
-                    Navigator.of(context).pushReplacement(SlideRightRoute(
-                        page: AddNewLesson(
-                      teacher: this.widget.teacher,
-                      googleSignIn: this.widget.googleSignIn,
-                          lessons: list,
-                    )));
-                  },
-                  child: Text("+ Add New Lesson "))
             ]),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -131,8 +95,8 @@ class LessonsDetails extends State<Lessons> {
                     child: StreamBuilder<QuerySnapshot>(
                       stream: this
                           .widget
-                          .teacher
-                          .getMeetingsByTeacherId(this.widget.teacher.id),
+                          .student
+                          .getMeetingsByStudentEmail(widget.student.email),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (!snapshot.hasData)
@@ -149,9 +113,9 @@ class LessonsDetails extends State<Lessons> {
                                 document.get("Time"),
                                 document.get("StuPhoneNumber"),
                                 document.get("LessonSubject"),
-                            document.get("StuEmail"));
+                                document.get("StuEmail"));
 
-                            
+
 
                             return new ListTile(
 
@@ -159,20 +123,10 @@ class LessonsDetails extends State<Lessons> {
                                     horizontal: 10.0, vertical: 10.0),
                                 onTap: () {
                                   try {
-                                    Stream<QuerySnapshot<Map<String, dynamic>>> list= widget.teacher.getMeetingsByTeacherIdFuture(widget.teacher.id);
 
-                                    Navigator.of(context)
-                                        .pushReplacement(SlideRightRoute(
-                                            page: AddNewLesson(
-                                      teacher: this.widget.teacher,
-                                      document: document,
-                                      index:index,
-                                      googleSignIn: this.widget.googleSignIn,
-                                              lessons: list,
-                                    )));
                                   } catch (e) {
                                     print(
-                                        "something went wrong with navigator line 146 LessonScreen");
+                                        "$e ");
                                   }
                                 },
                                 leading: Container(
@@ -199,7 +153,7 @@ class LessonsDetails extends State<Lessons> {
                                   children: <Widget>[
                                     SizedBox(width: .0),
                                     Text(
-                                        "${lesson.studentName} : ${lesson.studentphonenumber}",
+                                        "Teacher :${lesson.teacherName} ",
                                         maxLines: 1,
                                         style: TextStyle(color: Colors.black))
                                     //
@@ -208,18 +162,15 @@ class LessonsDetails extends State<Lessons> {
                                 trailing: IconButton(
                                     icon: Icon(Icons.delete),
                                     onPressed: () {
-                                      this
-                                          .widget
-                                          .teacher
-                                          .deleteMeetingById(document.id);
+
                                     }));
                           }).toList(),
                         );
                       },
                     )
-                    // color: Colors.grey,
+                  // color: Colors.grey,
 
-                    ),
+                ),
               ),
             ),
           ]),

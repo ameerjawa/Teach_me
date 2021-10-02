@@ -65,7 +65,7 @@ class SureLogout extends StatelessWidget {
                                   SlideRightRoute(page: SignInUser()));
                             }
                           } catch (e) {
-                            print(e);
+                            print(" line 68 surelogout  $e");
                           }
                         }
                       },

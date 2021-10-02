@@ -10,6 +10,8 @@ import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
+import 'Lessons/Add_New_Lesson_Screen.dart';
+
 // ignore: must_be_immutable
 class SearchForStudent extends StatefulWidget {
   DocumentSnapshot isTeacher;
@@ -143,7 +145,17 @@ class SearchForStudentState extends State<SearchForStudent> {
                             return new ListTile(
                               contentPadding: EdgeInsets.symmetric(
                                   horizontal: 10.0, vertical: 10.0),
-                              onTap: () {},
+                              onTap: () {
+
+                               Map<String,dynamic> data={"StuName":document["FullName"],"StuPhone":document["PhoneNumber"],"StuEmail":document["Email"]};
+
+                               Stream<QuerySnapshot<Map<String, dynamic>>> list= widget.teacher.getMeetingsByTeacherIdFuture(widget.teacher.id);
+
+                               Navigator.of(context).pushReplacement(
+                                   SlideRightRoute(
+                                       page: AddNewLesson(data: data,teacher: this.widget.teacher,lessons: list,)));
+
+                              },
                               leading: Container(
                                 height: 40.0,
                                 width: 1,
@@ -155,7 +167,7 @@ class SearchForStudentState extends State<SearchForStudent> {
                                 )),
                               ),
                               title: Text(
-                                "${document["FullName"]} - ${document["PhoneNumber"]} ",
+                                "${document["FullName"]} - ${document["PhoneNumber"]} \n ${document["Email"]} ",
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold),

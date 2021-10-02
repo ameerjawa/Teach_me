@@ -9,6 +9,7 @@ import 'CoursesScreens/Courses_Home_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
+import'package:teach_me/AppManagment/StudentsScreens/LessonsScreens/StudentLessons.dart';
 
 import 'Sure_Log_Out_Widget.dart';
 
@@ -195,6 +196,57 @@ class StudentActivity extends StatelessWidget {
                     }
                   },
                   child: Text("Courses",
+                      style: TextStyle(
+                          fontSize: BtnFontSize,
+                          color: btnColor,
+                          fontFamily: BtnFont)),
+                ),
+              ),
+              SizedBox(
+                height: 20.0,
+              ),
+              Container(
+                height: 100,
+                width: 250,
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade500,
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(20.0),
+                      topRight: Radius.circular(100.0),
+                      bottomLeft: Radius.circular(100.0),
+                      bottomRight: Radius.circular(20.0)),
+                  //  borderRadius: BorderRadius.circular(30),
+                ),
+                child: TextButton(
+                  onPressed: () async {
+                    try {
+                      ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                        duration: new Duration(seconds: 3),
+                        content: new Row(
+                          children: <Widget>[
+                            new CircularProgressIndicator(),
+                            SizedBox(
+                              width: 30,
+                            ),
+                            new Text(" Moving to Lessons ")
+                          ],
+                        ),
+                      ));
+                      // got meetings from firebase
+
+
+
+                      Navigator.of(context).pushReplacement(SlideRightRoute(
+                          page: StudentLessons(student: this.student,googleSignIn: this.googleSignIn,auth: this.auth,)));
+
+
+
+                    } catch (e) {
+                      print(
+                          "$e");
+                    }
+                  },
+                  child: Text("Lessons",
                       style: TextStyle(
                           fontSize: BtnFontSize,
                           color: btnColor,

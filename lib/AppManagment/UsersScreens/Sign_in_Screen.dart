@@ -42,6 +42,7 @@ class _MyHomePageState extends State<SignInUser> {
 
   Future<bool> _login() async {
     try {
+
       _userObj = await _googleSignIn.signIn();
       GoogleSignInAuthentication googleSignInAuthentication =
       await _userObj.authentication;
@@ -198,6 +199,7 @@ class _MyHomePageState extends State<SignInUser> {
                                 isTeacher["Title Sentence"],
                                 isTeacher["Price"],
                             isTeacher["CertifecationFileUrl"]);
+                           print( this._googleSignIn==null);
                             Navigator.of(context).pushReplacement(
                                 CupertinoPageRoute(
                                     builder: (context) => TeacherHomepage(

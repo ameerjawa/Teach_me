@@ -14,7 +14,7 @@ class CoursesHomePage extends StatefulWidget {
   GoogleSignIn googleSignIn;
   var resultCat;
 
-  CoursesHomePage(this.student, this.googleSignIn, this.resultCat);
+  CoursesHomePage({Key key,this.student, this.googleSignIn, this.resultCat});
 
   @override
   _CoursesHomePageState createState() => _CoursesHomePageState();
@@ -55,7 +55,7 @@ class _CoursesHomePageState extends State<CoursesHomePage> {
                     // moving to StudentActivity
                     Navigator.of(context).pushReplacement(SlideRightRoute(
                         page: StudentActivity(
-                            this.widget.student, this.widget.googleSignIn)));
+                            student:this.widget.student, googleSignIn:this.widget.googleSignIn)));
                   }),
               SizedBox(
                 height: lRPadding,

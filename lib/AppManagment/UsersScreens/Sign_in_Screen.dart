@@ -220,7 +220,7 @@ class _MyHomePageState extends State<SignInUser> {
                               Navigator.of(context).pushReplacement(
                                   CupertinoPageRoute(
                                       builder: (context) => StudentActivity(
-                                          student, _googleSignIn)));
+                                        googleSignIn:   _googleSignIn,auth:auth,student: student,)));
                             }
 
                           }

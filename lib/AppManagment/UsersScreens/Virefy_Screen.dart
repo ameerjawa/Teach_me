@@ -10,9 +10,10 @@ import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 import 'Sign_in_Screen.dart';
 
 class VerifyEmail extends StatefulWidget {
-  final auth;
+  FirebaseAuth auth;
+  UserCredential  credential;
 
-  VerifyEmail(this.auth,);
+  VerifyEmail(this.auth,this.credential);
 
   @override
   _VerifyState createState() => _VerifyState();
@@ -29,6 +30,9 @@ class _VerifyState extends State<VerifyEmail> {
   void initState() {
     // TODO: implement initState
 
+    user=widget.credential.user;
+
+
 
     user.sendEmailVerification();
     timer = Timer.periodic(Duration(seconds: 3), (timer) {
@@ -40,6 +44,7 @@ class _VerifyState extends State<VerifyEmail> {
   @override
   void dispose() {
     // TODO: implement dispose
+
     timer.cancel();
     super.dispose();
   }
@@ -59,7 +64,9 @@ class _VerifyState extends State<VerifyEmail> {
                     IconButton(
                         icon: const Icon(Icons.arrow_back),
                         iconSize: 50,
-                        onPressed: () {
+                        onPressed: () async{
+                          user=widget.auth.currentUser;
+                          await user.delete();
                           Navigator.of(context).pushReplacement(
                               SlideRightRoute(page: Sign_Up_User()));
                         })
@@ -95,8 +102,12 @@ class _VerifyState extends State<VerifyEmail> {
 
 
 
-    await widget.auth.currentUser.reload();
-    if (widget.auth.currentUser.emailVerified) {
+    user=widget.auth.currentUser;
+    print(user.emailVerified);
+
+
+    await user.reload();
+    if (user.emailVerified) {
       timer.cancel();
 
       Navigator.of(context).pushReplacement(CupertinoPageRoute(
@@ -104,12 +115,12 @@ class _VerifyState extends State<VerifyEmail> {
               AccountType(
                 auth: widget.auth,
               )));
+    } else{
+      if(!user.emailVerified && !timer.isActive){
+        user.delete();
+        Navigator.of(context).pushReplacement(CupertinoPageRoute(
+            builder: (context) => Sign_Up_User()));
+      }
     }
-    //  else{
-    //   user.delete();
-    //   Navigator.of(context).pushReplacement(CupertinoPageRoute(
-    //       builder: (context) => Sign_Up_User()));
-    //
-    // }
   }
 }

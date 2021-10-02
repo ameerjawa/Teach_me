@@ -53,8 +53,8 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
                       iconSize: lRPadding * 2.5,
                       onPressed: () {
                         Navigator.of(context).pushReplacement(SlideRightRoute(
-                            page: StudentActivity(this.widget.student,
-                                this.widget.googleSignIn)));
+                            page: StudentActivity(student:this.widget.student,
+                                googleSignIn: this.widget.googleSignIn)));
                       }),
                 ],
               ),

@@ -55,7 +55,7 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
                   onPressed: () {
                     Navigator.of(context).pushReplacement(SlideRightRoute(
                         page: StudentActivity(
-                            this.widget.student, this.widget.googleSignIn)));
+                            student:this.widget.student,googleSignIn: this.widget.googleSignIn)));
                   }),
               SizedBox(
                 height: lRPadding,

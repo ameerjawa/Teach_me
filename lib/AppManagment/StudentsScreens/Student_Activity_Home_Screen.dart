@@ -17,9 +17,9 @@ class StudentActivity extends StatelessWidget {
   Student student;
   GoogleSignIn googleSignIn;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final _auth = FirebaseAuth.instance;
+  final auth ;
 
-  StudentActivity(this.student, this.googleSignIn);
+  StudentActivity({Key key,this.student, this.googleSignIn,this.auth});
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -83,7 +83,7 @@ class StudentActivity extends StatelessWidget {
                           page: SearchForTeacherStudentActivity(
                               this.student,
                               this.googleSignIn,
-                              this._auth,
+                              this.auth,
                               subjectsList,
                               citiesList)));
                     } catch (e) {
@@ -186,7 +186,7 @@ class StudentActivity extends StatelessWidget {
                       if(resultCat != null){
                         Navigator.of(context).pushReplacement(SlideRightRoute(
                             page: CoursesHomePage(
-                                student, googleSignIn, resultCat)));
+                                student:student,googleSignIn: googleSignIn, resultCat:resultCat)));
                       }
 
                     } catch (e) {
@@ -208,7 +208,7 @@ class StudentActivity extends StatelessWidget {
                 onPressed: () => showDialog(
                   context: context,
                   builder: (context) =>
-                      SureLogout(auth: _auth, googleSignin: googleSignIn),
+                      SureLogout(auth: auth, googleSignin: googleSignIn),
                 ),
                 child: Text(
                   "Logout",

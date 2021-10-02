@@ -196,7 +196,7 @@ class AccountType extends StatelessWidget {
                             Navigator.of(context).pushReplacement(
                                 SlideRightRoute(
                                     page: StudentActivity(
-                                        student, googleSignIn)));
+                                        student:student, googleSignIn:googleSignIn)));
                           } else {
                             print(this.auth);
                             Student student = Student(

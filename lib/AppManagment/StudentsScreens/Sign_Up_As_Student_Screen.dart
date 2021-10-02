@@ -301,7 +301,7 @@ class SignUpStudentState extends State<SignUpStudent> {
                             Navigator.of(context).pushReplacement(
                                 SlideRightRoute(
                                     page: StudentActivity(
-                                        newStudent, googleSignIn)));
+                                        student:newStudent, googleSignIn:googleSignIn,auth: widget.auth,)));
                           }
                         } catch (e) {
                           print(

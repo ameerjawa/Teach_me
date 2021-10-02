@@ -80,8 +80,8 @@ class _CourseCategoryPageState extends State<CourseCategoryPage> {
                       var resultcat = await this.widget.student.getCategories();
 
                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                          page: CoursesHomePage(this.widget.student,
-                              this.widget.googleSignIn, resultcat)));
+                          page: CoursesHomePage(
+                               student: this.widget.student,googleSignIn: this.widget.googleSignIn,resultCat: resultcat,)));
                     } catch (e) {
                       print(
                           "somthing wrong with getting the categories from firebase line 89 Corses_inCategories_screen");

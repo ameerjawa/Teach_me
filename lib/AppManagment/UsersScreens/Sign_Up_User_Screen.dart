@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:teach_me/AppManagment/TeachersScreens/Lessons/Sure_Details_alert_add_new_Lesson.dart';
 import 'package:teach_me/AppManagment/UsersScreens/Sign_in_Screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,10 +10,12 @@ import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 
 // ignore: camel_case_types, must_be_immutable
 class Sign_Up_User extends StatelessWidget {
-  String email="", password="", verifypassword="";
+  String email="", password="", verifypassword="",errormessage="";
   final _formKey = GlobalKey<FormState>();
   final auth = FirebaseAuth.instance;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +73,7 @@ class Sign_Up_User extends StatelessWidget {
                             if (value.isEmpty || value == null) {
                               return "Must Type Email";
                             }else if (!value.contains("@")){
-                              return "Envalid email!";
+                              return "Envalid email!  ";
                             }
                             return null;
                           },
@@ -153,26 +156,36 @@ class Sign_Up_User extends StatelessWidget {
                       ));
 
 
-                      auth
+
+                      UserCredential value= await auth
                           .createUserWithEmailAndPassword(
-                          email: this.email, password: this.password)
-                          .then((value) {
-                        auth.signInWithCredential(value.credential);
+                          email: this.email, password: this.password);
+
+
+                      if(value != null){
+                     //   dynamic credential=await auth.signInWithCredential(value.credential);
                         Navigator.of(context).pushReplacement(
-                            CupertinoPageRoute(
-                                builder: (context) =>
-                                    VerifyEmail(auth,)));
-                      });
+                              CupertinoPageRoute(
+                                  builder: (context) =>
+                                      VerifyEmail(auth,value)));
 
 
-
-
+                      }
 
 
                     }
                   } catch (e) {
+
+
                     print(
-                        "something went wrong with signing up line 168 signupScreen"+e.toString());
+                        "something went wrong with signing up line 168 signupScreenv "+e.toString());
+                    if(e.code == "invalid-email"){
+                      return showDialog(
+                          context: context,
+                          builder: (context) =>
+                              SureDetails("The email address is badly formatted "));
+                    }
+
                   }
                 },
                 child: const Text(

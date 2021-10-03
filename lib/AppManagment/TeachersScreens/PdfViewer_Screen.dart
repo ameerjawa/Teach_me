@@ -1,7 +1,7 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import '../UsersScreens/checkInternet.dart';
 
 
 
@@ -20,6 +20,17 @@ class _PDFScreenState extends State<PDFScreen> with WidgetsBindingObserver {
   int currentPage = 0;
   bool isReady = false;
   String errorMessage = '';
+
+  @override
+  initState(){
+    super.initState();
+    CheckInternet().checkConnection(context);
+  }
+  @override
+  void dispose() {
+    CheckInternet().listener.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -11,6 +11,7 @@ import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
 import 'Lessons/Add_New_Lesson_Screen.dart';
+import '../UsersScreens/checkInternet.dart';
 
 // ignore: must_be_immutable
 class SearchForStudent extends StatefulWidget {
@@ -36,6 +37,17 @@ class SearchForStudentState extends State<SearchForStudent> {
   String selectedName = "";
 
   SearchForStudentState();
+  @override
+  initState(){
+    super.initState();
+    CheckInternet().checkConnection(context);
+  }
+  @override
+  void dispose() {
+    CheckInternet().listener.cancel();
+    super.dispose();
+  }
+
 
   Widget build(BuildContext context) {
     return Scaffold(

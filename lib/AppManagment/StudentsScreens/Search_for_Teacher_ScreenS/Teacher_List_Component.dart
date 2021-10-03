@@ -26,6 +26,7 @@ class TeachersList extends StatefulWidget {
 class _TeachersListState extends State<TeachersList> {
   _TeachersListState();
 
+
   Widget build(BuildContext context) {
     return new StreamBuilder<QuerySnapshot>(
       stream: this.widget.student.getTeachers(

@@ -6,6 +6,7 @@ import 'package:teach_me/AppManagment/UsersScreens/Account_Type_Screen.dart';
 import 'package:teach_me/AppManagment/UsersScreens/Sign_Up_User_Screen.dart';
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
+import 'checkInternet.dart';
 
 import 'Sign_in_Screen.dart';
 
@@ -33,7 +34,7 @@ class _VerifyState extends State<VerifyEmail> {
     user=widget.credential.user;
 
 
-
+    CheckInternet().checkConnection(context);
     user.sendEmailVerification();
     timer = Timer.periodic(Duration(seconds: 3), (timer) {
       checkEmailVerified();
@@ -44,7 +45,7 @@ class _VerifyState extends State<VerifyEmail> {
   @override
   void dispose() {
     // TODO: implement dispose
-
+    CheckInternet().listener.cancel();
     timer.cancel();
     super.dispose();
   }

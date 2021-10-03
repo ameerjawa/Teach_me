@@ -22,6 +22,7 @@ import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/UserManagment/User/Userbg.dart';
+import '../UsersScreens/checkInternet.dart';
 
 import 'PdfViewer_Screen.dart';
 
@@ -50,13 +51,18 @@ class HomepageteacherState extends State<TeacherHomepage> {
   HomepageteacherState();
 
 
+
   @override
-  void initState(){
+  initState(){
     super.initState();
-
-
-
+    CheckInternet().checkConnection(context);
   }
+  @override
+  void dispose() {
+    CheckInternet().listener.cancel();
+    super.dispose();
+  }
+
 
   Future<File> createFileOfPdfUrl(String url) async {
     print("Start download file from internet!");
@@ -524,6 +530,7 @@ class HomepageteacherState extends State<TeacherHomepage> {
         onPressed: () {
           Navigator.of(context).pushReplacement(CupertinoPageRoute(
               builder: (context) => SearchForTeacherViewTeachers(
+                googleSignIn: widget.googleSignIn,
                     s: widget.student,
                     selectedSubject: widget.subject,
                     selectedLocation: widget.location,

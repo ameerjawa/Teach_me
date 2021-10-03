@@ -7,6 +7,7 @@ import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
+import '../../UsersScreens/checkInternet.dart';
 
 // ignore: must_be_immutable
 class CoursesHomePage extends StatefulWidget {
@@ -30,7 +31,14 @@ class _CoursesHomePageState extends State<CoursesHomePage> {
       filteredCourses = this.widget.resultCat;
     });
     super.initState();
+    CheckInternet().checkConnection(context);
   }
+  @override
+  void dispose() {
+    CheckInternet().listener.cancel();
+    super.dispose();
+  }
+
 
   _CoursesHomePageState();
 

@@ -7,6 +7,7 @@ import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 
 import '../Student_Activity_Home_Screen.dart';
 import 'Sure_Enter_Exam_Widget.dart';
+import '../../UsersScreens/checkInternet.dart';
 
 // ignore: must_be_immutable
 class ExamsHomeScreen extends StatefulWidget {
@@ -32,8 +33,15 @@ class _ExamsHomeScreenState extends State<ExamsHomeScreen> {
     setState(() {
       filteredExams=this.widget.result[0];
     });
+
    super.initState();
+    CheckInternet().checkConnection(context);
    }
+  @override
+  void dispose() {
+    CheckInternet().listener.cancel();
+    super.dispose();
+  }
 
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,6 +16,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
 import '../StudentsScreens/Student_Activity_Home_Screen.dart';
+import 'checkInternet.dart';
 
 class SignInUser extends StatefulWidget {
   SignInUser({Key key}) : super(key: key);
@@ -30,6 +33,7 @@ class _MyHomePageState extends State<SignInUser> {
   final auth = FirebaseAuth.instance;
   DocumentSnapshot isTeacher;
   bool successFullyLogin = false;
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final GoogleSignIn _googleSignIn = new GoogleSignIn(
     scopes: [
@@ -40,9 +44,9 @@ class _MyHomePageState extends State<SignInUser> {
   GoogleSignInAccount _userObj;
   bool isLoggedin = false;
 
+
   Future<bool> _login() async {
     try {
-
       _userObj = await _googleSignIn.signIn();
       GoogleSignInAuthentication googleSignInAuthentication =
       await _userObj.authentication;
@@ -65,12 +69,30 @@ class _MyHomePageState extends State<SignInUser> {
   }
 
   @override
+  initState(){
+    super.initState();
+  CheckInternet().checkConnection(context);
+  }
+  @override
+  void dispose() {
+    CheckInternet().listener.cancel();
+    super.dispose();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
       body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         decoration: MainBoxDecorationStyle,
         child: Center(
           // Center is a layout widget. It takes a single child and positions it
@@ -104,7 +126,7 @@ class _MyHomePageState extends State<SignInUser> {
                             validator: (value) {
                               if (value.isEmpty || value == null) {
                                 return "Must Type Email";
-                              }else if (!value.contains("@")){
+                              } else if (!value.contains("@")) {
                                 return "Invalid email";
                               }
                               return null;
@@ -115,7 +137,7 @@ class _MyHomePageState extends State<SignInUser> {
                               filled: true,
                               border: OutlineInputBorder(
                                   borderRadius:
-                                      new BorderRadius.circular(15.0)),
+                                  new BorderRadius.circular(15.0)),
                               hintText: 'Enter your email',
                               hintStyle: InputTextStyle,
                             ),
@@ -138,7 +160,7 @@ class _MyHomePageState extends State<SignInUser> {
                               filled: true,
                               border: OutlineInputBorder(
                                   borderRadius:
-                                      new BorderRadius.circular(15.0)),
+                                  new BorderRadius.circular(15.0)),
                               hintText: 'Enter your password',
                               hintStyle: InputTextStyle,
                             ),
@@ -150,7 +172,7 @@ class _MyHomePageState extends State<SignInUser> {
                 ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all(Colors.white60),
+                      MaterialStateProperty.all(Colors.white60),
                       textStyle: MaterialStateProperty.all(
                           TextStyle(color: Colors.blue))),
                   onPressed: () async {
@@ -158,21 +180,22 @@ class _MyHomePageState extends State<SignInUser> {
                       // TODO submit
 
                       try {
-                        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-                          duration: new Duration(seconds: 5),
-                          content: new Row(
-                            children: <Widget>[
-                              new CircularProgressIndicator(),
-                              SizedBox(
-                                width: 30,
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            new SnackBar(
+                              duration: new Duration(seconds: 5),
+                              content: new Row(
+                                children: <Widget>[
+                                  new CircularProgressIndicator(),
+                                  SizedBox(
+                                    width: 30,
+                                  ),
+                                  new Text(" signing in ")
+                                ],
                               ),
-                              new Text(" signing in ")
-                            ],
-                          ),
-                        ));
+                            ));
 
                         final userCredential =
-                            await auth.signInWithEmailAndPassword(
+                        await auth.signInWithEmailAndPassword(
                           email: email,
                           password: password,
                         );
@@ -198,33 +221,39 @@ class _MyHomePageState extends State<SignInUser> {
                                 isTeacher.id,
                                 isTeacher["Title Sentence"],
                                 isTeacher["Price"],
-                            isTeacher["CertifecationFileUrl"]);
-                           print( this._googleSignIn==null);
+                                isTeacher["CertifecationFileUrl"]);
+                            print(this._googleSignIn == null);
                             Navigator.of(context).pushReplacement(
                                 CupertinoPageRoute(
-                                    builder: (context) => TeacherHomepage(
-                                        teacher,
-                                        student,
-                                        "",
-                                        "",
-                                        auth,
-                                        this._googleSignIn,
-                                        false)));
+                                    builder: (context) =>
+                                        TeacherHomepage(
+                                            teacher,
+                                            student,
+                                            "",
+                                            "",
+                                            auth,
+                                            this._googleSignIn,
+                                            false)));
                           } else {
                             student = await Student.getStudentById(
                                 userCredential.user.uid);
 
-                            if(student == null){
+                            if (student == null) {
                               Navigator.of(context).pushReplacement(
                                   CupertinoPageRoute(
-                                      builder: (context) => AccountType(auth: this.auth,googleSignIn: this._googleSignIn,userObj: this._userObj,)));
-                            }else{
+                                      builder: (context) =>
+                                          AccountType(auth: this.auth,
+                                            googleSignIn: this._googleSignIn,
+                                            userObj: this._userObj,)));
+                            } else {
                               Navigator.of(context).pushReplacement(
                                   CupertinoPageRoute(
-                                      builder: (context) => StudentActivity(
-                                        googleSignIn:   _googleSignIn,auth:auth,student: student,)));
+                                      builder: (context) =>
+                                          StudentActivity(
+                                            googleSignIn: _googleSignIn,
+                                            auth: auth,
+                                            student: student,)));
                             }
-
                           }
                         }
                       } on FirebaseAuthException catch (e) {
@@ -232,8 +261,9 @@ class _MyHomePageState extends State<SignInUser> {
                           print('No user found for that email.');
                           return showDialog(
                               context: context,
-                              builder: (context) => SureDetails(
-                                  "No user found for that email !"));
+                              builder: (context) =>
+                                  SureDetails(
+                                      "No user found for that email !"));
                         } else if (e.code == 'wrong-password') {
                           print('Wrong password provided for that user.');
                           return showDialog(
@@ -247,7 +277,7 @@ class _MyHomePageState extends State<SignInUser> {
                   child: const Text(
                     'sign in',
                     style:
-                        TextStyle(fontSize: BtnFontSize, fontFamily: BtnFont),
+                    TextStyle(fontSize: BtnFontSize, fontFamily: BtnFont),
                   ),
                 ),
                 SizedBox(height: 16),
@@ -271,26 +301,28 @@ class _MyHomePageState extends State<SignInUser> {
                     icon: Icon(FontAwesomeIcons.google),
                     onPressed: () async {
                       try {
-                        ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
-                          duration: new Duration(seconds: 3),
-                          content: new Row(
-                            children: <Widget>[
-                              new CircularProgressIndicator(),
-                              SizedBox(
-                                width: 30,
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            new SnackBar(
+                              duration: new Duration(seconds: 3),
+                              content: new Row(
+                                children: <Widget>[
+                                  new CircularProgressIndicator(),
+                                  SizedBox(
+                                    width: 30,
+                                  ),
+                                  new Text(" signing in with Google")
+                                ],
                               ),
-                              new Text(" signing in with Google")
-                            ],
-                          ),
-                        ));
+                            ));
                         bool isLogedin = await _login();
 
                         if (isLogedin == true) {
-                          Navigator.of(context).pushReplacement(SlideRightRoute(
-                              page: AccountType(
-                            googleSignIn: _googleSignIn,
-                            userObj: _userObj,
-                          )));
+                          Navigator.of(context).pushReplacement(
+                              SlideRightRoute(
+                                  page: AccountType(
+                                    googleSignIn: _googleSignIn,
+                                    userObj: _userObj,
+                                  )));
                         }
                       } catch (e) {
                         print(
@@ -330,4 +362,6 @@ class _MyHomePageState extends State<SignInUser> {
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
+
 }

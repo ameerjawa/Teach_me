@@ -47,8 +47,11 @@ class EditProfileForTeacherState extends State<EditProfileForTeacher> {
   File file;
   String fileUrl;
 
-
   EditProfileForTeacherState();
+
+
+
+
   Future selectfile()async{
     var result= await FilePicker.platform.pickFiles();
     if(result==null)return ;

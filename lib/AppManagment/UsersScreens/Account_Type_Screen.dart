@@ -10,9 +10,9 @@ import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 import 'package:teach_me/UserManagment/User/Userbg.dart';
-
 import '../TeachersScreens/Sign_Up_As_Teacher_Screen.dart';
 import 'Sign_in_Screen.dart';
+
 
 // ignore: must_be_immutable
 class AccountType extends StatelessWidget {
@@ -23,6 +23,10 @@ class AccountType extends StatelessWidget {
 
   AccountType({Key key, this.googleSignIn, this.userObj, this.auth})
       : super(key: key);
+
+
+
+
 
   Widget build(BuildContext context) {
     return Scaffold(

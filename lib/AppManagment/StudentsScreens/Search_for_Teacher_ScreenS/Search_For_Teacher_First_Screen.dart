@@ -6,9 +6,11 @@ import 'package:teach_me/AppManagment/StudentsScreens/Search_for_Teacher_Screens
 import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
+import '../../UsersScreens/checkInternet.dart';
 
 // ignore: must_be_immutable
 class SearchForTeacherStudentActivity extends StatefulWidget {
+
   Student student;
   GoogleSignIn googleSignIn;
   final auth;
@@ -31,6 +33,16 @@ class SearchForTeacherState extends State<SearchForTeacherStudentActivity> {
   String _selectedLocation;
 
   SearchForTeacherState();
+  // void initState(){
+  //   super.initState();
+  //   CheckInternet().checkConnection(context);
+  // }
+  // @override
+  // void dispose() {
+  //   CheckInternet().listener.cancel();
+  //   super.dispose();
+  // }
+
 
   Widget build(BuildContext context) {
     return Scaffold(

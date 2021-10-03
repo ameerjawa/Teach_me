@@ -11,6 +11,7 @@ import 'package:teach_me/UserManagment/TeacherManagment/Teacher.dart';
 
 import 'Add_New_Lesson_Screen.dart';
 import '../Teacher_Home_Page_Screen.dart';
+import '../../UsersScreens/checkInternet.dart';
 
 // ignore: must_be_immutable
 class Lessons extends StatefulWidget {
@@ -36,6 +37,19 @@ class LessonsDetails extends State<Lessons> {
   var index=0;
 
   LessonsDetails();
+
+  @override
+  initState(){
+    super.initState();
+    CheckInternet().checkConnection(context);
+  }
+  @override
+  void dispose() {
+    CheckInternet().listener.cancel();
+    super.dispose();
+  }
+
+
 
 
   Widget build(BuildContext context) {

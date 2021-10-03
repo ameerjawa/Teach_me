@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -10,17 +9,43 @@ import 'package:teach_me/AppManagment/Constants/constants.dart';
 import 'package:teach_me/UserManagment/StudentManagment/Student.dart';
 import 'package:teach_me/AppManagment/routes/pageRouter.dart';
 import'package:teach_me/AppManagment/StudentsScreens/LessonsScreens/StudentLessons.dart';
+import '../UsersScreens/checkInternet.dart';
 
 import 'Sure_Log_Out_Widget.dart';
 
 // ignore: must_be_immutable
-class StudentActivity extends StatelessWidget {
+class StudentActivity extends StatefulWidget {
   Student student;
   GoogleSignIn googleSignIn;
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final auth ;
+   StudentActivity({Key key,this.student, this.googleSignIn,this.auth}) : super(key: key);
 
-  StudentActivity({Key key,this.student, this.googleSignIn,this.auth});
+  @override
+  _StudentActivityState createState() => _StudentActivityState();
+}
+
+
+
+
+
+class _StudentActivityState extends State<StudentActivity> {
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+
+  _StudentActivityState({Key key,});
+  @override
+  initState(){
+    super.initState();
+    CheckInternet().checkConnection(context);
+  }
+  @override
+  void dispose() {
+    CheckInternet().listener.cancel();
+    super.dispose();
+  }
+
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +71,7 @@ class StudentActivity extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 30),
-              Text(student.email != null ? student.email : "your email",
+              Text(widget.student.email != null ? widget.student.email : "your email",
                   style: TextStyle(fontSize: 20, color: Colors.white)),
               SizedBox(height: 10),
               Container(
@@ -82,9 +107,9 @@ class StudentActivity extends StatelessWidget {
 
                       Navigator.of(context).pushReplacement(SlideRightRoute(
                           page: SearchForTeacherStudentActivity(
-                              this.student,
-                              this.googleSignIn,
-                              this.auth,
+                              this.widget.student,
+                              this.widget.googleSignIn,
+                              this.widget.auth,
                               subjectsList,
                               citiesList)));
                     } catch (e) {
@@ -129,12 +154,12 @@ class StudentActivity extends StatelessWidget {
                       ));
                       List<dynamic> result = [];
 
-                      await student
+                      await widget.student
                           .getExams()
                           .then((value) => {result.add(value)});
                       Navigator.of(context).pushReplacement(ScaleRoute(
                           page:
-                              ExamsHomeScreen(student, googleSignIn, result)));
+                              ExamsHomeScreen(widget.student, widget.googleSignIn, result)));
                     } catch (e) {
                       print(
                           "problem in line {130-140} StudentActivityHomeScreen GoToExamsButton");
@@ -182,12 +207,12 @@ class StudentActivity extends StatelessWidget {
 
                     try {
                       // here we store all the CoursesCategories from the firebase in resultcat variable
-                      dynamic resultCat = await this.student.getCategories();
+                      dynamic resultCat = await this.widget.student.getCategories();
 
                       if(resultCat != null){
                         Navigator.of(context).pushReplacement(SlideRightRoute(
                             page: CoursesHomePage(
-                                student:student,googleSignIn: googleSignIn, resultCat:resultCat)));
+                                student:widget.student,googleSignIn: widget.googleSignIn, resultCat:resultCat)));
                       }
 
                     } catch (e) {
@@ -237,7 +262,7 @@ class StudentActivity extends StatelessWidget {
 
 
                       Navigator.of(context).pushReplacement(SlideRightRoute(
-                          page: StudentLessons(student: this.student,googleSignIn: this.googleSignIn,auth: this.auth,)));
+                          page: StudentLessons(student: this.widget.student,googleSignIn: this.widget.googleSignIn,auth: this.widget.auth,)));
 
 
 
@@ -260,7 +285,7 @@ class StudentActivity extends StatelessWidget {
                 onPressed: () => showDialog(
                   context: context,
                   builder: (context) =>
-                      SureLogout(auth: auth, googleSignin: googleSignIn),
+                      SureLogout(auth: widget.auth, googleSignin: widget.googleSignIn),
                 ),
                 child: Text(
                   "Logout",

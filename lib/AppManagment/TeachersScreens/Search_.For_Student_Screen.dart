@@ -153,7 +153,7 @@ class SearchForStudentState extends State<SearchForStudent> {
 
                                Navigator.of(context).pushReplacement(
                                    SlideRightRoute(
-                                       page: AddNewLesson(data: data,teacher: this.widget.teacher,lessons: list,)));
+                                       page: AddNewLesson(data: data,teacher: this.widget.teacher,lessons: list,auth: widget.auth,googleSignIn: widget.googleSignin,)));
 
                               },
                               leading: Container(
